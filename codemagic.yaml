@@ -62,12 +62,14 @@ workflows:
         # Produces dist-board-native/. Distinct from Scorecard's
         # dist-native/ so both apps can coexist in the same repo.
         script: npm run build:board-native
-      - name: Capacitor sync iOS (Board config)
-        # Uses capacitor.board.config.ts so `webDir: dist-board-native` and
-        # `ios.path: ios-board` are picked up. Copies the Board web bundle
-        # into ios-board/App/App/public/ and refreshes native deps.
-        # Capacitor 8 uses Swift Package Manager, so no `pod install` step.
-        script: npx cap sync ios --config capacitor.board.config.ts
+      - name: Capacitor sync iOS
+        # capacitor.config.ts at repo root is Board's config in THIS repo
+        # (BBQ-Board diverges from BBQ-Scorecard on this one file). The
+        # `--config` flag is not supported on `cap sync`, so we rely on the
+        # default-filename discovery. Copies dist-board-native/ into
+        # ios-board/App/App/public/ and refreshes native deps. Capacitor 8
+        # uses Swift Package Manager, so no `pod install` step.
+        script: npx cap sync ios
       - name: Fetch signing files (App Store Connect API key)
         # PERSISTENT signing certificate reused across every build (Apple's
         # Distribution certificate limit is small). One team-wide certificate
