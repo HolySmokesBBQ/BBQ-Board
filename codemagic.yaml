@@ -106,13 +106,14 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
-        # Flip to true when ready for the first tester build. Kept false so
-        # the initial scaffolded runs are artifact-only — no accidental
-        # TestFlight submission of an incomplete Board.
-        submit_to_testflight: false
-        # When submit_to_testflight flips true, auto-attach the external
-        # tester group so approved builds distribute to the public-link
-        # testers with no manual "add group" step. Group must exist first
-        # (create in App Store Connect → TestFlight → External Testing).
+        # Auto-submit for external Beta App Review on every upload. Without
+        # this, ASC auto-attaches new builds to the External Testing group
+        # (via beta_groups below) but leaves them in "Ready to Submit" state,
+        # requiring a manual delete-and-readd through the modal to trigger
+        # the review submission (Apple's UI disables radios for already-
+        # attached builds). Flipping this to true skips that dance.
+        submit_to_testflight: true
+        # External tester group auto-attached to every approved build.
+        # Group must already exist in ASC → TestFlight → External Testing.
         beta_groups:
           - External Testing
