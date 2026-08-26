@@ -186,6 +186,12 @@ export default function AppProvider({ children }) {
   const [dirty, setDirty] = useState(false);
   const [compareIds, setCompareIds] = useState([]);
   const [compareMode, setCompareMode] = useState(false);
+  // Review pending an in-app delete confirmation (null = none). See
+  // deleteReview / DeleteConfirmModal.
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  // localStorage flag set when the user ticks "never ask again" in the
+  // delete confirmation — lets a mass-delete run skip the prompt.
+  const DELETE_CONFIRM_SKIP_KEY = 'bbq-scorecard-skip-delete-confirm';
   const [themePref, setThemePref] = useState(() => localStorage.getItem('muiller-bbq-theme') || 'system');
   const [systemTheme, setSystemTheme] = useState(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -202,6 +208,9 @@ export default function AppProvider({ children }) {
     try { return JSON.parse(localStorage.getItem('muiller-bbq-friends') || '[]'); } catch { return []; }
   });
   const [shareGenerating, setShareGenerating] = useState(false);
+  // Separate flag for the Story Card so generating one card doesn't flip
+  // the other button's label/disabled state (they are distinct exports).
+  const [storyGenerating, setStoryGenerating] = useState(false);
   const [fbUser, setFbUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [fbFriends, setFbFriends] = useState([]);
@@ -887,8 +896,9 @@ export default function AppProvider({ children }) {
     }
   };
 
-  const deleteReview = (id) => {
-    if (!window.confirm('Delete this review?')) return;
+  // The actual removal, with no confirmation. Both the confirm modal and
+  // the "never ask again" fast-path call this.
+  const performDelete = (id) => {
     const removed = reviews.find(r => r.id === id);
     save(reviews.filter(r => r.id !== id));
     setView('home');
@@ -905,6 +915,25 @@ export default function AppProvider({ children }) {
       deleteCloudReview(fbUser.uid, id).catch(() => {});
     }
   };
+
+  // Deleting a review opens an in-app "are you sure?" (DeleteConfirmModal),
+  // NOT a native confirm — unless the user has ticked "never ask again",
+  // which stores DELETE_CONFIRM_SKIP_KEY so a mass-delete run isn't
+  // interrupted on every review.
+  const deleteReview = (id) => {
+    let skip = false;
+    try { skip = localStorage.getItem(DELETE_CONFIRM_SKIP_KEY) === '1'; } catch {}
+    if (skip) { performDelete(id); return; }
+    setPendingDeleteId(id);
+  };
+
+  const confirmPendingDelete = (neverAskAgain) => {
+    if (neverAskAgain) { try { localStorage.setItem(DELETE_CONFIRM_SKIP_KEY, '1'); } catch {} }
+    if (pendingDeleteId != null) performDelete(pendingDeleteId);
+    setPendingDeleteId(null);
+  };
+
+  const cancelPendingDelete = () => setPendingDeleteId(null);
 
   const handlePhoto = async (e) => {
     const file = e.target.files?.[0];
@@ -1181,7 +1210,7 @@ export default function AppProvider({ children }) {
 
     const filename = `${r.restaurant.replace(/[^a-zA-Z0-9]/g, '-')}-story.png`;
 
-    setShareGenerating(true);
+    setStoryGenerating(true);
     try {
       const byScore = [...reviews].sort((a, b) =>
         calcScores(b.scores).composite - calcScores(a.scores).composite);
@@ -1235,16 +1264,22 @@ export default function AppProvider({ children }) {
         track('story_card_failed', { reason: (e?.message || 'unknown').toString().slice(0, 80) });
       }
     } finally {
-      setShareGenerating(false);
+      setStoryGenerating(false);
     }
   };
 
   const exportText = (r) => {
     const sc = calcScores(r.scores);
+    const friendNames = (r.friends || []).map(f => f?.name).filter(Boolean);
     const lines = [
       `═══ ${r.restaurant} ═══`,
       `Date: ${r.date}  |  Location: ${r.location || 'N/A'}`,
       r.trip ? `Trip: ${r.trip}` : '',
+      // "What was ordered" and "who was there" — these were captured on the
+      // review but omitted from the export, so anyone (or an AI) reading the
+      // paste had to ask for them.
+      r.meats?.length ? `Ordered: ${r.meats.join(', ')}` : '',
+      friendNames.length ? `With: ${friendNames.join(', ')}` : '',
       `Price: $${r.price || '?'}${r.priceSplit > 1 ? ` ($${(r.price / r.priceSplit).toFixed(2)}/person × ${r.priceSplit})` : ''}`,
       '',
       '— BBQ Track —',
@@ -1260,6 +1295,7 @@ export default function AppProvider({ children }) {
       r.sauceDep ? `Sauce: ${r.sauceDep}` : '',
       r.wouldReturn ? `Return: ${r.wouldReturn}` : '',
       ...(r.notesLog?.length ? ['', '— Notes —', ...r.notesLog] : []),
+      ...(r.notes ? ['', '— Additional Notes —', r.notes] : []),
     ].filter(Boolean).join('\n');
     navigator.clipboard?.writeText(lines);
   };
@@ -1308,7 +1344,7 @@ export default function AppProvider({ children }) {
     galleryIndex, setGalleryIndex,
     friendName, setFriendName,
     friendsList,
-    shareGenerating,
+    shareGenerating, storyGenerating,
     fbUser, setFbUser,
     userProfile,
     fbFriends, setFbFriends,
@@ -1333,6 +1369,7 @@ export default function AppProvider({ children }) {
     // Functions
     navigateTo, save, startNew, editReview, viewDetail, duplicateReview,
     update, updateScore, toggleChip, saveCurrentReview, deleteReview,
+    pendingDeleteId, confirmPendingDelete, cancelPendingDelete,
     handlePhoto, removePhoto, addFriend, removeFriend, updateFriendScore,
     exportBackup, handleImport, publishReviews, addTimestampedNote,
     shareReview, shareReviewStory, exportText, attemptSignIn, attemptAppleSignIn,
