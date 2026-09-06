@@ -152,6 +152,10 @@ import {
   generateShareCard, generateGoogleDraft, exportCSV,
 } from '../scoring.js';
 import { generateReviewStoryCard } from '../reviewShareCard.js';
+import {
+  initEntitlements, isUnlocked, canCreateReview, isGateEnabled,
+} from '../entitlements.js';
+import { reconcileEntitlementOnLaunch } from '../purchases.js';
 
 const AppContext = createContext(null);
 
@@ -189,6 +193,9 @@ export default function AppProvider({ children }) {
   // Review pending an in-app delete confirmation (null = none). See
   // deleteReview / DeleteConfirmModal.
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  // 4.0 free-tier gate (iOS only; see entitlements.js).
+  const [paywallOpen, setPaywallOpen] = useState(false);
+  const [unlocked, setUnlocked] = useState(() => isUnlocked());
   // localStorage flag set when the user ticks "never ask again" in the
   // delete confirmation — lets a mass-delete run skip the prompt.
   const DELETE_CONFIRM_SKIP_KEY = 'bbq-scorecard-skip-delete-confirm';
@@ -266,33 +273,56 @@ export default function AppProvider({ children }) {
     display: 'block', fontSize: '11px', color: S.muted, marginBottom: '4px', letterSpacing: '1px',
   });
 
-  const attemptSignIn = async () => {
+  // Sign-in status, shared by every provider button.
+  //   authBusy  — 'google' | 'apple' | null, so the pressed button can say
+  //               so instead of looking inert while the sheet loads.
+  //   authError — plain-English failure text rendered next to the buttons.
+  // Before this, the buttons were `onClick={async () => { await attempt() }}`
+  // with the result discarded: a failed sign-in produced no spinner, no
+  // message, nothing. App Review read that as "the button was
+  // unresponsive" (Guideline 2.1(a), 4.0.0 build 8).
+  const [authBusy, setAuthBusy] = useState(null);
+  const [authError, setAuthError] = useState(null);
+
+  // Backing out of the Apple/Google sheet is a normal thing to do, not an
+  // error worth shouting about.
+  const isUserCancel = (e) => {
+    const code = String(e?.code || '');
+    const msg = String(e?.message || '');
+    return /cancel/i.test(code) || /cancel/i.test(msg)
+      || code === 'auth/popup-closed-by-user'
+      || code === '1001';   // ASAuthorizationError.canceled
+  };
+
+  const runSignIn = async (method, fn) => {
     if (isInAppBrowser()) {
       setShowInAppWarning(true);
-      track('signin_failed', { method: 'google', reason: 'in_app_browser' });
+      track('signin_failed', { method, reason: 'in_app_browser' });
       return null;
     }
+    setAuthBusy(method);
+    setAuthError(null);
     try {
-      return await firebaseSignIn();
+      const user = await fn();
+      return user;
     } catch (e) {
-      track('signin_failed', { method: 'google', reason: (e?.code || e?.message || 'unknown').toString().slice(0, 80) });
-      throw e;
+      const reason = (e?.code || e?.message || 'unknown').toString().slice(0, 80);
+      track('signin_failed', { method, reason });
+      if (!isUserCancel(e)) {
+        setAuthError(
+          e?.code === 'auth/timeout'
+            ? 'That took too long. Check your connection and try again.'
+            : `Sign-in failed. ${String(e?.message || '').replace(/^Firebase: /, '')}`.trim()
+        );
+      }
+      return null;
+    } finally {
+      setAuthBusy(null);
     }
   };
 
-  const attemptAppleSignIn = async () => {
-    if (isInAppBrowser()) {
-      setShowInAppWarning(true);
-      track('signin_failed', { method: 'apple', reason: 'in_app_browser' });
-      return null;
-    }
-    try {
-      return await firebaseSignInWithApple();
-    } catch (e) {
-      track('signin_failed', { method: 'apple', reason: (e?.code || e?.message || 'unknown').toString().slice(0, 80) });
-      throw e;
-    }
-  };
+  const attemptSignIn = () => runSignIn('google', firebaseSignIn);
+  const attemptAppleSignIn = () => runSignIn('apple', firebaseSignInWithApple);
 
   // Inject responsive CSS (once)
   useEffect(() => {
@@ -409,6 +439,17 @@ export default function AppProvider({ children }) {
     const raw = loadLocal();
     const migrated = raw.map(migrateReview);
     setReviews(migrated);
+    // Runs once ever. A device that already holds reviews but has never
+    // seen 4.0 belonged to a paid-era customer, so it gets unlocked
+    // permanently rather than being handed a paywall.
+    initEntitlements(migrated.length);
+    setUnlocked(isUnlocked());
+    // A paid-era customer who deleted and reinstalled has no local data for
+    // the migration above to spot, so ask StoreKit which build they first
+    // downloaded. Silent, best-effort, never blocks load.
+    reconcileEntitlementOnLaunch()
+      .then(granted => { if (granted) setUnlocked(true); })
+      .catch(() => {});
     setLoaded(true);
     fetch(`${import.meta.env.BASE_URL}published-reviews.json`)
       .then(r => r.ok ? r.json() : [])
@@ -828,6 +869,14 @@ export default function AppProvider({ children }) {
   const saveCurrentReview = async () => {
     if (!currentReview.restaurant.trim()) return;
     const exists = reviews.find(r => r.id === currentReview.id);
+
+    // Free-tier gate. Only ever blocks CREATING a new review — editing
+    // anything already saved stays open forever, no matter the count.
+    if (!exists && !canCreateReview(reviews.length)) {
+      track('paywall_shown', { reviews: reviews.length });
+      setPaywallOpen(true);
+      return;
+    }
     let reviewToSave = exists
       ? { ...currentReview, lastEdited: new Date().toISOString().split('T')[0] }
       : currentReview;
@@ -1376,9 +1425,17 @@ export default function AppProvider({ children }) {
     navigateTo, save, startNew, editReview, viewDetail, duplicateReview,
     update, updateScore, toggleChip, saveCurrentReview, deleteReview,
     pendingDeleteId, confirmPendingDelete, cancelPendingDelete,
+    // 4.0 entitlements
+    paywallOpen,
+    openPaywall: () => setPaywallOpen(true),
+    closePaywall: () => setPaywallOpen(false),
+    refreshEntitlements: () => setUnlocked(isUnlocked()),
+    unlocked,
+    gateEnabled: isGateEnabled(),
     handlePhoto, removePhoto, addFriend, removeFriend, updateFriendScore,
     exportBackup, handleImport, publishReviews, addTimestampedNote,
     shareReview, shareReviewStory, exportText, attemptSignIn, attemptAppleSignIn,
+    authBusy, authError, clearAuthError: () => setAuthError(null),
     attemptEmailSignIn: firebaseEmailSignIn,
     attemptEmailSignUp: firebaseEmailSignUp,
     sendPasswordReset: firebaseSendPasswordReset,
