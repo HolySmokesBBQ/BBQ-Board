@@ -134,7 +134,7 @@ Board is a public price directory. Prices you submit are shown publicly to every
 
 *Browsing needs no account.* You can look up prices without signing in, and no account data is collected.
 
-*Your account (only if you sign in to submit).* Name, email address, and profile photo from your Google account. Used to run your account and attribute your submissions internally. If you submit using "Continue without an account," an anonymous identifier is created so your submissions can be managed; it is not linked to your name or email. Legal basis: performing our agreement with you (GDPR Art. 6(1)(b)).
+*Your account (only if you sign in to submit).* Name, email address, and profile photo from your Google account. Used to run your account and attribute your submissions internally. If you submit using "Continue without an account," a random identifier, not linked to your name or email, is created so your submissions can be managed. Legal basis: performing our agreement with you (GDPR Art. 6(1)(b)).
 
 *Your submissions.* Store, cut, price, region, and any note you add, stored in Google Firestore and displayed publicly without your identity. Legal basis: performing our agreement with you; public display is the purpose of the service.
 
