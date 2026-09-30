@@ -20,6 +20,8 @@ import Onboarding, { hasOnboarded } from './board/Onboarding.jsx';
 import BoardHamburger from './components/BoardHamburger.jsx';
 import Calculator from './board/Calculator.jsx';
 import Settings from './board/Settings.jsx';
+import { priceTier, scanBadgeLabel } from './board/priceTier.js';
+import { withTimeout, signInErrorMessage } from './board/signIn.js';
 import { sendProblemReport } from './diagnostics.js';
 import 'leaflet/dist/leaflet.css';
 
@@ -226,16 +228,21 @@ export default function BoardApp() {
       const isCapacitor = typeof window !== 'undefined' && !!window.Capacitor?.isNativePlatform?.();
       if (isCapacitor) {
         const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
-        const result = await FirebaseAuthentication.signInWithGoogle();
+        const result = await withTimeout(FirebaseAuthentication.signInWithGoogle(), 'Google sign-in');
         const credential = GoogleAuthProvider.credential(result.credential?.idToken);
-        await signInWithCredential(auth, credential);
+        await withTimeout(signInWithCredential(auth, credential), 'Sign-in');
       } else {
-        await signInWithPopup(auth, googleProvider);
+        await withTimeout(signInWithPopup(auth, googleProvider), 'Sign-in');
       }
       track('board_signin');
     } catch (err) {
       console.error('signin failed', err);
       track('board_signin_failed', { error: err?.code || 'unknown' });
+      // Rethrow. Swallowing this was the bug: the gates below already
+      // catch and show a message, but with nothing thrown they carried on
+      // as if sign-in SUCCEEDED. Mirrors src/App.board.jsx; Security audit
+      // AUDIT-2026-09-29-TEARDOWN.md F-5 residual.
+      throw err;
     }
   };
 
@@ -1265,12 +1272,10 @@ function ShopCard({ shop, price, distance, onSubmit, onOpen }) {
   const cut = price ? CUTS[price.cut] : null;
   const days = price ? ageInDays(price.reportedAt) : null;
   const fresh = price ? isFresh(price.reportedAt) : false;
-  // "Verified" trust badge derives ONLY from the server-validated
-  // `source` field. The docId-prefix fallback below used to also grant
-  // Verified when the id started with 'seed_' — but a user could mint
-  // that docId themselves and forge the badge on a $0.01 fake price
-  // (SECURITY-AUDIT-BOARD-DEEP.md Finding B-2). Removed the fallback.
-  const isSeed = price && price.source === 'operator_verified';
+  // Trust tier derives ONLY from the server-validated `source` field,
+  // never the docId, which a client can mint to forge a badge
+  // (SECURITY-AUDIT-BOARD-DEEP.md Finding B-2). See board/priceTier.js.
+  const tier = priceTier(price);
 
   return (
     <div
@@ -1294,7 +1299,8 @@ function ShopCard({ shop, price, distance, onSubmit, onOpen }) {
           <span style={{ fontSize: 16 }}>{storeType.icon}</span>
           <div style={{ fontWeight: 700, fontSize: 15 }}>{shop.name}</div>
           <TypeBadge type={shop.storeType} />
-          {isSeed && <VerifiedBadge />}
+          {tier === 'verified' && <VerifiedBadge />}
+          {tier === 'scan' && <ScanBadge price={price} />}
         </div>
         {price && (
           <div style={{ fontSize: 13, color: PAL.textDim, marginBottom: 2 }}>
@@ -1362,6 +1368,30 @@ function TypeBadge({ type }) {
   );
 }
 
+// Scan prices come from a shop's own published listing. Amber rather than
+// green: attributable and dated, but nobody stood in the store. When the
+// scan recorded a sourceUrl the badge opens it, so a user can read the
+// listing the number came from. Stops the click bubbling to the card,
+// which would otherwise open the shop detail underneath.
+function ScanBadge({ price }) {
+  const label = scanBadgeLabel(price?.reportedAt);
+  const style = {
+    fontSize: 10, background: PAL.panelDeep, color: PAL.amber,
+    padding: '2px 6px', borderRadius: 4, border: `1px solid ${PAL.amber}33`,
+    letterSpacing: 0.5, fontWeight: 700, textDecoration: 'none',
+  };
+  if (price?.sourceUrl) {
+    return (
+      <a
+        href={price.sourceUrl} target="_blank" rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        style={style}
+      >{label}</a>
+    );
+  }
+  return <span style={style}>{label}</span>;
+}
+
 function VerifiedBadge() {
   return (
     <span style={{
@@ -1384,6 +1414,7 @@ function CircularScrubPanel({ region, user, onSignIn, onSignInAnon }) {
   const [selectedShopId, setSelectedShopId] = useState('');
   const [showAuthGate, setShowAuthGate] = useState(false);
   const [authBusy, setAuthBusy] = useState(false);
+  const [gateError, setGateError] = useState('');
   const [pendingSubmit, setPendingSubmit] = useState(false);
 
   // If the user pressed submit while signed out, fire the write as soon
@@ -1673,19 +1704,20 @@ function CircularScrubPanel({ region, user, onSignIn, onSignInAnon }) {
       {showAuthGate && (
         <AuthGate
           busy={authBusy}
+          error={gateError}
           onSignIn={async () => {
-            setAuthBusy(true);
+            setAuthBusy(true); setGateError('');
             try { await onSignIn(); setPendingSubmit(true); setShowAuthGate(false); }
-            catch { setError('Sign in failed. Try again.'); }
+            catch (e) { setGateError(signInErrorMessage(e) || ''); }
             finally { setAuthBusy(false); }
           }}
           onSignInAnon={async () => {
-            setAuthBusy(true);
+            setAuthBusy(true); setGateError('');
             try { await onSignInAnon(); setPendingSubmit(true); setShowAuthGate(false); }
-            catch { setError('Anonymous sign-in failed. Try again.'); }
+            catch { setGateError('Anonymous sign-in failed. Try again.'); }
             finally { setAuthBusy(false); }
           }}
-          onCancel={() => setShowAuthGate(false)}
+          onCancel={() => { setGateError(''); setShowAuthGate(false); }}
         />
       )}
     </div>
@@ -1752,9 +1784,14 @@ function Footer() {
 // attribute + let them delete their own submissions later), or continue
 // anonymously (Firebase anon auth, no Google account needed). Either
 // path satisfies the isSignedIn() Firestore rules check.
-function AuthGate({ onSignIn, onSignInAnon, onCancel, busy }) {
+function AuthGate({ onSignIn, onSignInAnon, onCancel, busy, error }) {
   return (
-    <div style={{
+    // stopPropagation is load-bearing: SubmitModal renders this gate under a
+    // backdrop with onClick={onClose}, so without it every click on the gate
+    // closed the whole submit modal and discarded the typed price.
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
       position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: 16, zIndex: 200,
@@ -1770,6 +1807,13 @@ function AuthGate({ onSignIn, onSignInAnon, onCancel, busy }) {
           BBQ Board attaches every price to an account so real submissions
           stand out from noise. Pick how you'd like to submit:
         </div>
+        {error && (
+          <div role="alert" style={{
+            fontSize: 13, color: PAL.amber, background: PAL.panelDeep,
+            border: `1px solid ${PAL.amber}55`, borderRadius: 6,
+            padding: '8px 10px', marginBottom: 12, lineHeight: 1.4,
+          }}>{error}</div>
+        )}
         <button
           type="button"
           onClick={onSignIn}
@@ -1780,7 +1824,7 @@ function AuthGate({ onSignIn, onSignInAnon, onCancel, busy }) {
             fontSize: 15, marginBottom: 10, opacity: busy ? 0.6 : 1,
           }}
         >
-          Sign in with Google
+          {busy ? 'Signing in…' : 'Sign in with Google'}
         </button>
         <button
           type="button"
@@ -1831,6 +1875,7 @@ function SubmitModal({ region, user, prefillShopId, prefillCut, onClose, onSignI
   const [error, setError] = useState('');
   const [showAuthGate, setShowAuthGate] = useState(false);
   const [authBusy, setAuthBusy] = useState(false);
+  const [gateError, setGateError] = useState('');
   const [pendingSubmit, setPendingSubmit] = useState(false);
 
   const regionShops = useMemo(() => shopsForRegion(region), [region]);
@@ -1915,12 +1960,13 @@ function SubmitModal({ region, user, prefillShopId, prefillCut, onClose, onSignI
 
   const gateSignIn = async () => {
     setAuthBusy(true);
+    setGateError('');
     try {
       await onSignIn();
       setPendingSubmit(true);
       setShowAuthGate(false);
-    } catch {
-      setError('Sign in failed. Try again.');
+    } catch (e) {
+      setGateError(signInErrorMessage(e) || '');
     } finally {
       setAuthBusy(false);
     }
@@ -1928,12 +1974,13 @@ function SubmitModal({ region, user, prefillShopId, prefillCut, onClose, onSignI
 
   const gateSignInAnon = async () => {
     setAuthBusy(true);
+    setGateError('');
     try {
       await onSignInAnon();
       setPendingSubmit(true);
       setShowAuthGate(false);
     } catch {
-      setError('Anonymous sign-in failed. Try again.');
+      setGateError('Anonymous sign-in failed. Try again.');
     } finally {
       setAuthBusy(false);
     }
@@ -2057,9 +2104,10 @@ function SubmitModal({ region, user, prefillShopId, prefillCut, onClose, onSignI
       {showAuthGate && (
         <AuthGate
           busy={authBusy}
+          error={gateError}
           onSignIn={gateSignIn}
           onSignInAnon={gateSignInAnon}
-          onCancel={() => setShowAuthGate(false)}
+          onCancel={() => { setGateError(''); setShowAuthGate(false); }}
         />
       )}
     </div>
