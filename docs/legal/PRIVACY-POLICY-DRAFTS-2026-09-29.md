@@ -32,7 +32,7 @@ BBQ Scorecard is made by Holy Smokes BBQ Co ("we"). This policy explains what da
 
 *Your content.* The reviews you write — restaurant names, scores, notes, dates, and any photos you attach. Photos you attach stay with your content on your device; when cloud sync is available they are stored in Google Firebase Storage. Everything else syncs to Google Firestore. Your content is visible to you and, where you share it, to friends you have approved. Nobody else can read it. Legal basis: performing our agreement with you.
 
-*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used, so we know what to improve. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. If you are signed in, analytics is linked to your account ID, not your name or email. Legal basis: consent (Art. 6(1)(a)).
+*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used, so we know what to improve. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. Analytics is not linked to your account, name, or email. Legal basis: consent (Art. 6(1)(a)).
 
 *Crash reports.* The mobile apps send crash logs and basic diagnostics through Firebase Crashlytics so we can fix failures. Legal basis: our legitimate interest in keeping the app working (Art. 6(1)(f)). You can object using the contact below.
 
@@ -84,7 +84,7 @@ BBQ Notebook is made by Holy Smokes BBQ Co ("we"). This policy explains what dat
 
 *Weather at your location (only if you allow it).* When you log a cook, the app can fetch current weather from the US National Weather Service (api.weather.gov) using your approximate location, and saves the weather values — temperature, wind, humidity — with your cook. Your coordinates themselves are not stored on our servers. Legal basis: performing the lookup you asked for.
 
-*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website version, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. If you are signed in, analytics is linked to your account ID, not your name or email. Legal basis: consent (Art. 6(1)(a)).
+*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website version, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. Analytics is not linked to your account, name, or email. Legal basis: consent (Art. 6(1)(a)).
 
 *Crash reports.* The Android app sends crash logs and basic diagnostics through Firebase Crashlytics so we can fix failures. Legal basis: our legitimate interest in keeping the app working (Art. 6(1)(f)). You can object using the contact below.
 
@@ -142,7 +142,7 @@ Board is a public price directory. Prices you submit are shown publicly to every
 
 *Your region.* You pick a metro region so Board shows nearby prices. If you allow location access, it is used to suggest a region; your coordinates are not stored on our servers.
 
-*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website version, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. If you are signed in, analytics is linked to your account ID, not your name or email. Legal basis: consent (Art. 6(1)(a)).
+*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website version, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. Analytics is not linked to your account, name, or email. Legal basis: consent (Art. 6(1)(a)).
 
 *Crash reports.* The mobile apps send crash logs and basic diagnostics through Firebase Crashlytics so we can fix failures. Legal basis: our legitimate interest in keeping the app working (Art. 6(1)(f)). You can object using the contact below.
 
