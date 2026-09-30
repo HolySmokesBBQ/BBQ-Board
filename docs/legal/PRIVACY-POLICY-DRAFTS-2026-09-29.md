@@ -12,9 +12,15 @@
 4. The consent-withdrawal sentences assume the L-1 banner (web) and Settings toggle (apps) exist. **Do not publish before the L-1 web banner ships** — the policy must not describe controls that don't exist yet. Sequence: banner deploy, then policies in the same or next deploy.
 5. `[BRACKETED]` items are the only open decisions; everything else is settled by the compliance memo.
 
-**[DECISION FOR JOEL — EU/UK representative]**: A US controller offering services to EEA/UK users generally needs a local representative (GDPR Art. 27) unless processing is occasional, low-risk, and not large-scale — which these apps plausibly satisfy today. The drafts omit a representative on that exemption. Revisit if EEA usage becomes regular rather than incidental.
+**DECIDED (Joel, 2026-09-30) — EU/UK representative**: Art. 27 exemption taken (processing occasional, low-risk, not large-scale). No representative appointed. Revisit if EEA usage becomes regular rather than incidental.
 
-**[DECISION FOR JOEL — contact address]**: The drafts use `datadelete@holysmokesbbqco.com` as the single privacy contact, since it already exists and is monitored. If you want a distinct privacy@ alias, say so before publish.
+**DECIDED (Joel, 2026-09-30) — contact address**: `datadelete@holysmokesbbqco.com` is the privacy contact.
+
+**[PUBLISH-DAY SELECT — Board deletion sentence]** Board's date message will state whether the own-submission delete UI shipped in the live build (it is in 2.4.6 scope). Stage exactly one variant of the retention sentence:
+- **Variant A (delete UI shipped):** "Price submissions: because Board is a public directory, they remain published until removed. You can delete your own submissions in the app at any time, or email datadelete@holysmokesbbqco.com and we will take one down."
+- **Variant B (not shipped):** the sentence as currently drafted (email takedown only).
+
+**All publish gates from Joel are now cleared.** Remaining gate is per-app: each policy publishes the day its app's consent release is live **on ALL its platforms — the LATER platform's day when Android and iOS differ** (Scorecard: both Android 4.3.0 Production and iOS 4.3.0 live; Board likewise at its turn; Notebook is Android-only, so its day is its day). Rationale: the page describes both platforms together, and publishing on the first platform's day makes it false for every user still on the other platform's pre-consent build. (Rule corrected 2026-09-30 by Scorecard via Website; the Overseer's earlier "first platform" acceptance was wrong.) The website-only sentences are already true.
 
 ---
 
