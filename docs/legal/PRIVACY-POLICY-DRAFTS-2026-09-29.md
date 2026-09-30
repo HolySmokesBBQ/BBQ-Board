@@ -128,7 +128,7 @@ BBQ Board is made by Holy Smokes BBQ Co ("we"). This policy explains what data t
 
 **The most important thing to know**
 
-Board is a public price directory. Prices you submit are shown publicly to everyone using Board. Your name and email are not shown with a price; submissions display without your identity, but they are stored with your account internally so we can moderate abuse.
+Board is a public price directory. Prices you submit are shown publicly to everyone using Board. Your name and email are not shown with a price; submissions display without your identity. Each submission is stored with an account identifier so we can moderate abuse.
 
 **What we collect and why**
 

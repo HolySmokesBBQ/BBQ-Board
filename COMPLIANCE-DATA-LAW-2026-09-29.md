@@ -51,7 +51,7 @@ Standing memory: Notebook and Board likely still carry the Data Safety analytics
 
 ## L-6 — LOW: Board public price data + userId attribution
 
-`board_prices` docs carry `userId` and are world-readable. A Firebase UID tied to submissions is personal data under GDPR (identifiability via combination). Exposure is low (opaque UID, no profile join for signed-out readers — profile reads require sign-in, see L-2). Post-L-2, consider whether public price reads need `userId` at all; serving it only to the owner/moderation path would moot the question.
+`board_prices` docs carry `userId` and are world-readable. A Firebase UID tied to submissions is personal data under GDPR (identifiability via combination). Exposure is low (opaque UID, no profile join for signed-out readers — profile reads require sign-in, see L-2). Post-L-2, consider whether public price reads need `userId` at all; serving it only to the owner/moderation path would moot the question. **Detail added 2026-09-29 (Board session):** user-added shop doc IDs also embed the first 8 chars of the submitter's uid (`user_<slug>_<uid8>`, `App.board.jsx` ~1896) — strictly less revealing than the world-readable `userId` field itself, but public. Anonymous→Google sign-in verified non-linking (no `link*` calls; sign-in replaces the uid, prior anonymous submissions stay unconnected). Policy wording tightened in rev 5 to "stored with an account identifier" — the word "internally" claimed privacy the read-open data model doesn't deliver.
 
 ---
 
