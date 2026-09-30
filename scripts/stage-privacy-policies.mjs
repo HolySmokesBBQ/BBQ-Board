@@ -43,6 +43,25 @@ const DASH_EDITS = [
   ['our account deletion page (/delete-account-board.html)', 'our account deletion page'],
 ];
 let text = md;
+
+// Board deletion sentence, selected on publish day from Board's date message
+// (drafts' [PUBLISH-DAY SELECT] block, 2b0c30a). Variant B is the body as
+// drafted (email takedown only); Variant A is swapped in from the block when
+// Board states the own-submission delete UI shipped. Both texts come from
+// the drafts file, so a redraft of either fails loudly here.
+const boardDeleteArg = (process.argv.find(a => a.startsWith('--board-delete=')) || '--board-delete=b').split('=')[1].toLowerCase();
+if (!['a', 'b'].includes(boardDeleteArg)) throw new Error('--board-delete must be a or b');
+const VARIANT_B = 'Price submissions: because Board is a public directory, they remain published until removed. To remove one of yours, email datadelete@holysmokesbbqco.com and we will take it down.';
+if (boardDeleteArg === 'a') {
+  const m = /\*\*Variant A \(delete UI shipped\):\*\* "([^"]+)"/.exec(text);
+  if (!m) throw new Error('Variant A sentence not found in the drafts');
+  const body = text.indexOf('## POLICY 3');
+  const n = text.slice(body).split(VARIANT_B).length - 1;
+  if (n !== 1) throw new Error(`Variant B sentence expected once in the Board body, found ${n}`);
+  text = text.slice(0, body) + text.slice(body).replace(VARIANT_B, () => m[1]);
+}
+console.log(`Board deletion sentence: Variant ${boardDeleteArg.toUpperCase()}${boardDeleteArg === 'b' ? ' (default: delete UI not shipped)' : ' (delete UI shipped)'}`);
+
 for (const [from, to] of DASH_EDITS) {
   const n = text.split(from).length - 1;
   if (n !== 1) throw new Error(`dash edit expected once, found ${n}: ${from.slice(0, 60)}`);
