@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppContext } from '../context/AppContext.jsx';
 import { track } from '../scoring.js';
-import { MIN_SIGNUP_LENGTH, passwordMeetsGate, passwordStrength } from '../passwordPolicy.js';
+import { MIN_SIGNUP_LENGTH, passwordMeetsGate, passwordStrength, isCommonPassword } from '../passwordPolicy.js';
 
 // Email/password auth UI — toggles between Sign In and Sign Up, plus a
 // "Forgot password" mode that just collects the email and triggers a
@@ -89,6 +89,11 @@ export default function EmailSignInBox({ S, sBtn, sInput, onSignedIn }) {
             Password strength: <span style={{ color: STRENGTH_COLORS[strength.score], fontWeight: 600 }}>{strength.label}</span>
             {password.length < MIN_SIGNUP_LENGTH && ` · at least ${MIN_SIGNUP_LENGTH} characters`}
           </div>
+          {isCommonPassword(password) && (
+            <div style={{ fontSize: '11px', color: STRENGTH_COLORS[0], marginTop: '2px' }}>
+              That password is too common. Pick a different one.
+            </div>
+          )}
         </div>
       )}
 
