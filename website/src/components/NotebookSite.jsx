@@ -88,7 +88,7 @@ export default function NotebookSite() {
             textAlign: 'center', marginBottom: '16px',
           }}>The Journey</h2>
           <p style={{ fontSize: '14px', color: S.text, lineHeight: '1.8', marginBottom: '14px' }}>
-            Born and raised in the greater Kansas City area, so BBQ has always been a way of
+            Born and raised in the greater Kansas City area, so BBQ has been a way of
             life for me. Several years ago I got my first smoker, and haven't looked back
             since!
           </p>

@@ -80,7 +80,7 @@ export default function Site() {
         <h2 style={{ fontFamily: "'Oswald', sans-serif", fontSize: '18px', letterSpacing: '2px',
           color: S.accent, marginBottom: '12px', textAlign: 'center' }}>The Journey</h2>
         <p style={{ fontSize: '14px', lineHeight: '1.8', color: S.text, marginBottom: '12px' }}>
-          Born and raised in the greater Kansas City area, so BBQ has always been a way of
+          Born and raised in the greater Kansas City area, so BBQ has been a way of
           life for me. Several years ago I got my first smoker, and haven't looked back
           since!
         </p>
