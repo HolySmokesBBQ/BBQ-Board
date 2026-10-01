@@ -57,7 +57,7 @@ service cloud.firestore {
         'meats', 'meatOther', 'sides', 'sideOther', 'dessert',
         'scores', 'sauceDep', 'wouldReturn', 'notes', 'notesLog',
         'price', 'priceSplit', 'googleReviewUrl', 'photo', 'photos',
-        'friends', 'lastEdited', 'restaurantKey', 'syncedAt'
+        'friends', 'lastEdited', 'restaurantKey', 'syncedAt', 'drinks', 'orderStyle'
       ];
     }
 
