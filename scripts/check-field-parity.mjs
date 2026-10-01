@@ -122,7 +122,21 @@ for (const c of CHECKS) {
 // Usage: --published <file>  where <file> holds the LIVE ruleset body, read
 // by CONTENT from the console/CLI. NEVER verify a publish via the console's
 // ruleset-version list — it does not update reliably; read the rules body.
-// (Automatable via the Rules API once Firebase CLI reauth is restored.)
+//
+// SHIP-GATE ALTERNATIVE (Notebook's find): `firebase deploy --only
+// firestore:rules --project <p>` printing "already up to date, skipping
+// upload" IS leg-3 green from the authority itself (Firebase diffs local vs
+// published). CAVEAT: that command is a DEPLOY, not a probe — on drift it
+// PUBLISHES. Use it only at the ship gate where publishing is the intent,
+// never as a casual read. (True read-only automation via the Rules API once
+// CLI reauth is restored.)
+//
+// STRUCTURAL NOTE: the shared firestore.rules deploys to multiple projects,
+// so one app's rules change creates automatic repo-vs-published "drift" on
+// sibling projects. Harmless drift (fields for collections a project doesn't
+// have) should be FLAGGED, not closed by republishing another app's changes
+// into the wrong project. Clean fix direction: per-project rules files
+// (Board's firestore.board.rules pattern).
 const pubIdx = process.argv.indexOf('--published');
 if (pubIdx > -1 && process.argv[pubIdx + 1]) {
   const pub = stripComments(readFileSync(process.argv[pubIdx + 1], 'utf8'));
