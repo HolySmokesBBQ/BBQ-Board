@@ -313,7 +313,9 @@
 
     footer { text-align: center; padding-top: 24px; border-top: 1px solid #3a332c; font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 13px; letter-spacing: 0.08em; color: #9a9084; }
     footer p { margin-bottom: 4px; }
-    footer a { color: #bfb39a; text-decoration: none; margin: 0 4px; display: inline-block; padding: 12px 6px; transition: color 0.15s; }
+    /* min-height, not padding alone: Thornwood's line box is shorter than Inter's
+       and the links fell to 43px under it (tap target floor is 44). */
+    footer a { color: #bfb39a; text-decoration: none; margin: 0 4px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; transition: color 0.15s; }
     footer a:hover { color: #D06129; }
     footer .sep { color: #3a332c; }
 
