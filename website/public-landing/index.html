@@ -7,8 +7,8 @@
   <title>Free BBQ Apps: Score Restaurants, Log Cooks, Calculate Meat & Track Prices | Holy Smokes BBQ Co</title>
 
   <link rel="preload" as="image" href="/holy-smokes-logo@2x.avif" type="image/avif" fetchpriority="high" />
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/oswald-latin.woff2" crossorigin />
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+  <link rel="stylesheet" href="https://use.typekit.net/rrv8ywt.css" />
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/icon-192.png" />
   <link rel="canonical" href="https://holysmokesbbqco.com/" />
@@ -206,27 +206,33 @@
     }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { background: #1b1714; min-height: 100%; }
-    body { background: #1b1714; color: #E6D8B8; font-family: 'Inter', sans-serif; min-height: 100vh; font-size: 16px; line-height: 1.65; }
+    /* Thornwood VF is the brand face (marketing/brand-type-system.md). Four
+       roles: body Tall Regular (wdth 75 / 400), display XTall UltraBold
+       (wdth 50 / 900, caps, tracking 0), subheads Tall Bold (wdth 75 / 700),
+       meta rows Regular-width Medium (wdth 100 / 500, caps, wide tracking).
+       font-variation-settings carries the width axis; font-weight the weight.
+       Oswald and Inter remain as self-hosted fallbacks. */
+    body { background: #1b1714; color: #E6D8B8; font-family: 'thornwood-vf', 'Inter', sans-serif; font-variation-settings: 'wdth' 75; font-weight: 400; min-height: 100vh; font-size: 17px; line-height: 1.5; }
     main { max-width: 980px; margin: 0 auto; padding: 0 20px 48px; }
     h1, h2, h3 { text-wrap: balance; }
     ::selection { background: #D06129; color: #1b1714; }
     a:focus-visible, button:focus-visible { outline: 2px solid #E6D8B8; outline-offset: 2px; border-radius: 4px; }
 
     /* Skip link: hidden until a keyboard user tabs to it, then a cream pill. */
-    .skip { position: absolute; left: 16px; top: -48px; background: #E6D8B8; color: #1b1714; padding: 10px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; z-index: 10; }
+    .skip { position: absolute; left: 16px; top: -48px; background: #E6D8B8; color: #1b1714; padding: 10px 16px; border-radius: 8px; font-variation-settings: 'wdth' 75; font-weight: 700; text-decoration: none; z-index: 10; }
     .skip:focus { top: 16px; }
 
     /* Hero: the sign. Logo smaller than before so the headline carries the
        screen and the bio's first line lands above the fold on a phone. */
     .hero { text-align: center; padding: 40px 0 8px; }
     .hero img { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; object-fit: cover; display: block; }
-    .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(40px, 6vw, 64px); line-height: 1.05; font-weight: 700; letter-spacing: 1px; color: #D06129; margin-bottom: 8px; }
-    .hero .tagline { font-size: 15px; letter-spacing: 2px; color: #E6D8B8; margin-bottom: 8px; } /* brand slogan, styled in caps per Marketing */
+    .hero h1 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: clamp(56px, 10vw, 112px); line-height: 0.95; letter-spacing: 0; color: #D06129; margin-bottom: 10px; }
+    .hero .tagline { font-family: 'thornwood-vf', 'Inter', sans-serif; font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 14px; letter-spacing: 0.2em; color: #E6D8B8; margin-bottom: 8px; } /* brand slogan: meta role, caps, wide tracking */
     @media (min-width: 600px) { .hero { padding-top: 48px; } .hero img { width: 160px; height: 160px; } }
 
     /* Joel's story: the one first-person block, kept to a readable measure. */
     .story { background: #2a2015; border: 1px solid #3a332c; border-radius: 14px; padding: 28px 24px; margin: 32px auto 40px; max-width: 68ch; }
-    .story p { font-size: 17px; line-height: 1.7; color: #E6D8B8; margin-bottom: 14px; }
+    .story p { font-size: 18px; line-height: 1.55; color: #E6D8B8; margin-bottom: 14px; }
     .story p:last-child { margin-bottom: 0; }
 
     /* App grid: 2 + 2. The first row is heavier because those two apps
@@ -244,9 +250,9 @@
     /* Card headings are cream for every app: Notebook green on the panel is
        2.5:1 and Board brick 3.4:1, both below AA for text. Each app's colour
        lives on its card border and Launch button only (DESIGN.md §2). */
-    .app-card h2 { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; color: #E6D8B8; }
-    .app-card.lead h2 { font-size: 26px; }
-    .app-card p { font-size: 15px; color: #bfb39a; margin-bottom: 18px; line-height: 1.55; flex: 1; max-width: 46ch; }
+    .app-card h2 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: 0; margin-bottom: 8px; color: #E6D8B8; }
+    .app-card.lead h2 { font-size: 38px; }
+    .app-card p { font-size: 16px; color: #bfb39a; margin-bottom: 18px; line-height: 1.5; flex: 1; max-width: 46ch; }
     /* Button cluster. Top-aligned with a row-wide minimum height so Launch
        sits on one line across a row even when one card has a store button
        below it and its neighbour does not. */
@@ -258,8 +264,8 @@
        only; reduced motion removes them. */
     .app-card a {
       display: inline-block; padding: 12px 24px; border-radius: 8px;
-      font-family: 'Oswald', sans-serif; font-weight: 700; letter-spacing: 1px;
-      text-decoration: none; color: #fff; font-size: 14px;
+      font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 75; font-weight: 700; letter-spacing: 0.02em;
+      text-decoration: none; color: #fff; font-size: 16px;
       transition: background 0.15s, transform 0.15s;
     }
     .app-card a:active { transform: translateY(1px); }
@@ -282,7 +288,7 @@
       padding: 7px 12px; border-radius: 6px; min-height: 44px;
       text-decoration: none; font-size: 12px; letter-spacing: 0;
       border: 1px solid #3a332c; margin-top: 10px;
-      font-family: 'Inter', sans-serif; font-weight: 400;
+      font-family: 'thornwood-vf', 'Inter', sans-serif; font-variation-settings: 'wdth' 75; font-weight: 500;
     }
     .app-card .play-mini:hover { background: #111; border-color: #555; }
     .app-card .play-mini svg { flex-shrink: 0; }
@@ -292,20 +298,20 @@
     .app-card .play-soon:hover { background: #000; border-color: #3a332c; }
 
     .social-strip { text-align: center; margin-bottom: 40px; padding: 16px; border-top: 1px solid #2a2015; border-bottom: 1px solid #2a2015; }
-    .social-strip .social-kicker { font-size: 14px; color: #9a9084; margin-bottom: 6px; }
+    .social-strip .social-kicker { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 13px; letter-spacing: 0.2em; color: #9a9084; margin-bottom: 6px; }
     .social-links a { display: inline-flex; align-items: center; gap: 8px; margin: 0 6px; padding: 11px 10px; min-height: 44px; color: #E6D8B8; text-decoration: none; font-size: 15px; transition: color 0.15s; }
     .social-links a:hover { color: #D06129; }
     .social-links svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 
     .seo-section { margin-bottom: 40px; }
-    .seo-section h2 { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 1px; color: #D06129; margin-bottom: 12px; }
-    .seo-section h3 { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; color: #E6D8B8; margin: 24px 0 6px; }
-    .seo-section p, .seo-section li { font-size: 16px; color: #bfb39a; line-height: 1.65; margin-bottom: 10px; max-width: 72ch; }
+    .seo-section h2 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: 34px; line-height: 1; letter-spacing: 0; color: #D06129; margin-bottom: 14px; }
+    .seo-section h3 { font-variation-settings: 'wdth' 75; font-weight: 700; font-size: 21px; letter-spacing: 0; color: #E6D8B8; margin: 24px 0 6px; }
+    .seo-section p, .seo-section li { font-size: 17px; color: #bfb39a; line-height: 1.5; margin-bottom: 10px; max-width: 72ch; }
     .faq-list { list-style: none; padding: 0; }
-    .faq-list dt { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; color: #E6D8B8; padding: 16px 0 6px; }
-    .faq-list dd { font-size: 16px; color: #bfb39a; line-height: 1.65; margin: 0 0 12px; padding-bottom: 14px; border-bottom: 1px solid #2a2015; max-width: 72ch; }
+    .faq-list dt { font-variation-settings: 'wdth' 75; font-weight: 700; font-size: 21px; color: #E6D8B8; padding: 16px 0 6px; }
+    .faq-list dd { font-size: 17px; color: #bfb39a; line-height: 1.5; margin: 0 0 12px; padding-bottom: 14px; border-bottom: 1px solid #2a2015; max-width: 72ch; }
 
-    footer { text-align: center; padding-top: 24px; border-top: 1px solid #3a332c; font-size: 13px; color: #9a9084; }
+    footer { text-align: center; padding-top: 24px; border-top: 1px solid #3a332c; font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 13px; letter-spacing: 0.08em; color: #9a9084; }
     footer p { margin-bottom: 4px; }
     footer a { color: #bfb39a; text-decoration: none; margin: 0 4px; display: inline-block; padding: 12px 6px; transition: color 0.15s; }
     footer a:hover { color: #D06129; }
@@ -411,7 +417,7 @@
     </nav>
 
     <div class="social-strip">
-      <div class="social-kicker">Follow along</div>
+      <div class="social-kicker">FOLLOW ALONG</div>
       <div class="social-links">
         <a href="https://www.facebook.com/HolySmokesBBQCompany" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z"/></svg>

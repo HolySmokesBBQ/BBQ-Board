@@ -65,22 +65,32 @@ reads as one surface. The app shells (/scorecard/, /notebook/, /board/)
 carry their own themes and are not in scope of this file's palette.
 
 ## 3. Typography Rules
-PENDING (Joel): the locked brand face (2026-09-25, `marketing/brand-type-system.md`)
-is Thornwood VF (Swell Type, Adobe Fonts): titles XTall UltraBold (wdth 50
-wght 900), eyebrow and footer caps Regular-width Medium (wdth 100 wght 500),
-body Tall Regular (wdth 75 wght 400), numbers Tall UltraBold; the logo
-lettering matches Tall Bold. It is NOT licensed for web embedding through
-the desktop sync route: web use needs an Adobe Fonts web project, or display
-headings rendered as images. The role TTFs in `marketing/fonts/` must not be
-uploaded to the site. Until Joel decides, the site keeps its inherited pair:
+Decided 2026-10-01: Thornwood VF (Swell Type), the locked brand face
+(`marketing/brand-type-system.md`), served by the Adobe Fonts web project
+Joel created (`https://use.typekit.net/rrv8ywt.css`, family name
+`thornwood-vf`, wght 200–900; the wdth axis 50–100 is driven with
+`font-variation-settings`, verified live). One family, four roles:
 
-Oswald 700 for display: a condensed grotesk is the closest licensed stand-in
-for Thornwood's tall, heavy lettering, and caps with 1px tracking read as a
-stencil on a smoker. Used on h1, h2, card headings and buttons only. Inter
-400/700 for everything else: it stays out of the way of the copy, which is
-where the voice lives. Both self-hosted, Latin subset, `font-display: swap`.
-If Thornwood arrives, it replaces Oswald role for role (XTall UltraBold for
-h1/h2, Tall Regular for body) and this section is rewritten.
+- Display: XTall UltraBold, `'wdth' 50` / 900, ALL CAPS, tracking 0. h1
+  `clamp(56px, 10vw, 112px)` line-height 0.95; card h2 30px (lead 38px);
+  section h2 34px; compliance-page h1 40px, h2 24px.
+- Subheads: Tall Bold, `'wdth' 75` / 700, sentence case: h3, FAQ questions,
+  buttons (16px, tracking 0.02em).
+- Body: Tall Regular, `'wdth' 75` / 400: 17px / 1.5 on the homepage and
+  compliance pages (story 18px), 18px on the light SEO pages. The brand's
+  1.3 line height is for cards; long web paragraphs get 1.5.
+- Meta: Regular-width Medium, `'wdth' 100` / 500, ALL CAPS, tracking 0.2em:
+  the slogan, "FOLLOW ALONG", footer rows (0.08em there).
+- Numbers: Tall UltraBold, `'wdth' 75` / 900, reserved for prices and
+  figures; not yet used on the homepage.
+
+Oswald and Inter remain as self-hosted fallbacks in every stack, so a
+blocked or failed Typekit load still renders the previous design. The role
+TTFs in `marketing/fonts/` are never uploaded to the site. The app shells
+(/scorecard/, /notebook/, /board/) keep their own type; they are not on this
+kit. Adobe's kit CSS ships `font-display: auto`; the web project's Display
+setting should be "swap" (set in the Adobe Fonts project UI) to avoid a
+blank-text flash on slow loads.
 
 Scale: h1 `clamp(40px, 6vw, 64px)` line-height 1.05; card lead h2 26px;
 card h2 22px; section h2 24px; h3 18px; body 16px line-height 1.65; story
