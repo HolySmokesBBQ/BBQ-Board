@@ -121,7 +121,7 @@ describe('banner display', () => {
   it('banner copy has the approved text, a privacy link, and no banned words', () => {
     const { banner } = run({ cookie: 'hs_geo=eu' });
     const text = allText(banner);
-    expect(text).toContain('We use Google Analytics to see which pages get used.');
+    expect(text).toContain('We use Google Analytics to see which pages get used, and Adobe to load our brand font.');
     expect(text).toContain('Say no and everything still works the same.');
     expect(text.toLowerCase()).not.toContain('anonymous');
     expect(text.toLowerCase()).not.toContain('never');
@@ -161,8 +161,21 @@ describe('choices', () => {
     expect(later.some(u => u[2].analytics_storage === 'granted')).toBe(false);
     expect(findById(r.body, 'hs-consent')).toBeNull();
   });
-  it('re-applies a stored grant on the next load as an update before config, with no banner', () => {
+  it('re-asks when the stored choice was made against an older consent text', () => {
     const r = run({ cookie: 'hs_geo=eu', stored: { choice: 'granted', timestamp: '2026-09-29T00:00:00Z', consentTextVersion: '2026-09-29' } });
+    expect(r.banner).not.toBeNull();
+    expect(r.calls.some(c => c[0] === 'consent' && c[1] === 'update' && c[2].analytics_storage === 'granted')).toBe(false);
+  });
+  it('dispatches hs-consent with the choice so the font loader can act', () => {
+    const r = run({ cookie: 'hs_geo=eu' });
+    const seen = [];
+    r.sandbox.dispatchEvent = (e) => { seen.push(e.detail && e.detail.choice); return true; };
+    r.sandbox.CustomEvent = class { constructor(type, init) { this.type = type; this.detail = init && init.detail; } };
+    findById(r.banner, 'hs-consent-yes').onclick({ preventDefault() {} });
+    expect(seen).toEqual(['granted']);
+  });
+  it('re-applies a stored grant on the next load as an update before config, with no banner', () => {
+    const r = run({ cookie: 'hs_geo=eu', stored: { choice: 'granted', timestamp: '2026-10-01T00:00:00Z', consentTextVersion: '2026-10-01' } });
     expect(r.banner).toBeNull();
     const idxUpdate = r.calls.findIndex(c => c[0] === 'consent' && c[1] === 'update' && c[2].analytics_storage === 'granted');
     const idxConfig = r.calls.findIndex(c => c[0] === 'config');
@@ -170,7 +183,7 @@ describe('choices', () => {
     expect(idxUpdate).toBeLessThan(idxConfig);
   });
   it('re-applies a stored denial with no banner', () => {
-    const r = run({ cookie: 'hs_geo=eu', stored: { choice: 'denied', timestamp: '2026-09-29T00:00:00Z', consentTextVersion: '2026-09-29' } });
+    const r = run({ cookie: 'hs_geo=eu', stored: { choice: 'denied', timestamp: '2026-10-01T00:00:00Z', consentTextVersion: '2026-10-01' } });
     expect(r.banner).toBeNull();
     expect(r.calls.some(c => c[0] === 'consent' && c[1] === 'update' && c[2].analytics_storage === 'granted')).toBe(false);
   });

@@ -73,6 +73,7 @@ const sharedAssets = [
   'sitemap.xml',
   'robots.txt',
   'gtm-init.js',
+  'brand-font.js', // consent-aware Adobe Fonts loader; unhashed, no-cache header in netlify.toml
   // SEO / verification files
   'googleb5ed7e361153ee65.html',
   // Android trusted-web-activity assetlinks
