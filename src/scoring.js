@@ -50,6 +50,10 @@ export function emptyReview() {
     scores: {}, sauceDep: '', wouldReturn: '', notes: '', notesLog: [],
     price: '', priceSplit: '1', trip: '', googleReviewUrl: '', photo: null,
     photos: [], friends: [], lastEdited: null,
+    // Google review draft (4.4.0). Each of these must be in firestore.rules
+    // reviewFields() before a build that sends them ships.
+    party: '', partySize: '', serviceNote: '', atmosphereNote: '',
+    googleExtras: {}, googleRatings: {},
   };
 }
 
@@ -366,115 +370,7 @@ export function generateShareCard(r, opts = {}) {
 // weak link / sauce dependency), not as a trailing ratings row. Voice
 // follows Joel's guide: no em dashes, no rule-of-three, no signposts.
 
-function stripNoteDate(n) {
-  return (n || '').replace(/^\d{4}-\d{2}-\d{2}:\s*/, '').trim();
-}
-function joinAnd(items) {
-  const arr = items.filter(Boolean);
-  if (arr.length <= 1) return arr.join('');
-  if (arr.length === 2) return `${arr[0]} and ${arr[1]}`;
-  return `${arr.slice(0, -1).join(', ')}, and ${arr[arr.length - 1]}`;
-}
 
-export function generateGoogleDraft(r) {
-  const sc = calcScores(r.scores);
-
-  // TL;DR — one line, verdict tied to composite band. No hard rating
-  // block at the top or bottom of the draft; Google's own UI handles
-  // stars separately.
-  let verdict;
-  if (sc.composite >= 8) verdict = 'Top tier BBQ. Worth the trip.';
-  else if (sc.composite >= 7) verdict = 'A really solid spot.';
-  else if (sc.composite >= 6) verdict = 'Good BBQ that does the job.';
-  else if (sc.composite >= 5) verdict = 'Middle of the road.';
-  else if (sc.composite >= 4) verdict = 'Below average.';
-  else if (sc.composite >= 3) verdict = 'Disappointing.';
-  else verdict = 'Hard pass.';
-
-  const paragraphs = [];
-  paragraphs.push(`TL;DR: ${verdict}`);
-
-  // Opening context — stopped in for lunch, with the family, on the road
-  // to X. Only builds a sentence if we have at least one specific to say.
-  const openParts = [];
-  const hasFriends = Array.isArray(r.friends) && r.friends.length > 0;
-  if (r.location) openParts.push(`Stopped in ${r.location.split(',')[0].trim()}`);
-  if (r.trip) openParts.push(`on our ${r.trip.trim().toLowerCase()}`);
-  if (hasFriends) openParts.push('with the family');
-  if (openParts.length) paragraphs.push(openParts.join(' ') + '.');
-
-  // Order line — what we actually ate. Kept plain so notes don't have
-  // to reintroduce the meat names.
-  const ordered = [...(r.meats || []), r.meatOther].filter(Boolean);
-  const sidesList = [...(r.sides || []), r.sideOther].filter(Boolean);
-  const orderBits = [];
-  if (ordered.length) orderBits.push(`We ordered the ${joinAnd(ordered.map(x => x.toLowerCase()))}`);
-  if (sidesList.length) orderBits.push(`${orderBits.length ? 'with ' : 'Sides were '}${joinAnd(sidesList.map(x => x.toLowerCase()))}`);
-  if (r.dessert) orderBits.push(`and ${r.dessert.toLowerCase()} for dessert`);
-  if (r.drinks) orderBits.push(`${orderBits.length ? 'and ' : 'We had '}${r.drinks.toLowerCase()} to drink`);
-  if (orderBits.length) paragraphs.push(orderBits.join(' ') + '.');
-
-  // The reviewer's own notes ARE the body of the draft. Strip the date
-  // prefixes so they read as prose rather than a log. Each note becomes
-  // its own paragraph — most reviewers write one thought per note, and
-  // that groups naturally into topic paragraphs downstream.
-  const noteBlocks = (r.notesLog || [])
-    .map(stripNoteDate)
-    .filter(Boolean);
-  if (noteBlocks.length) {
-    for (const b of noteBlocks) paragraphs.push(b);
-  } else if (r.notes && r.notes.trim()) {
-    paragraphs.push(r.notes.trim());
-  }
-
-  // Score-derived observation. Picks the single highest and single
-  // lowest BBQ category (if the gap is real) so the draft has an
-  // opinion instead of a shrug.
-  const bbqCats = CATEGORIES.bbq;
-  const scored = bbqCats
-    .map(c => ({ c, v: r.scores[c.key] || 0 }))
-    .filter(x => x.v > 0)
-    .sort((a, b) => b.v - a.v);
-  if (scored.length >= 2 && scored[0].v - scored[scored.length - 1].v >= 3) {
-    const bestLabel = scored[0].c.label.split(' /')[0].split(' ·')[0].toLowerCase();
-    const worstLabel = scored[scored.length - 1].c.label.split(' /')[0].split(' ·')[0].toLowerCase();
-    paragraphs.push(`${cap(bestLabel)} was the highlight. ${cap(worstLabel)} was the weak link.`);
-  }
-
-  // Sauce dependency + service + cleanliness callouts, each only when
-  // meaningful. Woven as a small closing paragraph rather than a bullet list.
-  const closing = [];
-  if (r.sauceDep) {
-    const lc = r.sauceDep.toLowerCase();
-    if (lc.includes('need')) closing.push('The meat needed the sauce to get through.');
-    else if (lc.includes('optional')) closing.push('Sauce was optional. The meat stood up on its own.');
-  }
-  const svc = r.scores.service || 0;
-  if (svc >= 7) closing.push('Service was friendly and attentive.');
-  else if (svc > 0 && svc <= 4) closing.push('Service was a soft spot.');
-  const clean = r.scores.cleanliness || 0;
-  if (clean >= 7) closing.push('Place was clean and well kept.');
-  else if (clean > 0 && clean <= 4) closing.push('Cleanliness could use some work.');
-  if (closing.length) paragraphs.push(closing.join(' '));
-
-  // Recommendation + return. Ends the draft on something actionable.
-  const primaryMeat = ordered[0];
-  if (primaryMeat && sc.composite >= 5) {
-    paragraphs.push(`If you stop in, get the ${primaryMeat.toLowerCase()}.`);
-  }
-  if (r.wouldReturn) {
-    const lc = r.wouldReturn.toLowerCase();
-    if (lc === 'yes') paragraphs.push('We would be back.');
-    else if (lc === 'no') paragraphs.push("Won't be a return trip for us.");
-    else paragraphs.push('We might be back, but it would not be our first choice.');
-  }
-
-  return paragraphs.filter(Boolean).join('\n\n');
-}
-
-function cap(s) {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
 
 /* ── CSV Export ── */
 export function exportCSV(reviews) {
