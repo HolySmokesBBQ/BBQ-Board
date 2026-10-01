@@ -529,20 +529,36 @@ export async function getUserProfile(userId) {
    explicit save flow). Uses merge:true so cloud-only fields like photo URLs
    are preserved when local has empty/missing photo state. */
 export async function syncReviewsUp(userId, reviews) {
-  // Batch writes (Firestore limit: 500 per batch)
+  // Batch writes (Firestore limit: 500 per batch). A batch is atomic, so a
+  // single review the rules reject fails every review in it; that is how
+  // one missing rules field stopped ALL review syncing from 2026-08-13 to
+  // 2026-10-01. When a batch fails, retry its reviews one at a time so the
+  // good ones still land, and report which ids were refused.
   const chunks = [];
   for (let i = 0; i < reviews.length; i += 450) {
     chunks.push(reviews.slice(i, i + 450));
   }
 
+  const failed = [];
   for (const chunk of chunks) {
     const batch = writeBatch(db);
     for (const review of chunk) {
       const ref = doc(db, 'reviews', `${userId}_${review.id}`);
       batch.set(ref, prepForFirestoreMetadata(review, userId), { merge: true });
     }
-    await batch.commit();
+    try {
+      await batch.commit();
+    } catch (batchErr) {
+      const results = await Promise.allSettled(chunk.map(review =>
+        setDoc(doc(db, 'reviews', `${userId}_${review.id}`), prepForFirestoreMetadata(review, userId), { merge: true })
+      ));
+      results.forEach((res, i) => {
+        if (res.status === 'rejected') failed.push({ id: chunk[i].id, code: res.reason?.code || 'unknown' });
+      });
+      console.warn(`syncReviewsUp: batch failed (${batchErr?.code || batchErr}); retried singly, ${failed.length} refused`, failed);
+    }
   }
+  return { failed };
 }
 
 /* Explicit single-review write with photos — called from saveCurrentReview
