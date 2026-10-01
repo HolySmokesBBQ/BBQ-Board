@@ -267,6 +267,16 @@ Fixed in `61ce8a5` (`gzip: false`), which also fixed two parser bugs that only b
 
 ---
 
+### F-15 — HIGH (incident, post-audit): ALL Scorecard review sync silently dead for 7 weeks (Aug 13 → Oct 1)
+
+*Found and fixed by the Scorecard session while scoping 4.4.0; third strike of one failure class.* 3.6.3 (Aug 17) added `drinks` and `orderStyle` to every review; `reviewFields()` in the rules never got them; `hasOnly()` denied every write carrying them — and because `syncReviewsUp` commits all of a user's reviews in **one atomic batch**, a single denied doc failed every review, including untouched old ones. No user-facing error. Evidence: live ruleset read in the GCP editor lacked both fields; Firestore `reviews` ordered by `syncedAt` desc showed newest = 2026-08-13. Fix published 2026-10-01 14:34 CDT (permissive-only, that line only, verified); recovery is automatic on next launch/sign-in; data lost only for users who reinstalled or switched phones inside the window. Compliance note for the record: for 7 weeks the cloud was not the system of record our deletion pages describe.
+
+**The class, now three instances:** Board regions behind `schema.js` → F-12 pit fields → this. Same shape every time: client schema grows, rules whitelist doesn't, failure is silent. **Audit's honest ledger:** the deep audit missed this — its "cloud write failures swallowed" candidate died unverified in the session-limit window and was never re-adjudicated; reality adjudicated it. Standing lesson adopted: audits must include **liveness probes** (when did the last doc actually sync?) — code-vs-code checks can all pass while the system is dead.
+
+**Mechanism shipped (Overseer): `npm run check:fields`** — extracts client-sendable fields (`emptyReview()` keys + sync-added; `COOK_`/`RECIPE_FIELD_WHITELIST`) and fails if any is missing from the repo rules whitelists. Proven green on today's repo (reviews 27/27) and proven to fail on a doctored copy missing `drinks` (exit 1, field named). Includes a degenerate-parse guard so it can never false-OK if the schema shape changes. Scope: reviews/cooks/recipes; `board_prices` inline whitelist not yet covered. **Doctrine: any new synced field lands in the rules whitelist and is PUBLISHED before the client ships — and `check:fields` runs in the release checklist.**
+
+---
+
 ## Credit where it's due
 
 Several previously-flagged problems are genuinely fixed, and I verified each:
