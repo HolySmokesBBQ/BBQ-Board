@@ -1,8 +1,11 @@
 # DESIGN.md: Holy Smokes BBQ Co website
 
-Status: values extracted from the live site on 2026-10-01 (audit-001). The
-fonts and palette are inherited, not yet confirmed by Holy Smokes Marketing;
-revise sections 2 and 3 when they answer. Everything else is decided.
+Status: values extracted from the live site on 2026-10-01 (audit-001) and
+checked against Holy Smokes Marketing's brand inputs the same day
+(`marketing/holy-smokes-bbq-voice-profile.md`, `marketing/brand-type-system.md`,
+`marketing/brand-template-spec.md`). Two decisions are Joel's and are marked
+PENDING below: whether the site switches to the brand typeface, and whether
+the web palette moves to the logo colors.
 
 ## 1. Visual Theme & Atmosphere
 A smokehouse sign at night: near-black, cream lettering, one burnt-orange
@@ -11,13 +14,37 @@ behind them. Readers are home pitmasters and people hunting a BBQ joint,
 most arriving on a phone from a store listing or a search. It should feel
 like a hand-painted menu board, not a startup: confident, plain-spoken,
 specific. Joel's own bio opens the page in first person; the product copy is
-plain third person. No fire clichés beyond the logo's own flames, no stock
-photos, no claims the code can't back.
+plain third person in his register, not marketing voice. No fire clichés
+beyond the logo's own flames, no stock photos or BBQ clip art, no claims the
+code can't back.
+
+Voice (Marketing's profile): Joel talking, first person singular, "I" never
+"we here at Holy Smokes". Kansas City is the heritage; he lives in Waukesha,
+WI. Short declaratives, plain verbs, contractions mixed with full forms,
+specs over adjectives, no hype, no trophy or pro claims, no em dashes, no
+"it's not X, it's Y". Sign-off "Faith, family, and fire." The slogan is
+styled FAITH, FAMILY & FIRE as a mark. Facts that must hold: THREE apps
+(Scorecard, Notebook, Board) plus the Calculator, which is a website tool,
+never "four apps"; the sauce is not for sale and nothing may imply it is;
+never call the smoker an offset; Peyton's name and face never appear; no
+exterior shots of the house. Anything drafted in Joel's name runs humanize,
+then joel, then antislop.
 
 Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 Impeccable mode: Persuade (homepage), Read (SEO and legal pages)
 
 ## 2. Color Palette & Roles
+PENDING (Joel): the live hexes below appear in no brand document. Marketing's
+canon, sampled from the logo: charcoal `#444947`, orange `#D06129`, gold
+`#F3CF6D`, outline `#090806`; print/card palette: cream `#E6D8B8`, ink
+`#33211A`, stamp red `#B5432E`, gold `#E8C23A`; recent video end cards:
+near-black `#1b1714` with gold, cream, orange. A logo-aligned web palette
+would be background `#1b1714`, text `#E6D8B8` (12.6:1), orange `#D06129` for
+headings and links (4.6:1, fine for 18px+ display, too low for 14px body
+text), and gold `#F3CF6D` with ink text for Launch buttons (10.2:1). The logo
+orange cannot be a button fill: no text color reaches AA on it (best 4.6:1
+with near-black). Until Joel chooses, the live values stand:
+
 Core: background `#1a1a1a`, surface `#2a2015` (warm umber panels), text
 `#f5e6d3` (cream). Accent: `#d4782f` burnt orange (headings, links, hover).
 Muted text `#ccc` on dark, `#888`/`#999` only for footer-grade text.
@@ -37,11 +64,22 @@ not darken the brick); `#1a1a1a` on Calculator brass 7.8:1; footer `#888` on
 background 4.9:1 at 13px minimum.
 
 ## 3. Typography Rules
-Oswald 700 for display: a condensed grotesk is the sign-painter's face, and
-caps with 1px tracking read as a stencil on a smoker. Used on h1, h2, card
-headings and buttons only. Inter 400/700 for everything else: it stays out
-of the way of the copy, which is where the voice lives. Both self-hosted,
-Latin subset, `font-display: swap`.
+PENDING (Joel): the locked brand face (2026-09-25, `marketing/brand-type-system.md`)
+is Thornwood VF (Swell Type, Adobe Fonts): titles XTall UltraBold (wdth 50
+wght 900), eyebrow and footer caps Regular-width Medium (wdth 100 wght 500),
+body Tall Regular (wdth 75 wght 400), numbers Tall UltraBold; the logo
+lettering matches Tall Bold. It is NOT licensed for web embedding through
+the desktop sync route: web use needs an Adobe Fonts web project, or display
+headings rendered as images. The role TTFs in `marketing/fonts/` must not be
+uploaded to the site. Until Joel decides, the site keeps its inherited pair:
+
+Oswald 700 for display: a condensed grotesk is the closest licensed stand-in
+for Thornwood's tall, heavy lettering, and caps with 1px tracking read as a
+stencil on a smoker. Used on h1, h2, card headings and buttons only. Inter
+400/700 for everything else: it stays out of the way of the copy, which is
+where the voice lives. Both self-hosted, Latin subset, `font-display: swap`.
+If Thornwood arrives, it replaces Oswald role for role (XTall UltraBold for
+h1/h2, Tall Regular for body) and this section is rewritten.
 
 Scale: h1 `clamp(40px, 6vw, 64px)` line-height 1.05; card lead h2 26px;
 card h2 22px; section h2 24px; h3 18px; body 16px line-height 1.65; story
