@@ -272,6 +272,11 @@
 # returning visitor. Must revalidate. The `?v=` query param in the HTML
 # still exists as a belt-and-braces buster for already-cached copies.
 [[headers]]
+  for = "/site-fx.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
   for = "/brand-font.js"
   [headers.values]
     Cache-Control = "no-cache"

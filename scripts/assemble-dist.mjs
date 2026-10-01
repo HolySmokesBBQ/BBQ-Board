@@ -82,6 +82,10 @@ const sharedAssets = [
   // Directory copy; without this entry the files never reach dist/ (same
   // allowlist trap as support.html, 2026-09-03).
   'ocr',
+  // Homepage photos (hero, pit strip, video thumbnail), web-sized by the
+  // Website session from marketing/ originals. Immutable-safe: new names per change.
+  'photos',
+  'site-fx.js', // hero smoke + photo reveal; unhashed, no-cache header in netlify.toml
 ];
 
 for (const asset of sharedAssets) {
@@ -230,6 +234,30 @@ for (const [app, keep] of Object.entries(COMPLIANCE_KEEP)) {
       console.log(`  - ${app}/${page} (belongs to another app)`);
     }
   }
+}
+
+// 8. Bake the Board price line into the homepage. The calculator build
+//    already snapshots the cheapest price per cut from Board seed data
+//    (website/calculator/calculatorPrices.js); the homepage quotes brisket
+//    with the shop, the sample size and the build date, so the number is
+//    sourced and dated rather than a marketing claim (antislop R-17).
+try {
+  const { MEAT_PRICES } = await import('../website/calculator/calculatorPrices.js');
+  const b = MEAT_PRICES && MEAT_PRICES.Brisket;
+  const home = join(DIST, 'index.html');
+  if (b && existsSync(home)) {
+    const { readFileSync, writeFileSync } = await import('node:fs');
+    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    let html = readFileSync(home, 'utf8');
+    html = html.replace(/{{BRISKET_PRICE}}/g, '$' + b.pricePerLb.toFixed(2))
+               .replace(/{{BRISKET_SHOP}}/g, b.shopName)
+               .replace(/{{BRISKET_SAMPLES}}/g, String(b.sampleSize))
+               .replace(/{{BUILD_DATE}}/g, date);
+    writeFileSync(home, html);
+    console.log(`  + board brisket line: ${b.pricePerLb} ${b.shopName} (${b.sampleSize}) as of ${date}`);
+  }
+} catch (e) {
+  console.log('  ! board brisket line skipped: ' + e.message);
 }
 
 console.log('Done.');

@@ -30,8 +30,22 @@ never call the smoker an offset; Peyton's name and face never appear; no
 exterior shots of the house. Anything drafted in Joel's name runs humanize,
 then joel, then antislop.
 
-Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
+Dial: ENERGY 2 / RHYTHM 2 / MOTION 2
 Impeccable mode: Persuade (homepage), Read (SEO and legal pages)
+
+Photo-led since 2026-10-01 (Joel: "make it as eye-catching as the light
+show site"). The homepage is banded like a smokehouse wall, a chalkboard and
+a menu card: a real photo under the sign, Joel's story on cream, the apps on
+near-black, the pit photos and the YouTube tile on umber, dated news on
+cream. Two authored motions only: a slow smoke drift behind the hero
+lettering (the company is named after smoke) and photos easing up as they
+scroll in. Text never animates. Both are off under prefers-reduced-motion.
+Photos come from `marketing/photo-library` and `marketing/bts-photos`, web-sized
+into `public/photos/`, and obey Marketing's rules: no photo with Joel's
+daughter, no house exterior, no sauce jars or labels (sale implication), and
+captions never identify cuts, wood or gear from a photo; until Joel writes
+his own lines, captions are dates only. A character may come later; nothing
+on the site stands in for it.
 
 ## 2. Color Palette & Roles
 Decided 2026-10-01 (Joel delegated; Marketing's canon applied): the web
