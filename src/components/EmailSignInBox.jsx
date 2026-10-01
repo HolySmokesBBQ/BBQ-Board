@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAppContext } from '../context/AppContext.jsx';
 import { track } from '../scoring.js';
+import { MIN_SIGNUP_LENGTH, passwordMeetsGate, passwordStrength } from '../passwordPolicy.js';
 
 // Email/password auth UI — toggles between Sign In and Sign Up, plus a
 // "Forgot password" mode that just collects the email and triggers a
@@ -8,6 +9,7 @@ import { track } from '../scoring.js';
 // replacement, so users keep both paths.
 
 const ACCENT = '#4A6741';
+const STRENGTH_COLORS = ['#f87171', '#fbbf24', '#4ade80'];
 
 export default function EmailSignInBox({ S, sBtn, sInput, onSignedIn }) {
   const { attemptEmailSignIn, attemptEmailSignUp, sendPasswordReset } = useAppContext();
@@ -40,9 +42,10 @@ export default function EmailSignInBox({ S, sBtn, sInput, onSignedIn }) {
     }
   };
 
-  const submitDisabled = busy
-    || !email
-    || (mode !== 'reset' && (!password || password.length < 6));
+  // Sign-up needs 8+, sign-in keeps the old 6 so existing accounts still
+  // work (passwordPolicy.js).
+  const submitDisabled = busy || !email || !passwordMeetsGate(mode, password);
+  const strength = passwordStrength(password);
 
   return (
     <div style={{
@@ -66,10 +69,27 @@ export default function EmailSignInBox({ S, sBtn, sInput, onSignedIn }) {
         style={{ ...sInput(), width: '100%', marginBottom: '8px' }} />
 
       {mode !== 'reset' && (
-        <input type="password" placeholder={mode === 'signUp' ? 'New password (6+ chars)' : 'Password'}
+        <input type="password" placeholder={mode === 'signUp' ? `New password (${MIN_SIGNUP_LENGTH}+ characters)` : 'Password'}
           autoComplete={mode === 'signUp' ? 'new-password' : 'current-password'}
           value={password} onChange={e => setPassword(e.target.value)}
           style={{ ...sInput(), width: '100%', marginBottom: '8px' }} />
+      )}
+
+      {mode === 'signUp' && password && (
+        <div style={{ marginTop: '-2px', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', gap: '4px', marginBottom: '4px' }} aria-hidden="true">
+            {[0, 1, 2].map(i => (
+              <div key={i} style={{
+                flex: 1, height: '4px', borderRadius: '2px',
+                background: i <= strength.score ? STRENGTH_COLORS[strength.score] : S.border,
+              }} />
+            ))}
+          </div>
+          <div aria-live="polite" style={{ fontSize: '11px', color: S.muted }}>
+            Password strength: <span style={{ color: STRENGTH_COLORS[strength.score], fontWeight: 600 }}>{strength.label}</span>
+            {password.length < MIN_SIGNUP_LENGTH && ` · at least ${MIN_SIGNUP_LENGTH} characters`}
+          </div>
+        </div>
       )}
 
       {err && (
