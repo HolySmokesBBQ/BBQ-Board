@@ -52,8 +52,10 @@ const sharedAssets = [
   'bbq-scorecard-logo.png',
   'bbq-notebook-logo.png',
   'bbq-calculator-logo.png',
+  'bbq-calculator-logo-144.png', // 2x for the 72px homepage card (audit-001 item 16)
   'bbq-board-logo.png',
   'bbq-board-logo@2x.png',
+  'bbq-board-logo-180.png',      // 2x for the 90px homepage card (audit-001 item 16)
   'board-icon-192.png',
   'board-icon-512.png',
   'privacy.html',
