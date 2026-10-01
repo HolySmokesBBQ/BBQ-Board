@@ -115,8 +115,39 @@ for (const c of CHECKS) {
   if (missingInRules.length) console.log(`     MISSING IN RULES (writes will be DENIED, silently): ${missingInRules.join(', ')}`);
   if (rulesOnly.length) console.log(`     rules-only (permissive surplus, info): ${rulesOnly.join(', ')}`);
 }
+// ── Leg 3 (optional): repo rules vs PUBLISHED ruleset ───────
+// The honest invariant is three-way: client ⊆ repo rules ⊆ published rules.
+// Legs 1-2 above are repo-vs-repo; a correct repo whose publish never landed
+// is exactly how the Notebook signup outage survived July→September.
+// Usage: --published <file>  where <file> holds the LIVE ruleset body, read
+// by CONTENT from the console/CLI. NEVER verify a publish via the console's
+// ruleset-version list — it does not update reliably; read the rules body.
+// (Automatable via the Rules API once Firebase CLI reauth is restored.)
+const pubIdx = process.argv.indexOf('--published');
+if (pubIdx > -1 && process.argv[pubIdx + 1]) {
+  const pub = stripComments(readFileSync(process.argv[pubIdx + 1], 'utf8'));
+  const pubList = fn => {
+    const m = pub.match(new RegExp('function ' + fn + '\\(\\)\\s*\\{\\s*return \\[([\\s\\S]*?)\\]', ''));
+    return m ? [...m[1].matchAll(/'([^']+)'/g)].map(x => x[1]) : null;
+  };
+  console.log('\n── Leg 3: repo rules vs published ruleset ──');
+  for (const fn of ['reviewFields', 'cookFields', 'recipeFields']) {
+    const repo = rulesList(fn);
+    const live = pubList(fn);
+    if (!live) { console.log(`FAIL ${fn}: not found in published ruleset file`); failures++; continue; }
+    const liveSet = new Set(live);
+    const unpublished = repo.filter(f => !liveSet.has(f));
+    if (unpublished.length) {
+      console.log(`FAIL ${fn}: in repo but NOT PUBLISHED (live writes will be DENIED): ${unpublished.join(', ')}`);
+      failures++;
+    } else {
+      console.log(`OK   ${fn}: published ruleset covers all ${repo.length} repo fields`);
+    }
+  }
+}
+
 console.log(failures === 0
-  ? '\nAll client-sendable fields are allowed by the repo rules.'
-  : `\n${failures} collection(s) have client fields the rules will DENY. Fix the rules, PUBLISH them, then ship the client.`);
-console.log('(Repo rules only. Published-ruleset parity is a separate check: deploy discipline / check:rules.)');
+  ? '\nAll checks green.'
+  : `\n${failures} failure(s). Fix the rules, PUBLISH them, verify by CONTENT, then ship the client.`);
+if (pubIdx === -1) console.log('(Legs 1-2 only: repo rules. Add --published <live-ruleset-file> for leg 3.)');
 if (strict && failures) process.exit(1);
