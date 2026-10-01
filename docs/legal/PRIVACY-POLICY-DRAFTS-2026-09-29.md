@@ -50,7 +50,7 @@ We do not sell your data. We do not run ads. We do not share your content with a
 
 **Who processes data for us**
 
-Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). These providers process data on our instructions.
+Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). On our website pages (not the app), Adobe Fonts serves our brand typeface; Adobe receives your IP address and browser details to count font usage for licensing, and sets no cookies. If you are in the EEA, UK, or Switzerland, the Adobe font loads only after you say yes to our banner; until then the site uses our self-hosted fonts. These providers process data on our instructions.
 
 **Where data is processed**
 
@@ -100,7 +100,7 @@ We do not sell your data. We do not run ads. We do not share your cooks or recip
 
 **Who processes data for us**
 
-Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). The National Weather Service receives only the coordinates needed for the weather lookup you request.
+Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). On our website pages (not the app), Adobe Fonts serves our brand typeface; Adobe receives your IP address and browser details to count font usage for licensing, and sets no cookies. If you are in the EEA, UK, or Switzerland, the Adobe font loads only after you say yes to our banner; until then the site uses our self-hosted fonts. The National Weather Service receives only the coordinates needed for the weather lookup you request.
 
 **Where data is processed**
 
@@ -158,7 +158,7 @@ We do not sell your data. We do not run ads. We do not display your name or emai
 
 **Who processes data for us**
 
-Google (Firebase: sign-in, database, analytics, crash reports) and Netlify (website hosting).
+Google (Firebase: sign-in, database, analytics, crash reports) and Netlify (website hosting). On our website pages (not the app), Adobe Fonts serves our brand typeface; Adobe receives your IP address and browser details to count font usage for licensing, and sets no cookies. If you are in the EEA, UK, or Switzerland, the Adobe font loads only after you say yes to our banner; until then the site uses our self-hosted fonts.
 
 **Where data is processed**
 
