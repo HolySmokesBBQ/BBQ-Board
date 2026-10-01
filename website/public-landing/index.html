@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1a1a1a" />
+  <meta name="theme-color" content="#1b1714" />
   <title>Free BBQ Apps: Score Restaurants, Log Cooks, Calculate Meat & Track Prices | Holy Smokes BBQ Co</title>
 
   <link rel="preload" as="image" href="/holy-smokes-logo@2x.avif" type="image/avif" fetchpriority="high" />
@@ -205,28 +205,28 @@
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html { background: #1a1a1a; min-height: 100%; }
-    body { background: #1a1a1a; color: #f5e6d3; font-family: 'Inter', sans-serif; min-height: 100vh; font-size: 16px; line-height: 1.65; }
+    html { background: #1b1714; min-height: 100%; }
+    body { background: #1b1714; color: #E6D8B8; font-family: 'Inter', sans-serif; min-height: 100vh; font-size: 16px; line-height: 1.65; }
     main { max-width: 980px; margin: 0 auto; padding: 0 20px 48px; }
     h1, h2, h3 { text-wrap: balance; }
-    ::selection { background: #d4782f; color: #1a1a1a; }
-    a:focus-visible, button:focus-visible { outline: 2px solid #f5e6d3; outline-offset: 2px; border-radius: 4px; }
+    ::selection { background: #D06129; color: #1b1714; }
+    a:focus-visible, button:focus-visible { outline: 2px solid #E6D8B8; outline-offset: 2px; border-radius: 4px; }
 
     /* Skip link: hidden until a keyboard user tabs to it, then a cream pill. */
-    .skip { position: absolute; left: 16px; top: -48px; background: #f5e6d3; color: #1a1a1a; padding: 10px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; z-index: 10; }
+    .skip { position: absolute; left: 16px; top: -48px; background: #E6D8B8; color: #1b1714; padding: 10px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; z-index: 10; }
     .skip:focus { top: 16px; }
 
     /* Hero: the sign. Logo smaller than before so the headline carries the
        screen and the bio's first line lands above the fold on a phone. */
     .hero { text-align: center; padding: 40px 0 8px; }
     .hero img { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; object-fit: cover; display: block; }
-    .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(40px, 6vw, 64px); line-height: 1.05; font-weight: 700; letter-spacing: 1px; color: #d4782f; margin-bottom: 8px; }
-    .hero .tagline { font-size: 15px; letter-spacing: 2px; color: #f5e6d3; margin-bottom: 8px; } /* brand slogan, styled in caps per Marketing */
+    .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(40px, 6vw, 64px); line-height: 1.05; font-weight: 700; letter-spacing: 1px; color: #D06129; margin-bottom: 8px; }
+    .hero .tagline { font-size: 15px; letter-spacing: 2px; color: #E6D8B8; margin-bottom: 8px; } /* brand slogan, styled in caps per Marketing */
     @media (min-width: 600px) { .hero { padding-top: 48px; } .hero img { width: 160px; height: 160px; } }
 
     /* Joel's story: the one first-person block, kept to a readable measure. */
-    .story { background: #2a2015; border: 1px solid #333; border-radius: 14px; padding: 28px 24px; margin: 32px auto 40px; max-width: 68ch; }
-    .story p { font-size: 17px; line-height: 1.7; color: #f5e6d3; margin-bottom: 14px; }
+    .story { background: #2a2015; border: 1px solid #3a332c; border-radius: 14px; padding: 28px 24px; margin: 32px auto 40px; max-width: 68ch; }
+    .story p { font-size: 17px; line-height: 1.7; color: #E6D8B8; margin-bottom: 14px; }
     .story p:last-child { margin-bottom: 0; }
 
     /* App grid: 2 + 2. The first row is heavier because those two apps
@@ -235,19 +235,18 @@
     @media (min-width: 600px) { .apps-grid { grid-template-columns: 1fr 1fr; gap: 20px; } }
     .app-card { background: #2a2015; border-radius: 14px; padding: 24px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
     .app-card.lead { padding: 32px 24px; }
-    .app-card.scorecard { border: 2px solid #d4782f; }
+    .app-card.scorecard { border: 2px solid #D06129; }
     .app-card.notebook { border: 2px solid #4A6741; }
-    .app-card.calculator { border: 2px solid #d4a64a; }
+    .app-card.calculator { border: 2px solid #F3CF6D; }
     .app-card.board { border: 2px solid #A85F52; }
     .app-card img { display: block; width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 12px; }
     .app-card.lead img { width: 90px; height: 90px; margin-bottom: 14px; }
-    .app-card h2 { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+    /* Card headings are cream for every app: Notebook green on the panel is
+       2.5:1 and Board brick 3.4:1, both below AA for text. Each app's colour
+       lives on its card border and Launch button only (DESIGN.md §2). */
+    .app-card h2 { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; color: #E6D8B8; }
     .app-card.lead h2 { font-size: 26px; }
-    .app-card.scorecard h2 { color: #d4782f; }
-    .app-card.notebook h2 { color: #4A6741; }
-    .app-card.calculator h2 { color: #d4a64a; }
-    .app-card.board h2 { color: #A85F52; }
-    .app-card p { font-size: 15px; color: #ccc; margin-bottom: 18px; line-height: 1.55; flex: 1; max-width: 46ch; }
+    .app-card p { font-size: 15px; color: #bfb39a; margin-bottom: 18px; line-height: 1.55; flex: 1; max-width: 46ch; }
     /* Button cluster. Top-aligned with a row-wide minimum height so Launch
        sits on one line across a row even when one card has a store button
        below it and its neighbour does not. */
@@ -266,14 +265,15 @@
     .app-card a:active { transform: translateY(1px); }
     /* `:not(.play-mini)` keeps the brand fill off the store buttons, whose
        rule below has lower specificity. */
-    /* Dark text on the orange: white on #d4782f is 3.2:1 and fails AA; dark
+    /* Dark text on the orange: white on #D06129 is 3.2:1 and fails AA; dark
        is 5.4:1. Hover lightens so the dark text stays above 4.5:1. */
-    .app-card.scorecard a:not(.play-mini) { background: #d4782f; color: #1a1a1a; }
-    .app-card.scorecard a:not(.play-mini):hover { background: #e08a45; }
+    /* Near-black on the logo orange is 4.6:1; the hover lightens to 6.2:1. */
+    .app-card.scorecard a:not(.play-mini) { background: #D06129; color: #1b1714; }
+    .app-card.scorecard a:not(.play-mini):hover { background: #e0803f; }
     .app-card.notebook a:not(.play-mini) { background: #4A6741; }
     .app-card.notebook a:not(.play-mini):hover { background: #3a5234; }
-    .app-card.calculator a:not(.play-mini) { background: #d4a64a; color: #1a1a1a; }
-    .app-card.calculator a:not(.play-mini):hover { background: #b88c30; }
+    .app-card.calculator a:not(.play-mini) { background: #F3CF6D; color: #1b1714; }
+    .app-card.calculator a:not(.play-mini):hover { background: #f6da8c; }
     .app-card.board a:not(.play-mini) { background: #A85F52; }
     .app-card.board a:not(.play-mini):hover { background: #8B4E42; }
     .app-card .play-mini {
@@ -281,7 +281,7 @@
       background: #000; color: #fff;
       padding: 7px 12px; border-radius: 6px; min-height: 44px;
       text-decoration: none; font-size: 12px; letter-spacing: 0;
-      border: 1px solid #333; margin-top: 10px;
+      border: 1px solid #3a332c; margin-top: 10px;
       font-family: 'Inter', sans-serif; font-weight: 400;
     }
     .app-card .play-mini:hover { background: #111; border-color: #555; }
@@ -289,27 +289,27 @@
     /* Non-link variant for a store the app is not on yet: same look,
        dimmed, not clickable, so it never promises a store page. */
     .app-card .play-soon { cursor: default; color: #aaa; }
-    .app-card .play-soon:hover { background: #000; border-color: #333; }
+    .app-card .play-soon:hover { background: #000; border-color: #3a332c; }
 
     .social-strip { text-align: center; margin-bottom: 40px; padding: 16px; border-top: 1px solid #2a2015; border-bottom: 1px solid #2a2015; }
-    .social-strip .social-kicker { font-size: 14px; color: #999; margin-bottom: 6px; }
-    .social-links a { display: inline-flex; align-items: center; gap: 8px; margin: 0 6px; padding: 11px 10px; min-height: 44px; color: #f5e6d3; text-decoration: none; font-size: 15px; transition: color 0.15s; }
-    .social-links a:hover { color: #d4782f; }
+    .social-strip .social-kicker { font-size: 14px; color: #9a9084; margin-bottom: 6px; }
+    .social-links a { display: inline-flex; align-items: center; gap: 8px; margin: 0 6px; padding: 11px 10px; min-height: 44px; color: #E6D8B8; text-decoration: none; font-size: 15px; transition: color 0.15s; }
+    .social-links a:hover { color: #D06129; }
     .social-links svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 
     .seo-section { margin-bottom: 40px; }
-    .seo-section h2 { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 1px; color: #d4782f; margin-bottom: 12px; }
-    .seo-section h3 { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; color: #f5e6d3; margin: 24px 0 6px; }
-    .seo-section p, .seo-section li { font-size: 16px; color: #ccc; line-height: 1.65; margin-bottom: 10px; max-width: 72ch; }
+    .seo-section h2 { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 1px; color: #D06129; margin-bottom: 12px; }
+    .seo-section h3 { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; color: #E6D8B8; margin: 24px 0 6px; }
+    .seo-section p, .seo-section li { font-size: 16px; color: #bfb39a; line-height: 1.65; margin-bottom: 10px; max-width: 72ch; }
     .faq-list { list-style: none; padding: 0; }
-    .faq-list dt { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; color: #f5e6d3; padding: 16px 0 6px; }
-    .faq-list dd { font-size: 16px; color: #ccc; line-height: 1.65; margin: 0 0 12px; padding-bottom: 14px; border-bottom: 1px solid #2a2015; max-width: 72ch; }
+    .faq-list dt { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; color: #E6D8B8; padding: 16px 0 6px; }
+    .faq-list dd { font-size: 16px; color: #bfb39a; line-height: 1.65; margin: 0 0 12px; padding-bottom: 14px; border-bottom: 1px solid #2a2015; max-width: 72ch; }
 
-    footer { text-align: center; padding-top: 24px; border-top: 1px solid #333; font-size: 13px; color: #888; }
+    footer { text-align: center; padding-top: 24px; border-top: 1px solid #3a332c; font-size: 13px; color: #9a9084; }
     footer p { margin-bottom: 4px; }
-    footer a { color: #ccc; text-decoration: none; margin: 0 4px; display: inline-block; padding: 12px 6px; transition: color 0.15s; }
-    footer a:hover { color: #d4782f; }
-    footer .sep { color: #333; }
+    footer a { color: #bfb39a; text-decoration: none; margin: 0 4px; display: inline-block; padding: 12px 6px; transition: color 0.15s; }
+    footer a:hover { color: #D06129; }
+    footer .sep { color: #3a332c; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition: none !important; animation: none !important; }
@@ -331,7 +331,7 @@
     </header>
 
     <div class="story">
-      <p>Born and raised in the greater Kansas City area, so for me BBQ wasn't just a hobby, it became a way of life. Several years ago I got my first smoker, and haven't looked back since!</p>
+      <p>Born and raised in the greater Kansas City area, so BBQ has always been a way of life for me. Several years ago I got my first smoker, and haven't looked back since!</p>
       <p>I also work as a United Methodist Pastor, taking my career a step forward by going to seminary. A lot of the best conversations I've had about God, religion, and life have happened around either the smoker itself or at the table sharing in that good smoke. I've come to believe that this is one of my most effective ministries.</p>
       <p>My family's a lot bigger than when I initially started, so is my smoker. With that growth came the desire to keep track of all the places we've eaten at along the way. From the very first app, to the latest and greatest. I hope you get as much enjoyment out of using these apps, as I did creating them.</p>
     </div>

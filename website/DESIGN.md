@@ -34,34 +34,35 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 1
 Impeccable mode: Persuade (homepage), Read (SEO and legal pages)
 
 ## 2. Color Palette & Roles
-PENDING (Joel): the live hexes below appear in no brand document. Marketing's
-canon, sampled from the logo: charcoal `#444947`, orange `#D06129`, gold
-`#F3CF6D`, outline `#090806`; print/card palette: cream `#E6D8B8`, ink
-`#33211A`, stamp red `#B5432E`, gold `#E8C23A`; recent video end cards:
-near-black `#1b1714` with gold, cream, orange. A logo-aligned web palette
-would be background `#1b1714`, text `#E6D8B8` (12.6:1), orange `#D06129` for
-headings and links (4.6:1, fine for 18px+ display, too low for 14px body
-text), and gold `#F3CF6D` with ink text for Launch buttons (10.2:1). The logo
-orange cannot be a button fill: no text color reaches AA on it (best 4.6:1
-with near-black). Until Joel chooses, the live values stand:
+Decided 2026-10-01 (Joel delegated; Marketing's canon applied): the web
+palette is the logo's. Sources: logo sample (orange `#D06129`, gold
+`#F3CF6D`, charcoal `#444947`), video end cards (near-black `#1b1714`),
+print palette (cream `#E6D8B8`, ink `#33211A`).
 
-Core: background `#1a1a1a`, surface `#2a2015` (warm umber panels), text
-`#f5e6d3` (cream). Accent: `#d4782f` burnt orange (headings, links, hover).
-Muted text `#ccc` on dark, `#888`/`#999` only for footer-grade text.
-Hairlines `#333` on background, `#2a2015` between sections.
+Core: background `#1b1714` (warm near-black), surface `#2a2015` (umber
+panels), text `#E6D8B8` (cream). Accent: `#D06129` logo orange for h1,
+section headings, links and hover. Muted text `#bfb39a` (cream at 80%),
+footer-grade `#9a9084`. Hairlines `#3a332c` on background, `#2a2015`
+between sections.
 
-Per-app colors exist and are the written reason the palette exceeds 2+1:
-Scorecard `#d4782f`, Notebook `#4a6741`, Board `#a85f52`, Calculator
-`#d4a64a`. Rule: an app's color appears on its own card border, heading and
-Launch button, and nowhere else on the page. Brass `#d4a64a` is Board's
-secondary inside the Board app and Calculator's color on this page; it is
-not a general accent here.
+Per-app colors are the written reason the palette exceeds 2+1: Scorecard
+`#D06129`, Notebook `#4a6741`, Board `#a85f52`, Calculator `#F3CF6D`. Rule:
+an app's color appears on its own card border and Launch button, and
+nowhere else. Card headings are cream for every app, because Notebook green
+on the panel is 2.5:1 and Board brick 3.4:1, both below AA for text.
 
-Contrast pairs that must stay AA: cream on background 14.2:1; `#ccc` on
-surface 9.9:1; `#1a1a1a` on orange 5.4:1 (so Launch Scorecard uses dark text,
-never white); white on Notebook green 6.4:1; white on Board brick 4.75:1 (do
-not darken the brick); `#1a1a1a` on Calculator brass 7.8:1; footer `#888` on
-background 4.9:1 at 13px minimum.
+Contrast pairs that must stay AA (measured): cream on background 12.6:1;
+muted on background 8.6:1, on surface 7.7:1; footer on background 5.7:1;
+orange on background 4.6:1 (headings 18px+ only; never body text on it);
+near-black on orange buttons 4.6:1, hover `#e0803f` 6.2:1 (the orange is
+never a fill for white text: 3.9:1); ink on gold buttons 10.2:1, hover
+`#f6da8c` 11.2:1; white on Notebook green 6.4:1; white on Board brick 4.75:1
+(do not darken the brick).
+
+The same hexes are used on the Board city pages, calculator-guests pages and
+the privacy, deletion, changelog and support pages, so the whole website
+reads as one surface. The app shells (/scorecard/, /notebook/, /board/)
+carry their own themes and are not in scope of this file's palette.
 
 ## 3. Typography Rules
 PENDING (Joel): the locked brand face (2026-09-25, `marketing/brand-type-system.md`)
