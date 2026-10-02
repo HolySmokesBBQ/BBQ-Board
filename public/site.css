@@ -201,8 +201,10 @@ footer a { color: #bfb39a; text-decoration: none; margin: 0 4px; display: inline
 footer a:hover { color: #D06129; }
 footer .sep { color: #3a332c; }
 /* Footer sign-off: the dry avatar and Striker's one line. */
-.signoff { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px; color: #bfb39a; font-size: 15px; letter-spacing: 0; text-transform: none; }
-.signoff img { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; }
+/* Joel, 2026-10-02: the full figure, not a headshot. 280:300 master, shown 112px tall. */
+.signoff { display: inline-flex; align-items: flex-end; gap: 14px; margin-bottom: 14px; color: #bfb39a; font-size: 15px; letter-spacing: 0; text-transform: none; }
+.signoff img { width: auto; height: 112px; aspect-ratio: 280 / 300; flex-shrink: 0; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
+.signoff span { padding-bottom: 10px; }
 .signoff .who { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #9a9084; display: block; }
 
 
@@ -256,8 +258,14 @@ footer .sep { color: #3a332c; }
 .episode p { font-size: 17px; color: #bfb39a; }
 .episode .btn { align-self: flex-start; margin-top: auto; }
 
-/* About: Joel's story, read mode, on cream. */
+/* About: Joel's story, read mode, on cream. Portrait beside the story from
+   700px up (Joel, 2026-10-02: "the About section should use my picture"). */
 .about .story p { font-size: 19px; line-height: 1.6; }
+.about-row { display: grid; gap: 24px; grid-template-columns: 1fr; align-items: start; max-width: 62ch; margin: 0 auto; }
+.about-row .portrait { margin: 0; }
+.about-row .portrait img { display: block; width: 100%; max-width: 320px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 12px; }
+.about-row .portrait figcaption { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #5f574f; padding-top: 8px; }
+@media (min-width: 700px) { .about-row { grid-template-columns: 260px 1fr; gap: 36px; max-width: none; } .about-row .story { margin: 0; } }
 
 /* Short link sections on the homepage: a photo or still, two lines, one named link. */
 .leads { display: grid; gap: 14px; grid-template-columns: 1fr; }

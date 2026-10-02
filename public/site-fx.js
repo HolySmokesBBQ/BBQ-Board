@@ -31,16 +31,16 @@
     }
     function spawn(initial) {
       return {
-        x: w * (0.25 + Math.random() * 0.5),
+        x: w * (0.1 + Math.random() * 0.8),
         y: initial ? Math.random() * h : h + 40,
-        r: 40 + Math.random() * 70,
+        r: 110 + Math.random() * 160, // Joel, 2026-10-02: bigger smoke
         vy: 0.18 + Math.random() * 0.22,
         vx: (Math.random() - 0.5) * 0.15,
         life: initial ? Math.random() : 0,
         wobble: Math.random() * Math.PI * 2,
       };
     }
-    function reset() { puffs = []; for (var i = 0; i < 14; i++) puffs.push(spawn(true)); }
+    function reset() { puffs = []; for (var i = 0; i < 12; i++) puffs.push(spawn(true)); }
     function draw() {
       ctx.clearRect(0, 0, w, h);
       for (var i = 0; i < puffs.length; i++) {
@@ -49,8 +49,8 @@
         p.y -= p.vy;
         p.wobble += 0.004;
         p.x += p.vx + Math.sin(p.wobble) * 0.25;
-        p.r += 0.06;
-        var a = Math.sin(Math.min(p.life, 1) * Math.PI) * 0.16; // fade in, then out
+        p.r += 0.12;
+        var a = Math.sin(Math.min(p.life, 1) * Math.PI) * 0.13; // fade in, then out
         if (a > 0) {
           var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
           g.addColorStop(0, 'rgba(230, 216, 184, ' + a + ')');
