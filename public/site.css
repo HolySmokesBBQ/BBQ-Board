@@ -49,6 +49,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid #E6D8B8; outline-offs
 .hero-photo { position: absolute; inset: 0; z-index: 0; }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; display: block; }
 .hero::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(27,23,20,0.78) 0%, rgba(27,23,20,0.66) 55%, #1b1714 100%); }
+@media (max-width: 599px) { .hero::before { background: linear-gradient(180deg, rgba(27,23,20,0.5) 0%, rgba(27,23,20,0.4) 55%, #1b1714 100%); } .hero-photo img { object-position: 50% 50%; } }
 .smoke-canvas { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 .hero-inner { position: relative; z-index: 3; max-width: 760px; }
 .hero img.logo { width: 112px; height: 112px; border-radius: 50%; margin: 0 auto 18px; object-fit: cover; display: block; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
@@ -210,10 +211,11 @@ footer .sep { color: #3a332c; }
 
 /* Site nav: one row, every page. On the homepage it floats over the hero. */
 .site-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 4px; padding: 10px 12px; }
-.site-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #E6D8B8; text-decoration: none; font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 13px; letter-spacing: 0.16em; transition: color 0.15s, background 0.15s; }
+.site-nav a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 12px; border-radius: 6px; color: #E6D8B8; text-decoration: none; font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 13px; letter-spacing: 0.16em; transition: color 0.15s, background 0.15s; }
 .site-nav a:hover { color: #D06129; }
 .site-nav a[aria-current="page"] { color: #F3CF6D; }
 .hero .site-nav { position: absolute; top: 0; left: 0; right: 0; z-index: 4; }
+@media (max-width: 420px) { .site-nav { gap: 0; padding: 8px 4px; } .site-nav a { padding: 0 7px; font-size: 11px; letter-spacing: 0.1em; } }
 
 /* Inner pages: a short dark masthead instead of the full hero. */
 .masthead { background: #1b1714; text-align: center; padding: 8px 20px 36px; border-bottom: 1px solid #2a2015; }
@@ -224,12 +226,16 @@ footer .sep { color: #3a332c; }
 
 /* Gallery: a 3:2 grid, every third row has one wide frame so the wall is
    not a uniform tile sheet. Buttons open the lightbox. */
-.gallery { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+.gallery { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; }
 @media (min-width: 700px) { .gallery { grid-template-columns: repeat(3, 1fr); gap: 14px; } .gallery .wide { grid-column: span 2; } }
 .gallery button { display: block; width: 100%; padding: 0; border: 0; background: #1b1714; border-radius: 12px; overflow: hidden; cursor: pointer; }
-.gallery button img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 2; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.gallery button img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover; aspect-ratio: 3 / 2; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 .gallery button:hover img { transform: scale(1.03); }
 .gallery button:focus-visible { outline: 3px solid #F3CF6D; outline-offset: 2px; }
+
+/* Closing row under the gallery: one line and two named links. */
+.gallery-end { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 16px; }
+.gallery-end p { color: #bfb39a; font-size: 17px; flex-basis: 100%; }
 
 /* Lightbox: a native dialog, one photo, prev/next, Escape closes. */
 .lightbox { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; }
@@ -249,11 +255,13 @@ footer .sep { color: #3a332c; }
 .episode { display: grid; gap: 14px; grid-template-columns: 1fr; background: #2a2015; border-radius: 14px; overflow: hidden; }
 @media (min-width: 700px) { .episode { grid-template-columns: 1fr 1fr; } }
 .episode a.still { display: block; position: relative; background: #1b1714; }
-.episode a.still img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.episode a.still img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
 .episode a.still:focus-visible { outline: 3px solid #F3CF6D; outline-offset: -3px; }
 .episode .body { padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 10px; }
 @media (min-width: 700px) { .episode .body { padding: 28px 28px 28px 14px; } }
-.episode .num { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.16em; color: #9a9084; }
+.episode .num { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.16em; color: #9a9084; margin-bottom: 2px; }
+.episode-note { margin-top: 24px; color: #bfb39a; font-size: 17px; }
+.episode-note a { color: #E6D8B8; text-decoration: underline; text-decoration-color: #D06129; text-decoration-thickness: 2px; text-underline-offset: 3px; display: inline-block; padding: 11px 2px; margin: -11px 0; }
 .episode h2 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: 34px; line-height: 1; letter-spacing: 0; color: #E6D8B8; }
 .episode p { font-size: 17px; color: #bfb39a; }
 .episode .btn { align-self: flex-start; margin-top: auto; }
@@ -271,7 +279,7 @@ footer .sep { color: #3a332c; }
 .leads { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 700px) { .leads { grid-template-columns: repeat(3, 1fr); } }
 .lead-card { background: #1b1714; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-.lead-card img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.lead-card img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
 .lead-card .body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .lead-card h3 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: 28px; line-height: 1; letter-spacing: 0; color: #E6D8B8; }
 .lead-card p { color: #bfb39a; font-size: 16px; }

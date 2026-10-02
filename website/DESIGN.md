@@ -184,8 +184,9 @@ Don't: em dashes anywhere in copy. Don't: eyebrow labels above headings
 ("NEW", "JUST LAUNCHED"). Don't: a "coming soon" badge once the app is on
 that store, or a store badge before it is. Don't: "Get started" / "Learn
 more" CTAs; name the app. Don't: forward promises ("no ads", "will stay
-free"), "anonymous", identity padding in copy. Don't: scroll animations;
-MOTION is 1, hover and press only, with `prefers-reduced-motion` honored.
+free"), "anonymous", identity padding in copy. Don't: text that animates, or
+more than the two authored motions (hero smoke drift, photo reveal); MOTION
+is 2, with `prefers-reduced-motion` honored.
 
 ## 8. Responsive Behavior
 Breakpoints: one column under 600px, two columns from 600px. Logo 120px
@@ -198,6 +199,6 @@ served at 2x their rendered size (180px for 90px, 144px for 72px).
 Build to a dark smokehouse sign: `#1a1a1a` background, `#f5e6d3` cream text,
 `#d4782f` orange accent, umber `#2a2015` panels, Oswald caps for display
 and Inter for body. Each app owns one color on its own card and button
-only. ENERGY 2 / RHYTHM 2 / MOTION 1. The identity motif is the stencil
-heading over a warm panel. Easy to get wrong: white text on the orange
+only. ENERGY 2 / RHYTHM 2 / MOTION 2. The identity motif is Striker, the
+torch, in every footer, and the display caps over real pit photos. Easy to get wrong: white text on the orange
 (fails AA), numbers that drift from the data, and labels above headings.
