@@ -130,278 +130,23 @@
   }
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How much brisket do I need per person?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Plan on about half a pound of cooked brisket per adult. A whole packer brisket loses roughly 40% of its raw weight during trimming and cooking, so buy about 0.8 pounds of raw brisket per person. For 20 guests, that's 16 pounds raw. For 50 guests, 40 pounds. BBQ Calculator does this math for you and adjusts for your specific cut and smoker."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do you score BBQ like a competition judge?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Competition BBQ judges score on appearance, taste, and tenderness. BBQ Scorecard adapts that framework for restaurant dining, expanding to 10 categories: appearance, taste, tenderness, smoke, sauce, sides, portions and value, service, cleanliness, and family amenities. Each category is scored 1 to 10."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What should I write in a BBQ cook log?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Record the cut and weight of meat, your rub or seasoning recipe, the wood species you used, your target temperature and actual temps at key checkpoints, total cook time, the weather, and honest tasting notes. The most useful thing to log is what you'd do differently next time. BBQ Notebook gives you fields for all of these."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is there a free app to track BBQ restaurant visits?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "BBQ Scorecard is free to use. Rate every BBQ joint you visit, compare restaurants, and build a personal leaderboard. Works in any web browser and as a native Android app on Google Play."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I find the cheapest brisket near me?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "BBQ Board shows community-reported meat prices from butchers, grocery stores, and warehouse clubs in your area. Pick your city, filter by brisket or any cut, and the results sort cheapest-first."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What wood should I use for smoking brisket?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Post oak is the standard for Texas-style brisket. Hickory runs hotter and gives a stronger smoke flavor. Mesquite works but can turn bitter on long cooks. Cherry and apple add sweetness but are better suited to pork and poultry. BBQ Calculator includes a wood pairing guide with flavor profiles and heat ratings for 16 wood species."
-        }
-      }
-    ]
-  }
-  </script>
 
   <script src="/gtm-init.js?v=8" defer data-ga-title="Holy Smokes BBQ Co" data-ga-group="landing"></script>
   <script src="/site-fx.js?v=1" defer></script>
 
-  <style>
-    @font-face {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400 700;
-      font-display: swap;
-      src: url(/fonts/inter-latin.woff2) format('woff2');
-      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-    @font-face {
-      font-family: 'Oswald';
-      font-style: normal;
-      font-weight: 400 700;
-      font-display: swap;
-      src: url(/fonts/oswald-latin.woff2) format('woff2');
-      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html { background: #1b1714; min-height: 100%; }
-    /* Thornwood VF is the brand face (marketing/brand-type-system.md); Oswald and
-       Inter remain as self-hosted fallbacks. Roles: body Tall Regular, display
-       XTall UltraBold caps tracking 0, subheads Tall Bold, meta Regular-width
-       Medium caps wide-tracked. */
-    body { background: #1b1714; color: #E6D8B8; font-family: 'thornwood-vf', 'Inter', sans-serif; font-variation-settings: 'wdth' 75; font-weight: 400; min-height: 100vh; font-size: 17px; line-height: 1.5; }
-    h1, h2, h3 { text-wrap: balance; }
-    ::selection { background: #D06129; color: #1b1714; }
-    a:focus-visible, button:focus-visible { outline: 2px solid #E6D8B8; outline-offset: 2px; border-radius: 4px; }
-    .skip { position: absolute; left: 16px; top: -48px; background: #E6D8B8; color: #1b1714; padding: 10px 16px; border-radius: 8px; font-variation-settings: 'wdth' 75; font-weight: 700; text-decoration: none; z-index: 10; }
-    .skip:focus { top: 16px; }
-
-    /* Bands: full-bleed sections with one shared inner width. The page is
-       no longer one dark surface; it alternates near-black, cream and umber
-       like a smokehouse wall, a chalkboard and a menu card. */
-    .band { padding: 48px 0; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
-    .band-cream { background: #E6D8B8; color: #33211A; }
-    .band-umber { background: #2a2015; }
-    .display { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; letter-spacing: 0; line-height: 1; }
-    .band h2.display { font-size: 38px; color: #D06129; margin-bottom: 18px; }
-    .band-cream h2.display { color: #33211A; }
-    .band-cream h2.display::after { content: ''; display: block; width: 56px; height: 4px; background: #D06129; margin-top: 10px; }
-    @media (min-width: 600px) { .band { padding: 64px 0; } .band h2.display { font-size: 46px; } }
-
-    /* Hero: the sign over the pit. A real photo, a dark overlay so the cream
-       type stays legible, and a smoke drift behind the lettering (site-fx.js). */
-    .hero { position: relative; overflow: hidden; text-align: center; padding: 56px 20px 48px; min-height: 86vh; display: flex; flex-direction: column; align-items: center; justify-content: center; isolation: isolate; }
-    .hero-photo { position: absolute; inset: 0; z-index: 0; }
-    .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; display: block; }
-    .hero::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(27,23,20,0.78) 0%, rgba(27,23,20,0.66) 55%, #1b1714 100%); }
-    .smoke-canvas { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-    .hero-inner { position: relative; z-index: 3; max-width: 760px; }
-    .hero img.logo { width: 112px; height: 112px; border-radius: 50%; margin: 0 auto 18px; object-fit: cover; display: block; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-    .hero h1 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: clamp(60px, 11vw, 124px); line-height: 0.92; letter-spacing: 0; color: #E6D8B8; margin-bottom: 12px; text-shadow: 0 2px 18px rgba(0,0,0,0.55); }
-    .hero .tagline { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 14px; letter-spacing: 0.22em; color: #F3CF6D; margin-bottom: 22px; }
-    .hero-sub { font-size: 19px; color: #E6D8B8; max-width: 34em; margin: 0 auto 26px; }
-    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; border-radius: 8px; font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 75; font-weight: 700; font-size: 17px; letter-spacing: 0.02em; text-decoration: none; transition: background 0.15s, transform 0.15s; }
-    .btn:active { transform: translateY(1px); }
-    .btn-orange { background: #D06129; color: #1b1714; }
-    .btn-orange:hover { background: #e0803f; }
-    .btn-line { border: 2px solid #E6D8B8; color: #E6D8B8; }
-    .btn-line:hover { background: rgba(230,216,184,0.12); }
-    @media (min-width: 600px) { .hero img.logo { width: 140px; height: 140px; } }
-
-    /* Joel's story on a cream band. One first-person block, readable measure. */
-    .story { max-width: 62ch; margin: 0 auto; }
-    .story p { font-size: 19px; line-height: 1.55; margin-bottom: 14px; }
-    .story p:last-child { margin-bottom: 0; }
-
-    /* App grid: 2 + 2. The first row is heavier because those two apps
-       are on both stores (Scorecard) and newest (Board). */
-    .apps-grid { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 40px; }
-    @media (min-width: 600px) { .apps-grid { grid-template-columns: 1fr 1fr; gap: 20px; } }
-    .app-card { background: #2a2015; border-radius: 14px; padding: 24px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .app-card.lead { padding: 32px 24px; }
-    .app-card.scorecard { border: 2px solid #D06129; }
-    .app-card.notebook { border: 2px solid #4A6741; }
-    .app-card.calculator { border: 2px solid #F3CF6D; }
-    .app-card.board { border: 2px solid #A85F52; }
-    .app-card img { display: block; width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 12px; }
-    .app-card.lead img { width: 90px; height: 90px; margin-bottom: 14px; }
-    /* Card headings are cream for every app: Notebook green on the panel is
-       2.5:1 and Board brick 3.4:1, both below AA for text. Each app's colour
-       lives on its card border and Launch button only (DESIGN.md §2). */
-    .app-card h2 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: 0; margin-bottom: 8px; color: #E6D8B8; }
-    .app-card.lead h2 { font-size: 38px; }
-    .app-card p { font-size: 16px; color: #bfb39a; margin-bottom: 18px; line-height: 1.5; flex: 1; max-width: 46ch; }
-    /* Button cluster. Top-aligned with a row-wide minimum height so Launch
-       sits on one line across a row even when one card has a store button
-       below it and its neighbour does not. */
-    .app-card .actions { display: flex; flex-direction: column; align-items: center; margin-top: auto; }
-    .app-card:not(.lead) .actions { min-height: 102px; }
-
-    /* Buttons: one Launch per card in the app's color, store buttons in
-       store black. Press state and transitions on transform/background
-       only; reduced motion removes them. */
-    .app-card a {
-      display: inline-block; padding: 12px 24px; border-radius: 8px;
-      font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 75; font-weight: 700; letter-spacing: 0.02em;
-      text-decoration: none; color: #fff; font-size: 16px;
-      transition: background 0.15s, transform 0.15s;
-    }
-    .app-card a:active { transform: translateY(1px); }
-    /* `:not(.play-mini)` keeps the brand fill off the store buttons, whose
-       rule below has lower specificity. */
-    /* Dark text on the orange: white on #D06129 is 3.2:1 and fails AA; dark
-       is 5.4:1. Hover lightens so the dark text stays above 4.5:1. */
-    /* Near-black on the logo orange is 4.6:1; the hover lightens to 6.2:1. */
-    .app-card.scorecard a:not(.play-mini) { background: #D06129; color: #1b1714; }
-    .app-card.scorecard a:not(.play-mini):hover { background: #e0803f; }
-    .app-card.notebook a:not(.play-mini) { background: #4A6741; }
-    .app-card.notebook a:not(.play-mini):hover { background: #3a5234; }
-    .app-card.calculator a:not(.play-mini) { background: #F3CF6D; color: #1b1714; }
-    .app-card.calculator a:not(.play-mini):hover { background: #f6da8c; }
-    .app-card.board a:not(.play-mini) { background: #A85F52; }
-    .app-card.board a:not(.play-mini):hover { background: #8B4E42; }
-    .app-card .play-mini {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #000; color: #fff;
-      padding: 7px 12px; border-radius: 6px; min-height: 44px;
-      text-decoration: none; font-size: 12px; letter-spacing: 0;
-      border: 1px solid #3a332c; margin-top: 10px;
-      font-family: 'thornwood-vf', 'Inter', sans-serif; font-variation-settings: 'wdth' 75; font-weight: 500;
-    }
-    .app-card .play-mini:hover { background: #111; border-color: #555; }
-    .app-card .play-mini svg { flex-shrink: 0; }
-    /* Non-link variant for a store the app is not on yet: same look,
-       dimmed, not clickable, so it never promises a store page. */
-    .app-card .play-soon { cursor: default; color: #aaa; }
-    .app-card .play-soon:hover { background: #000; border-color: #3a332c; }
-
-    /* From the pit: real photos, newest first, with the lead frame larger.
-       Captions are dates only until Joel writes his own lines. */
-    .pit-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
-    @media (min-width: 700px) { .pit-grid { grid-template-columns: repeat(3, 1fr); } .pit.lead { grid-column: span 2; grid-row: span 2; } }
-    .pit { margin: 0; background: #1b1714; border-radius: 12px; overflow: hidden; }
-    .pit img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 2; }
-    .pit figcaption { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #bfb39a; padding: 8px 10px; }
-    /* Striker, the torch character (assets-source/striker). One aside: the
-       fired figure leaning in from the corner of the fire photo, no copy.
-       Never over text or controls. Hidden under 700px where the lead frame
-       is a single column and the figure would cover the picture. */
-    .pit.lead { position: relative; }
-    /* `.pit img` (full width, 3:2, display block) would otherwise win on the
-       figure's own image rule; this selector outranks it. */
-    .pit img.striker-peek { position: absolute; right: -6px; bottom: 28px; width: 120px; height: auto; aspect-ratio: 280 / 300; object-fit: contain; z-index: 1; pointer-events: none; display: none; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
-    @media (min-width: 700px) { .pit img.striker-peek { display: block; } }
-    .pit-extras { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 14px; }
-    @media (min-width: 700px) { .pit-extras { grid-template-columns: 1fr 1fr; } }
-    .tile { background: #1b1714; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-    .tile img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-    .tile-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .tile h3 { font-variation-settings: 'wdth' 75; font-weight: 700; font-size: 22px; line-height: 1.1; color: #E6D8B8; }
-    .tile p { color: #bfb39a; font-size: 16px; }
-    .tile .btn { align-self: flex-start; margin-top: auto; }
-    .board-line { background: #1b1714; border-radius: 12px; padding: 22px 20px; border: 2px solid #A85F52; }
-    .board-line .num { font-variation-settings: 'wdth' 75; font-weight: 900; font-size: 52px; line-height: 1; color: #F3CF6D; display: block; margin: 6px 0 4px; }
-    .board-line .meta { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #9a9084; display: block; margin-bottom: 14px; }
-
-    /* The one entrance on the site: photos and tiles ease up from an
-       already-visible start (opacity 0.35, 12px). Text never animates. */
-    .js .rise { opacity: 0.35; transform: translateY(12px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
-    .js .rise.is-in { opacity: 1; transform: none; }
-
-    /* What's new: dated items, newest first, on the cream band. */
-    .news { list-style: none; max-width: 62ch; margin: 0 auto; }
-    .news li { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 16px 0; border-bottom: 1px solid rgba(51,33,26,0.18); }
-    .news li:last-child { border-bottom: 0; }
-    .news time { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #5f574f; }
-    .news h3 { font-variation-settings: 'wdth' 75; font-weight: 700; font-size: 22px; line-height: 1.15; }
-    .news p { font-size: 17px; color: #33211A; }
-    /* Ink on cream (10.8:1); stamp red on cream was 3.9:1. Padding + negative
-       margin give a 44px hit area without moving the line. */
-    .news a { color: #33211A; text-decoration: underline; text-decoration-color: #D06129; text-decoration-thickness: 2px; text-underline-offset: 3px; display: inline-block; padding: 11px 2px; margin: -11px 0; }
-    .news a:hover { color: #D06129; }
-    @media (min-width: 600px) { .news li { grid-template-columns: 150px 1fr; column-gap: 20px; } .news time { padding-top: 6px; } .news h3, .news p { grid-column: 2; } .news time { grid-column: 1; grid-row: 1 / span 2; } }
-
-    .social-strip { text-align: center; margin-bottom: 40px; padding: 16px; border-top: 1px solid #2a2015; border-bottom: 1px solid #2a2015; }
-    .social-strip .social-kicker { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 13px; letter-spacing: 0.2em; color: #9a9084; margin-bottom: 6px; }
-    .social-links a { display: inline-flex; align-items: center; gap: 8px; margin: 0 6px; padding: 11px 10px; min-height: 44px; color: #E6D8B8; text-decoration: none; font-size: 15px; transition: color 0.15s; }
-    .social-links a:hover { color: #D06129; }
-    .social-links svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
-    .seo-section { margin-bottom: 40px; }
-    .seo-section h2 { font-family: 'thornwood-vf', 'Oswald', sans-serif; font-variation-settings: 'wdth' 50; font-weight: 900; font-size: 34px; line-height: 1; letter-spacing: 0; color: #D06129; margin-bottom: 14px; }
-    .seo-section h3 { font-variation-settings: 'wdth' 75; font-weight: 700; font-size: 21px; letter-spacing: 0; color: #E6D8B8; margin: 24px 0 6px; }
-    .seo-section p, .seo-section li { font-size: 17px; color: #bfb39a; line-height: 1.5; margin-bottom: 10px; max-width: 72ch; }
-    .faq-list { list-style: none; padding: 0; }
-    .faq-list dt { font-variation-settings: 'wdth' 75; font-weight: 700; font-size: 21px; color: #E6D8B8; padding: 16px 0 6px; }
-    .faq-list dd { font-size: 17px; color: #bfb39a; line-height: 1.5; margin: 0 0 12px; padding-bottom: 14px; border-bottom: 1px solid #2a2015; max-width: 72ch; }
-    footer { text-align: center; padding-top: 24px; border-top: 1px solid #3a332c; font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 13px; letter-spacing: 0.08em; color: #9a9084; }
-    footer p { margin-bottom: 4px; }
-    /* min-height, not padding alone: Thornwood's line box is shorter than Inter's
-       and the links fell to 43px under it (tap target floor is 44). */
-    footer a { color: #bfb39a; text-decoration: none; margin: 0 4px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; transition: color 0.15s; }
-    footer a:hover { color: #D06129; }
-    footer .sep { color: #3a332c; }
-    /* Footer sign-off: the dry avatar and Striker's one line. */
-    .signoff { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px; color: #bfb39a; font-size: 15px; letter-spacing: 0; text-transform: none; }
-    .signoff img { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; }
-    .signoff .who { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #9a9084; display: block; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition: none !important; animation: none !important; }
-      .btn:active, .app-card a:active { transform: none; }
-      .rise { opacity: 1; transform: none; }
-    }
-  </style>
+  <link rel="stylesheet" href="/site.css?v=1" />
 </head>
 <body>
   <a class="skip" href="#apps">Skip to the apps</a>
   <main>
     <header class="hero" data-smoke>
+      <nav class="site-nav" aria-label="Site">
+        <a href="/" aria-current="page">HOME</a>
+        <a href="/pit">FROM THE PIT</a>
+        <a href="/episodes">EPISODES</a>
+        <a href="/about">ABOUT</a>
+        <a href="/#apps">THE APPS</a>
+      </nav>
       <div class="hero-photo" aria-hidden="true">
         <picture>
           <source type="image/avif" srcset="/photos/hero-steak-1280.avif 1280w, /photos/hero-steak-1920.avif 1920w" sizes="100vw" />
@@ -420,21 +165,10 @@
         <p class="hero-sub">Three free BBQ apps and a meat calculator, built by a pastor in Wisconsin who grew up on Kansas City barbecue.</p>
         <div class="hero-cta">
           <a class="btn btn-orange" href="#apps">See the apps</a>
-          <a class="btn btn-line" href="https://www.youtube.com/@HolySmokesBBQCo" target="_blank" rel="noopener noreferrer">Watch the latest cook</a>
+          <a class="btn btn-line" href="/episodes">Watch the latest cook</a>
         </div>
       </div>
     </header>
-
-    <section class="band band-cream">
-      <div class="wrap">
-        <h2 class="display">THE STORY</h2>
-        <div class="story">
-      <p>Born and raised in the greater Kansas City area, so BBQ has been a way of life for me. Several years ago I got my first smoker, and haven't looked back since!</p>
-      <p>I also work as a United Methodist Pastor, taking my career a step forward by going to seminary. A lot of the best conversations I've had about God, religion, and life have happened around either the smoker itself or at the table sharing in that good smoke. I've come to believe that this is one of my most effective ministries.</p>
-      <p>My family's a lot bigger than when I initially started, so is my smoker. With that growth came the desire to keep track of all the places we've eaten at along the way. From the very first app, to the latest and greatest. I hope you get as much enjoyment out of using these apps, as I did creating them.</p>
-        </div>
-      </div>
-    </section>
 
     <section class="band">
       <div class="wrap">
@@ -515,96 +249,45 @@
       </div>
     </section>
 
-    <section class="band band-umber" id="pit">
+    <section class="band band-umber" id="more">
       <div class="wrap">
-        <h2 class="display">FROM THE PIT</h2>
-        <div class="pit-grid">
-        <figure class="pit lead rise">
-          <picture>
-            <source type="image/webp" srcset="/photos/pit-2026-09-19-fire-logs-720.webp 720w, /photos/pit-2026-09-19-fire-logs-1440.webp 1440w" sizes="(min-width: 700px) 640px, 100vw" />
-            <img src="/photos/pit-2026-09-19-fire-logs-720.jpg" srcset="/photos/pit-2026-09-19-fire-logs-720.jpg 720w, /photos/pit-2026-09-19-fire-logs-1440.jpg 1440w" sizes="(min-width: 700px) 640px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="Logs burning in the firebox" />
-          </picture>
-          <figcaption>September 19, 2026</figcaption>
-          <img class="striker-peek" src="/striker/striker-fired-figure.svg" width="280" height="300" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="pit rise">
-          <picture>
-            <source type="image/webp" srcset="/photos/pit-2026-09-19-steaks-720.webp 720w, /photos/pit-2026-09-19-steaks-1440.webp 1440w" sizes="(min-width: 700px) 310px, 100vw" />
-            <img src="/photos/pit-2026-09-19-steaks-720.jpg" srcset="/photos/pit-2026-09-19-steaks-720.jpg 720w, /photos/pit-2026-09-19-steaks-1440.jpg 1440w" sizes="(min-width: 700px) 310px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="Two steaks on the grate with flames behind" />
-          </picture>
-          <figcaption>September 19, 2026</figcaption>
-        </figure>
-        <figure class="pit rise">
-          <picture>
-            <source type="image/webp" srcset="/photos/pit-2026-08-09-night-720.webp 720w, /photos/pit-2026-08-09-night-1440.webp 1440w" sizes="(min-width: 700px) 310px, 100vw" />
-            <img src="/photos/pit-2026-08-09-night-720.jpg" srcset="/photos/pit-2026-08-09-night-720.jpg 720w, /photos/pit-2026-08-09-night-1440.jpg 1440w" sizes="(min-width: 700px) 310px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="August 9, 2026" />
-          </picture>
-          <figcaption>August 9, 2026</figcaption>
-        </figure>
-        <figure class="pit rise">
-          <picture>
-            <source type="image/webp" srcset="/photos/pit-2026-04-19-720.webp 720w, /photos/pit-2026-04-19-1440.webp 1440w" sizes="(min-width: 700px) 310px, 100vw" />
-            <img src="/photos/pit-2026-04-19-720.jpg" srcset="/photos/pit-2026-04-19-720.jpg 720w, /photos/pit-2026-04-19-1440.jpg 1440w" sizes="(min-width: 700px) 310px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="April 19, 2026" />
-          </picture>
-          <figcaption>April 19, 2026</figcaption>
-        </figure>
-        <figure class="pit rise">
-          <picture>
-            <source type="image/webp" srcset="/photos/pit-2026-04-13-720.webp 720w, /photos/pit-2026-04-13-1440.webp 1440w" sizes="(min-width: 700px) 310px, 100vw" />
-            <img src="/photos/pit-2026-04-13-720.jpg" srcset="/photos/pit-2026-04-13-720.jpg 720w, /photos/pit-2026-04-13-1440.jpg 1440w" sizes="(min-width: 700px) 310px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="April 13, 2026" />
-          </picture>
-          <figcaption>April 13, 2026</figcaption>
-        </figure>
-        <figure class="pit rise">
-          <picture>
-            <source type="image/webp" srcset="/photos/pit-2025-08-01-720.webp 720w, /photos/pit-2025-08-01-1440.webp 1440w" sizes="(min-width: 700px) 310px, 100vw" />
-            <img src="/photos/pit-2025-08-01-720.jpg" srcset="/photos/pit-2025-08-01-720.jpg 720w, /photos/pit-2025-08-01-1440.jpg 1440w" sizes="(min-width: 700px) 310px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="August 1, 2025" />
-          </picture>
-          <figcaption>August 1, 2025</figcaption>
-        </figure>
-        </div>
-        <div class="pit-extras">
-          <div class="tile rise">
-            <img src="/photos/yt-episode-3-960.jpg" width="960" height="540" loading="lazy" decoding="async" alt="Thumbnail for Holy Smokes BBQ Co episode 3 on YouTube" />
-            <div class="tile-body">
-              <h3>Episode 3: Saturday steak on the smoker</h3>
-              <p>From lighting the coals to the first slice. I don't say a word the whole time, it's just the fire and the sizzle.</p>
-              <a class="btn btn-orange" href="https://www.youtube.com/@HolySmokesBBQCo" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+        <h2 class="display">MORE FROM HOLY SMOKES</h2>
+        <div class="leads">
+          <div class="lead-card rise">
+            <picture>
+              <source type="image/webp" srcset="/photos/g-fire-logs-720.webp 720w, /photos/g-fire-logs-1440.webp 1440w" sizes="(min-width: 700px) 310px, 100vw" />
+              <img src="/photos/g-fire-logs-720.jpg" srcset="/photos/g-fire-logs-720.jpg 720w, /photos/g-fire-logs-1440.jpg 1440w" sizes="(min-width: 700px) 310px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="Logs burning in the firebox" />
+            </picture>
+            <img class="striker-peek" src="/striker/striker-fired-figure.svg" width="280" height="300" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+            <div class="body">
+              <h3>FROM THE PIT</h3>
+              <p>45 photos from my cooks: the firebox, the grate, the board and the slice.</p>
+              <a class="btn btn-line" href="/pit">See the photos</a>
             </div>
           </div>
-          <div class="tile board-line rise">
-            <div class="tile-body">
-              <h3>Cheapest brisket on BBQ Board</h3>
-              <span class="num">{{BRISKET_PRICE}}/lb</span>
-              <span class="meta">{{BRISKET_SHOP}} &middot; {{BRISKET_SAMPLES}} PRICES ON FILE &middot; AS OF {{BUILD_DATE}}</span>
-              <p>Board tracks what butchers, grocery counters and warehouse clubs are charging in 109 cities. Pick yours and see who's cheapest this week.</p>
-              <a class="btn btn-orange" href="/board/">Open BBQ Board</a>
+          <div class="lead-card rise">
+            <picture>
+              <source type="image/webp" srcset="/photos/yt-episode-3-640.webp" />
+              <img src="/photos/yt-episode-3-640.jpg" width="640" height="360" loading="lazy" decoding="async" alt="Episode 3 thumbnail: two steaks over the coals" />
+            </picture>
+            <div class="body">
+              <h3>EPISODES</h3>
+              <p>The cooks on YouTube, start to finish. Episode 3 is Saturday steak, and I don't say a word.</p>
+              <a class="btn btn-line" href="/episodes">See the episodes</a>
+            </div>
+          </div>
+          <div class="lead-card rise">
+            <picture>
+              <source type="image/webp" srcset="/photos/g-brisket-rest-720.webp 720w, /photos/g-brisket-rest-1200.webp 1200w" sizes="(min-width: 700px) 310px, 100vw" />
+              <img src="/photos/g-brisket-rest-720.jpg" srcset="/photos/g-brisket-rest-720.jpg 720w, /photos/g-brisket-rest-1200.jpg 1200w" sizes="(min-width: 700px) 310px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="Brisket resting on butcher paper" />
+            </picture>
+            <div class="body">
+              <h3>ABOUT</h3>
+              <p>Kansas City raised, Wisconsin pastor. The story in my own words.</p>
+              <a class="btn btn-line" href="/about">Read the story</a>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="band band-cream">
-      <div class="wrap">
-        <h2 class="display">WHAT'S NEW</h2>
-        <ul class="news">
-          <li>
-            <time datetime="2026-09">September 2026</time>
-            <h3>BBQ Scorecard is on the App Store</h3>
-            <p>Free on iPhone now, alongside Android and the web. <a href="https://apps.apple.com/us/app/bbq-scorecard/id6796120225">Get it on the App Store</a>.</p>
-          </li>
-          <li>
-            <time datetime="2026-09">September 2026</time>
-            <h3>BBQ Board is on Google Play</h3>
-            <p>The butcher price directory is a native Android app. <a href="https://play.google.com/store/apps/details?id=com.holysmokesbbq.board">Get it on Google Play</a>. The App Store version is in testing.</p>
-          </li>
-          <li>
-            <time datetime="2026-09">September 2026</time>
-            <h3>Board covers 109 cities in 23 states</h3>
-            <p>Twelve metros were added over the summer, from Little Rock to Pittsburgh. <a href="/board/">See the list</a>.</p>
-          </li>
-        </ul>
       </div>
     </section>
 
@@ -631,47 +314,6 @@
         </a>
       </div>
     </div>
-    <section class="seo-section">
-      <h2>FREQUENTLY ASKED QUESTIONS</h2>
-      <dl class="faq-list">
-        <dt>How much brisket do I need per person?</dt>
-        <dd>Plan on about half a pound of cooked brisket per adult. A whole packer brisket loses roughly 40% of its raw weight during trimming and cooking, so buy about 0.8 pounds of raw brisket per person. For 20 guests, that's 16 pounds raw. For 50 guests, 40 pounds. BBQ Calculator does this math for you and adjusts for your specific cut and smoker.</dd>
-
-        <dt>How do you score BBQ like a competition judge?</dt>
-        <dd>Competition BBQ judges score on appearance, taste, and tenderness. BBQ Scorecard adapts that framework for restaurant dining, expanding to 10 categories: appearance, taste, tenderness, smoke, sauce, sides, portions and value, service, cleanliness, and family amenities. Each category is scored 1 to 10 and the app averages them into an overall rating you can compare across every restaurant you've visited.</dd>
-
-        <dt>What should I write in a BBQ cook log?</dt>
-        <dd>Record the cut and weight of meat, your rub or seasoning recipe, the wood species you used, your target temperature and actual temps at key checkpoints, total cook time, the weather (wind and humidity affect cook time), and honest tasting notes. The most useful thing to log is what you'd do differently next time. BBQ Notebook gives you fields for all of these and keeps every cook in one searchable timeline.</dd>
-
-        <dt>Is there a free app to track BBQ restaurant visits?</dt>
-        <dd>BBQ Scorecard is free to use. Rate every BBQ joint you visit, compare restaurants, and build a personal leaderboard. Works in any web browser and as a native Android app on Google Play. Your data syncs across devices when you create a free account.</dd>
-
-        <dt>How do I find the cheapest brisket near me?</dt>
-        <dd>BBQ Board shows community-reported meat prices from butchers, grocery stores, and warehouse clubs in your area. Pick your city, filter by brisket (or any cut), and the results sort cheapest-first. Prices are updated by other BBQ buyers in your region, so the number you see is what someone in your area actually paid.</dd>
-
-        <dt>What wood should I use for smoking brisket?</dt>
-        <dd>Post oak is the standard for Texas-style brisket. Hickory runs hotter and gives a stronger smoke flavor. Mesquite works but can turn bitter on long cooks if you're not careful with fire management. Cherry and apple add sweetness but are better suited to pork and poultry. BBQ Calculator includes a wood pairing guide with flavor profiles and heat ratings for 16 wood species.</dd>
-      </dl>
-    </section>
-    <section class="seo-section">
-      <h2>WHAT EACH APP DOES</h2>
-
-      <h3>BBQ Scorecard: Rate and Compare BBQ Restaurants</h3>
-      <p>BBQ Scorecard is a free restaurant rating app built for people who eat BBQ seriously. Score every joint you visit across 10 competition-style categories: appearance, taste, tenderness, smoke, sauce, sides, portions and value, service, cleanliness, and family amenities. The scoring system is modeled on competition BBQ judging criteria, adapted for restaurant dining instead of competition turn-in boxes.</p>
-      <p>Compare restaurants side by side, filter by city or category, and track a leaderboard of your personal top-rated spots. Syncs across devices with a free account. Works offline on Android so you can score at the table without cell signal.</p>
-
-      <h3>BBQ Notebook: Cook Log for Pitmasters</h3>
-      <p>BBQ Notebook is a free cook logging app for anyone running a smoker at home, backyard or competition. Log every cook: meat type and weight, rub recipe, wood species, smoker type, target and actual temperatures, total cook time, weather conditions, and tasting notes. Write down what worked and what to change next time.</p>
-      <p>Import temperature data from 11 Bluetooth thermometer apps. Earn pitmaster tiers as you log more cooks. All data stays private by default. Available as a web app and a native Android app on Google Play.</p>
-
-      <h3>BBQ Meat Calculator: How Much Meat to Buy</h3>
-      <p>BBQ Calculator tells you how much raw meat to buy for a crowd, based on your guest count, the cut you're smoking, and your smoker's capacity. It accounts for trim loss and cook shrinkage so the raw weight you buy is the right amount.</p>
-      <p>Covers brisket, pork shoulder (pulled pork), ribs, chicken, turkey, tri-tip, and sausage. Enter your guest count and the calculator gives you: pounds of raw meat to buy, estimated cook time, how many batches fit on your smoker, a reverse timeline from your target serve time, a printable shopping list, fuel estimates for pellets or charcoal, and side dish quantities. Free, no account required.</p>
-
-      <h3>BBQ Board: Local Meat Prices from Butchers and Grocery Stores</h3>
-      <p>BBQ Board is a crowdsourced meat price tracker. Pick your city and see current per-pound prices for brisket, pork shoulder, ribs, chicken breast, whole chicken, ground beef, bratwurst, and more at local butchers, warehouse clubs like Costco and Sam's Club, and grocery store meat counters. Prices are submitted by the community and sorted cheapest-first so you can find the best deal on brisket or pork butt in your area.</p>
-      <p>Currently covering Milwaukee, Madison, Chicago, Kansas City, St. Louis, Minneapolis–St. Paul, Omaha, Indianapolis, Cincinnati, Pittsburgh, Dallas–Fort Worth, Houston, San Antonio, Austin, Lockhart, Memphis, Nashville, Louisville, Atlanta, Savannah, Charlotte, Raleigh, Birmingham, New Orleans, Little Rock, Oklahoma City, Tulsa, Wichita, Denver, Phoenix, Jacksonville, and Boise. Over 100 cities across 23 states. Free to browse. Sign in to submit prices from your local shops. Available as a web app and as a native Android app on Google Play.</p>
-    </section>
     <footer>
       <p class="signoff">
         <img src="/striker/striker-dry-avatar-96.png" srcset="/striker/striker-dry-avatar-48.png 1x, /striker/striker-dry-avatar-96.png 2x" width="48" height="48" alt="Striker, the Holy Smokes torch character" loading="lazy" decoding="async" />

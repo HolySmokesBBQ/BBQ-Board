@@ -1,0 +1,362 @@
+[
+  {
+    "slug": "g-fire-logs",
+    "alt": "Logs burning in the firebox",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-torch-coals",
+    "alt": "Lighting the coals in the firebox",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-sparks",
+    "alt": "Sparks rising from the firebox",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-torch-flame",
+    "alt": "The torch flame over the wood",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-embers",
+    "alt": "Embers in the firebox",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-fire-logs-bright",
+    "alt": "A log catching over the coals",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-torch-blue",
+    "alt": "The torch lighting the firebox",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-wood-stacked",
+    "alt": "Split wood stacked in the firebox",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-torch-coals-2",
+    "alt": "Flame climbing off the coals",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-smoke-stacks",
+    "alt": "Smoke rising from the stacks",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-smoke-door",
+    "alt": "Smoke rolling out of the open smoker",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-smoker-open",
+    "alt": "The smoker door open",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-night-pit",
+    "alt": "The pit at night",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-pit-inside",
+    "alt": "Inside the smoker, meat and pans on the rack",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-pit-inside-2",
+    "alt": "Inside the smoker, meat and pans on the rack",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-steaks-flames",
+    "alt": "Two steaks on the grate with the fire behind them",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-steak-flame",
+    "alt": "A steak on the grate with flame behind it",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-steaks-coals",
+    "alt": "Two steaks over glowing coals",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-steak-crust",
+    "alt": "Close on the crust of a steak",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-two",
+    "alt": "Two pieces of meat on the grate",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-two-2",
+    "alt": "Two pieces of meat on the grate, bark set",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-pair",
+    "alt": "Meat on the grate over the fire",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-pair-2",
+    "alt": "Meat on the grate over the fire",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-rubbed",
+    "alt": "A rubbed piece of meat on the grate",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-rubbed-2",
+    "alt": "A rubbed piece of meat on the grate",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-potatoes",
+    "alt": "Meat on the grate with potatoes alongside",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-grate-pieces",
+    "alt": "Pieces on the grate",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-raw-steaks",
+    "alt": "Raw seasoned steaks in a glass dish",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-probe-board",
+    "alt": "Setting a probe on the cutting board",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-loading",
+    "alt": "Loading the smoker",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-rub-hands",
+    "alt": "Working the rub in by hand",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-rubbed-tray",
+    "alt": "Rubbed meat in the tray",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-tub",
+    "alt": "Rubbed meat resting in a tub",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-tub-2",
+    "alt": "Rubbed meat resting in a tub",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-foil",
+    "alt": "Wrapping in foil to rest",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-brisket-rest",
+    "alt": "Brisket resting on butcher paper",
+    "widths": [
+      720,
+      1200
+    ]
+  },
+  {
+    "slug": "g-steak-sliced",
+    "alt": "A steak sliced, pink inside",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-sliced-cut",
+    "alt": "Cut through to the center",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-sliced-cut-2",
+    "alt": "Cut through to the center, held with a gloved hand",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-board-rest",
+    "alt": "Resting on the cutting board",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-tray-rest",
+    "alt": "Resting on the tray",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-paper-sliced",
+    "alt": "Sliced on butcher paper with sides alongside",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-paper-rest",
+    "alt": "Resting on butcher paper",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-sliced-roll",
+    "alt": "Sliced and fanned on the board",
+    "widths": [
+      720,
+      1440
+    ]
+  },
+  {
+    "slug": "g-foil-open",
+    "alt": "Opening the foil",
+    "widths": [
+      720,
+      1440
+    ]
+  }
+]

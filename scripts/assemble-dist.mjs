@@ -35,6 +35,13 @@ console.log('Assembling dist/...');
 mkdirSync(DIST, { recursive: true });
 const landed = copyIfExists(join(ROOT, 'website', 'public-landing', 'index.html'), join(DIST, 'index.html'));
 console.log(landed ? '  + brand landing' : '  ! website/public-landing/index.html missing');
+// 1b. Inner brand pages (served at /pit, /episodes, /about via Netlify
+//     pretty URLs). Same allowlist trap as everything else here: a page not
+//     named below never deploys.
+for (const page of ['pit.html', 'episodes.html', 'about.html']) {
+  const ok = copyIfExists(join(ROOT, 'website', 'public-landing', page), join(DIST, page));
+  console.log(ok ? `  + ${page}` : `  ! website/public-landing/${page} missing`);
+}
 
 // 2. Shared assets at dist/ root. These get served at both /favicon.ico
 //    AND inside the sub-apps via their own publicDir copies — but having
@@ -74,6 +81,7 @@ const sharedAssets = [
   'robots.txt',
   'gtm-init.js',
   'brand-font.js', // consent-aware Adobe Fonts loader; unhashed, no-cache header in netlify.toml
+  'site.css',      // shared stylesheet for /, /pit, /episodes, /about; *.css is immutable, so bump ?v= on change
   // SEO / verification files
   'googleb5ed7e361153ee65.html',
   // Android trusted-web-activity assetlinks
