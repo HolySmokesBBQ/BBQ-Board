@@ -22,8 +22,8 @@ Voice (Marketing's profile): Joel talking, first person singular, "I" never
 "we here at Holy Smokes". Kansas City is the heritage; he lives in Waukesha,
 WI. Short declaratives, plain verbs, contractions mixed with full forms,
 specs over adjectives, no hype, no trophy or pro claims, no em dashes, no
-"it's not X, it's Y". Sign-off "Faith, Family, and Fire." (Joel, 2026-10-02: a motto is capitalized; "and", never "&"). The slogan is
-styled FAITH, FAMILY, AND FIRE as a mark. Facts that must hold: THREE apps
+"it's not X, it's Y". Sign-off "Faith, Family, and Fire." (Joel, 2026-10-02: a motto is capitalized; "and" and "&" are interchangeable, and he likes the ampersand on the mark). The slogan is
+styled FAITH, FAMILY & FIRE as a mark. Facts that must hold: THREE apps
 (Scorecard, Notebook, Board) plus the Calculator, which is a website tool,
 never "four apps"; the sauce is not for sale and nothing may imply it is;
 never call the smoker an offset; Peyton's name and face never appear; no
