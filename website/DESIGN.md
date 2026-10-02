@@ -141,10 +141,31 @@ Social links: SVG mark + name, 44px tall, orange on hover.
 Skip link: visually hidden until focused, then a cream pill at top left.
 
 ## 5. Layout Principles
-Single column, max-width 980px, 20px side gutters. Order: header (logo,
-h1, slogan) → story panel (the only first-person block) → app grid →
-social strip → FAQ → "What each app does" (search copy, last on purpose)
-→ footer. Spacing scale 8/12/16/24/32/40px; more space above a heading
+Four pages since 2026-10-01 (Joel: "the site needs more than one page"),
+one stylesheet (`public/site.css?v=N`, bump N on every change because
+Netlify caches `*.css` immutable), one nav row on every page (HOME, FROM
+THE PIT, EPISODES, ABOUT, THE APPS), one footer with the Striker sign-off:
+
+- `/` (Persuade): hero → app grid → "More from Holy Smokes", three link
+  cards (From the Pit with the Striker aside, Episodes, About) → social
+  strip → footer. The story, the pit grid, What's New, the FAQ and "What
+  each app does" came off the homepage on 2026-10-01; the FAQPage schema
+  went with the FAQ.
+- `/pit` (Experience): the full gallery, 45 photos from `marketing/`
+  (`gallery-manifest.json` is the source list), 3:2 frames in a 3-column
+  grid with one wide frame per seven, no captions, no dates. Each frame is
+  a `<button>` opening a native `<dialog>` lightbox (arrows, Escape, focus
+  returns to the opener). Without JS the grid still shows every photo.
+- `/episodes` (Read): every YouTube episode newest first, still on the
+  left from 700px, one line each in Joel's own description words, the
+  published date, a "Watch" button. Episode 2 is missing on purpose and the
+  page says so in his words.
+- `/about` (Read): THE STORY verbatim (his keystrokes) on cream, then three
+  link cards.
+
+Inner pages open with a short dark masthead (nav, display h1, one-line
+lede) instead of the hero. Single column, max-width 980px, 20px side
+gutters. Spacing scale 8/12/16/24/32/40px; more space above a heading
 than below it. The composition is specific because the bio comes before
 the products and the products are a 2+2 grid with a heavier first row,
 not a uniform three-across.
