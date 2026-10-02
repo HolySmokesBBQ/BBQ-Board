@@ -44,8 +44,18 @@ Photos come from `marketing/photo-library` and `marketing/bts-photos`, web-sized
 into `public/photos/`, and obey Marketing's rules: no photo with Joel's
 daughter, no house exterior, no sauce jars or labels (sale implication), and
 captions never identify cuts, wood or gear from a photo; until Joel writes
-his own lines, captions are dates only. A character may come later; nothing
-on the site stands in for it.
+his own lines, captions are dates only.
+
+Identity motif: **Striker**, the torch character (Joel chose the torch over
+a smoke puff on 2026-10-01; masters in `assets-source/striker/`, site copies
+in `public/striker/`). Eight faces: dry (default), pleased, surprised,
+patient, skeptical, sleepy, fired (the only one with flame) and out (flame
+out, a curl of smoke: 404 and empty states). His one line is "It's just a
+match." Rules: at most one aside beside a photo and one footer sign-off per
+page; never over prices, store buttons, hours or legal text; never the words
+"Texas Match" anywhere (a product name); copy about him runs humanize, joel,
+antislop. The site favicon stays the Holy Smokes logo; Striker's favicon is
+for his own surfaces only.
 
 ## 2. Color Palette & Roles
 Decided 2026-10-01 (Joel delegated; Marketing's canon applied): the web

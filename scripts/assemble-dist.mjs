@@ -85,6 +85,8 @@ const sharedAssets = [
   // Homepage photos (hero, pit strip, video thumbnail), web-sized by the
   // Website session from marketing/ originals. Immutable-safe: new names per change.
   'photos',
+  'striker',  // Striker, the torch character (masters in assets-source/striker)
+  '404.html', // custom not-found page (Netlify serves it for unmatched paths)
   'site-fx.js', // hero smoke + photo reveal; unhashed, no-cache header in netlify.toml
 ];
 

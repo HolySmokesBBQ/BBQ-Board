@@ -328,6 +328,15 @@
     .pit { margin: 0; background: #1b1714; border-radius: 12px; overflow: hidden; }
     .pit img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 2; }
     .pit figcaption { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #bfb39a; padding: 8px 10px; }
+    /* Striker, the torch character (assets-source/striker). One aside: the
+       fired figure leaning in from the corner of the fire photo, no copy.
+       Never over text or controls. Hidden under 700px where the lead frame
+       is a single column and the figure would cover the picture. */
+    .pit.lead { position: relative; }
+    /* `.pit img` (full width, 3:2, display block) would otherwise win on the
+       figure's own image rule; this selector outranks it. */
+    .pit img.striker-peek { position: absolute; right: -6px; bottom: 28px; width: 120px; height: auto; aspect-ratio: auto; object-fit: contain; z-index: 1; pointer-events: none; display: none; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
+    @media (min-width: 700px) { .pit img.striker-peek { display: block; } }
     .pit-extras { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 14px; }
     @media (min-width: 700px) { .pit-extras { grid-template-columns: 1fr 1fr; } }
     .tile { background: #1b1714; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
@@ -377,6 +386,10 @@
     footer a { color: #bfb39a; text-decoration: none; margin: 0 4px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; transition: color 0.15s; }
     footer a:hover { color: #D06129; }
     footer .sep { color: #3a332c; }
+    /* Footer sign-off: the dry avatar and Striker's one line. */
+    .signoff { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px; color: #bfb39a; font-size: 15px; letter-spacing: 0; text-transform: none; }
+    .signoff img { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; }
+    .signoff .who { font-variation-settings: 'wdth' 100; font-weight: 500; font-size: 12px; letter-spacing: 0.14em; color: #9a9084; display: block; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition: none !important; animation: none !important; }
@@ -512,6 +525,7 @@
             <img src="/photos/pit-2026-09-07-fire-720.jpg" srcset="/photos/pit-2026-09-07-fire-720.jpg 720w, /photos/pit-2026-09-07-fire-1440.jpg 1440w" sizes="(min-width: 700px) 640px, 100vw" width="720" height="480" loading="lazy" decoding="async" alt="September 7, 2026" />
           </picture>
           <figcaption>September 7, 2026</figcaption>
+          <img class="striker-peek" src="/striker/striker-fired-figure.svg" width="280" height="300" alt="" aria-hidden="true" loading="lazy" decoding="async" />
         </figure>
         <figure class="pit rise">
           <picture>
@@ -659,6 +673,10 @@
       <p>Currently covering Milwaukee, Madison, Chicago, Kansas City, St. Louis, Minneapolis–St. Paul, Omaha, Indianapolis, Cincinnati, Pittsburgh, Dallas–Fort Worth, Houston, San Antonio, Austin, Lockhart, Memphis, Nashville, Louisville, Atlanta, Savannah, Charlotte, Raleigh, Birmingham, New Orleans, Little Rock, Oklahoma City, Tulsa, Wichita, Denver, Phoenix, Jacksonville, and Boise. Over 100 cities across 23 states. Free to browse. Sign in to submit prices from your local shops. Available as a web app and as a native Android app on Google Play.</p>
     </section>
     <footer>
+      <p class="signoff">
+        <img src="/striker/striker-dry-avatar-96.png" srcset="/striker/striker-dry-avatar-48.png 1x, /striker/striker-dry-avatar-96.png 2x" width="48" height="48" alt="Striker, the Holy Smokes torch character" loading="lazy" decoding="async" />
+        <span>It's just a match. <span class="who">STRIKER</span></span>
+      </p>
       <p>Catering clients in Wisconsin: <a href="/catering/">sign in to your quotes</a></p>
       <p>
         <a href="/privacy.html">Privacy</a>
