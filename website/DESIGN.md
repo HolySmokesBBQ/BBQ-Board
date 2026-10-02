@@ -22,8 +22,8 @@ Voice (Marketing's profile): Joel talking, first person singular, "I" never
 "we here at Holy Smokes". Kansas City is the heritage; he lives in Waukesha,
 WI. Short declaratives, plain verbs, contractions mixed with full forms,
 specs over adjectives, no hype, no trophy or pro claims, no em dashes, no
-"it's not X, it's Y". Sign-off "Faith, family, and fire." The slogan is
-styled FAITH, FAMILY & FIRE as a mark. Facts that must hold: THREE apps
+"it's not X, it's Y". Sign-off "Faith, Family, and Fire." (Joel, 2026-10-02: a motto is capitalized; "and", never "&"). The slogan is
+styled FAITH, FAMILY, AND FIRE as a mark. Facts that must hold: THREE apps
 (Scorecard, Notebook, Board) plus the Calculator, which is a website tool,
 never "four apps"; the sauce is not for sale and nothing may imply it is;
 never call the smoker an offset; Peyton's name and face never appear; no
@@ -120,7 +120,7 @@ Scale: h1 `clamp(40px, 6vw, 64px)` line-height 1.05; card lead h2 26px;
 card h2 22px; section h2 24px; h3 18px; body 16px line-height 1.65; story
 17px line-height 1.7 at max 68ch; card copy 15px; FAQ answers 16px; footer
 13px. Headings `text-wrap: balance`. Sentence case everywhere except the
-Oswald display elements; the slogan "Faith, Family & Fire" keeps its title
+Oswald display elements; the slogan "Faith, Family, and Fire" keeps its title
 case because it is a name.
 
 ## 4. Component Stylings
