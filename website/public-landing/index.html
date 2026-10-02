@@ -335,7 +335,7 @@
     .pit.lead { position: relative; }
     /* `.pit img` (full width, 3:2, display block) would otherwise win on the
        figure's own image rule; this selector outranks it. */
-    .pit img.striker-peek { position: absolute; right: -6px; bottom: 28px; width: 120px; height: auto; aspect-ratio: auto; object-fit: contain; z-index: 1; pointer-events: none; display: none; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
+    .pit img.striker-peek { position: absolute; right: -6px; bottom: 28px; width: 120px; height: auto; aspect-ratio: 280 / 300; object-fit: contain; z-index: 1; pointer-events: none; display: none; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); }
     @media (min-width: 700px) { .pit img.striker-peek { display: block; } }
     .pit-extras { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 14px; }
     @media (min-width: 700px) { .pit-extras { grid-template-columns: 1fr 1fr; } }
