@@ -91,9 +91,10 @@ const sharedAssets = [
   // Directory copy; without this entry the files never reach dist/ (same
   // allowlist trap as support.html, 2026-09-03).
   'ocr',
-  // Homepage photos (hero, pit strip, video thumbnail), web-sized by the
-  // Website session from marketing/ originals. Immutable-safe: new names per change.
-  'photos',
+  // NOTE: homepage/gallery photos are NOT here. They live in website/photos/
+  // (step 2c) because every Vite build copies the whole of public/ into its
+  // bundle, and 28 MB of marketing photography was shipping inside the
+  // native apps (Notebook 3.0.6 AAB went 28 MB -> 55 MB; found 2026-10-05).
   'striker',  // Striker, the torch character (masters in assets-source/striker)
   '404.html', // custom not-found page (Netlify serves it for unmatched paths)
   'site-fx.js', // hero smoke + photo reveal; unhashed, no-cache header in netlify.toml
@@ -122,6 +123,17 @@ for (const seoDir of ['board-cities', 'calculator-guests']) {
     });
     console.log(`  + ${seoDir}/`);
   }
+}
+
+// 2c. Website-only photos: website/photos/ -> dist/photos/. Kept outside
+//     public/ on purpose (see the note in sharedAssets). Serve path is
+//     unchanged (/photos/...), so no HTML changes when files move here.
+const photosDir = join(ROOT, 'website', 'photos');
+if (existsSync(photosDir)) {
+  cpSync(photosDir, join(DIST, 'photos'), { recursive: true });
+  console.log(`  + photos/ (website-only, ${readdirSync(photosDir).length} files)`);
+} else {
+  console.log('  ! website/photos missing');
 }
 
 // 3. Fonts directory
