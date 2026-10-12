@@ -12,9 +12,15 @@
 4. The consent-withdrawal sentences assume the L-1 banner (web) and Settings toggle (apps) exist. **Do not publish before the L-1 web banner ships** — the policy must not describe controls that don't exist yet. Sequence: banner deploy, then policies in the same or next deploy.
 5. `[BRACKETED]` items are the only open decisions; everything else is settled by the compliance memo.
 
-**[DECISION FOR JOEL — EU/UK representative]**: A US controller offering services to EEA/UK users generally needs a local representative (GDPR Art. 27) unless processing is occasional, low-risk, and not large-scale — which these apps plausibly satisfy today. The drafts omit a representative on that exemption. Revisit if EEA usage becomes regular rather than incidental.
+**DECIDED (Joel, 2026-09-30) — EU/UK representative**: Art. 27 exemption taken (processing occasional, low-risk, not large-scale). No representative appointed. Revisit if EEA usage becomes regular rather than incidental.
 
-**[DECISION FOR JOEL — contact address]**: The drafts use `datadelete@holysmokesbbqco.com` as the single privacy contact, since it already exists and is monitored. If you want a distinct privacy@ alias, say so before publish.
+**DECIDED (Joel, 2026-09-30) — contact address**: `datadelete@holysmokesbbqco.com` is the privacy contact.
+
+**[PUBLISH-DAY SELECT — Board deletion sentence]** Board's date message will state whether the own-submission delete UI shipped in the live build (it is in 2.4.6 scope). Stage exactly one variant of the retention sentence:
+- **Variant A (delete UI shipped):** "Price submissions: because Board is a public directory, they remain published until removed. You can delete your own submissions in the app at any time, or email datadelete@holysmokesbbqco.com and we will take one down."
+- **Variant B (not shipped):** the sentence as currently drafted (email takedown only).
+
+**All publish gates from Joel are now cleared.** Remaining gate is per-app: each policy publishes the day its app's consent release is live **on ALL its platforms — the LATER platform's day when Android and iOS differ** (Scorecard: both Android 4.3.0 Production and iOS 4.3.0 live; Board likewise at its turn; Notebook is Android-only, so its day is its day). Rationale: the page describes both platforms together, and publishing on the first platform's day makes it false for every user still on the other platform's pre-consent build. (Rule corrected 2026-09-30 by Scorecard via Website; the Overseer's earlier "first platform" acceptance was wrong.) The website-only sentences are already true.
 
 ---
 
@@ -30,21 +36,21 @@ BBQ Scorecard is made by Holy Smokes BBQ Co ("we"). This policy explains what da
 
 *Your account (only if you sign in).* Name, email address, and profile photo from your Google or Apple account, or the email you sign up with, plus a friend code the app generates. We use these to run your account, sync your reviews between devices, and let friends you approve see what you share. Legal basis: performing our agreement with you (GDPR Art. 6(1)(b)).
 
-*Your content.* The reviews you write — restaurant names, scores, notes, dates, and any photos you attach. Photos are stored in Google Firebase Storage; everything else in Google Firestore. Your content is visible to you and, where you share it, to friends you have approved. Nobody else can read it. Legal basis: performing our agreement with you.
+*Your content.* The reviews you write — restaurant names, scores, notes, dates, and any photos you attach. Photos you attach stay with your content on your device; when cloud sync is available they are stored in Google Firebase Storage. Everything else syncs to Google Firestore. Your content is visible to you and, where you share it, to friends you have approved. Nobody else can read it. Legal basis: performing our agreement with you.
 
-*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used, so we know what to improve. This is off until you say yes, and you can change your mind any time — in the app under Settings, on the website via the analytics banner choice. Legal basis: consent (Art. 6(1)(a)).
+*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used, so we know what to improve. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. Analytics is not linked to your account, name, or email. Legal basis: consent (Art. 6(1)(a)).
 
 *Crash reports.* The mobile apps send crash logs and basic diagnostics through Firebase Crashlytics so we can fix failures. Legal basis: our legitimate interest in keeping the app working (Art. 6(1)(f)). You can object using the contact below.
 
 *Location (only when you use BBQ Near Me).* If you tap BBQ Near Me and allow location access, your approximate coordinates are sent to the OpenStreetMap Overpass API to find barbecue spots near you, and OpenStreetMap map tiles load around that point. We do not store your coordinates. Legal basis: performing the lookup you asked for.
 
-**What we never do**
+**What we don't do**
 
 We do not sell your data. We do not run ads. We do not share your content with anyone except the friends you approve.
 
 **Who processes data for us**
 
-Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). These providers process data on our instructions.
+Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). On our website pages (not the app), Adobe Fonts serves our brand typeface; Adobe receives your IP address and browser details to count font usage for licensing, and sets no cookies. If you are in the EEA, UK, or Switzerland, the Adobe font loads only after you say yes to our banner; until then the site uses our self-hosted fonts. These providers process data on our instructions.
 
 **Where data is processed**
 
@@ -60,7 +66,7 @@ Wherever you live, you can ask us for a copy of your data, ask us to correct or 
 
 **Children**
 
-BBQ Scorecard is not directed at children under 13, and we do not knowingly collect their data.
+BBQ Scorecard is not directed at children under 16, and we do not knowingly collect their data.
 
 **Changes**
 
@@ -80,21 +86,21 @@ BBQ Notebook is made by Holy Smokes BBQ Co ("we"). This policy explains what dat
 
 *Your account (only if you sign in).* Name, email address, and profile photo from your Google account, or the email you sign up with, plus a friend code the app generates. We use these to run your account, sync your cooks and recipes between devices, and let friends you approve see what you choose to share. Legal basis: performing our agreement with you (GDPR Art. 6(1)(b)).
 
-*Your content.* Your cook logs (meat, rub, wood, temperatures, times, pit readings, notes, ratings, photos) and recipes. Photos are stored in Google Firebase Storage; everything else in Google Firestore. Cooks and recipes are private unless you mark them shared, and shared items are visible only to friends you have approved. Legal basis: performing our agreement with you.
+*Your content.* Your cook logs (meat, rub, wood, temperatures, times, pit readings, notes, ratings, photos) and recipes. Photos you attach stay with your content on your device; when cloud sync is available they are stored in Google Firebase Storage. Everything else syncs to Google Firestore. Cooks and recipes are private unless you mark them shared, and shared items are visible only to friends you have approved. Legal basis: performing our agreement with you.
 
 *Weather at your location (only if you allow it).* When you log a cook, the app can fetch current weather from the US National Weather Service (api.weather.gov) using your approximate location, and saves the weather values — temperature, wind, humidity — with your cook. Your coordinates themselves are not stored on our servers. Legal basis: performing the lookup you asked for.
 
-*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. This is off until you say yes, and you can change your mind any time in Settings. Legal basis: consent (Art. 6(1)(a)).
+*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website version, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. Analytics is not linked to your account, name, or email. Legal basis: consent (Art. 6(1)(a)).
 
 *Crash reports.* The Android app sends crash logs and basic diagnostics through Firebase Crashlytics so we can fix failures. Legal basis: our legitimate interest in keeping the app working (Art. 6(1)(f)). You can object using the contact below.
 
-**What we never do**
+**What we don't do**
 
 We do not sell your data. We do not run ads. We do not share your cooks or recipes with anyone except friends you approve, and only when you mark them shared.
 
 **Who processes data for us**
 
-Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). The National Weather Service receives only the coordinates needed for the weather lookup you request.
+Google (Firebase: sign-in, database, photo storage, analytics, crash reports) and Netlify (website hosting). On our website pages (not the app), Adobe Fonts serves our brand typeface; Adobe receives your IP address and browser details to count font usage for licensing, and sets no cookies. If you are in the EEA, UK, or Switzerland, the Adobe font loads only after you say yes to our banner; until then the site uses our self-hosted fonts. The National Weather Service receives only the coordinates needed for the weather lookup you request.
 
 **Where data is processed**
 
@@ -110,7 +116,7 @@ Wherever you live, you can ask us for a copy of your data, ask us to correct or 
 
 **Children**
 
-BBQ Notebook is not directed at children under 13, and we do not knowingly collect their data.
+BBQ Notebook is not directed at children under 16, and we do not knowingly collect their data.
 
 **Changes**
 
@@ -128,13 +134,13 @@ BBQ Board is made by Holy Smokes BBQ Co ("we"). This policy explains what data t
 
 **The most important thing to know**
 
-Board is a public price directory. Prices you submit are shown publicly to everyone using Board. Your name and email are never shown with a price — submissions display without your identity — but they are stored with your account internally so we can moderate abuse.
+Board is a public price directory. Prices you submit are shown publicly to everyone using Board. Your name and email are not shown with a price; submissions display without your identity. Each submission is stored with an account identifier so we can moderate abuse.
 
 **What we collect and why**
 
 *Browsing needs no account.* You can look up prices without signing in, and no account data is collected.
 
-*Your account (only if you sign in to submit).* Name, email address, and profile photo from your Google or Apple account. Used to run your account and attribute your submissions internally. Legal basis: performing our agreement with you (GDPR Art. 6(1)(b)).
+*Your account (only if you sign in to submit).* Name, email address, and profile photo from your Google account. Used to run your account and attribute your submissions internally. If you submit using "Continue without an account," a random identifier, not linked to your name or email, is created so your submissions can be managed. Legal basis: performing our agreement with you (GDPR Art. 6(1)(b)).
 
 *Your submissions.* Store, cut, price, region, and any note you add, stored in Google Firestore and displayed publicly without your identity. Legal basis: performing our agreement with you; public display is the purpose of the service.
 
@@ -142,17 +148,17 @@ Board is a public price directory. Prices you submit are shown publicly to every
 
 *Your region.* You pick a metro region so Board shows nearby prices. If you allow location access, it is used to suggest a region; your coordinates are not stored on our servers.
 
-*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. Off until you say yes; change your mind any time in Settings. Legal basis: consent (Art. 6(1)(a)).
+*Usage analytics (only with your consent).* With your permission we use Google Analytics and Firebase Analytics to see which features get used. In the app, this is off until you say yes and you can change your mind any time in Settings. On the website version, visitors in the EEA, UK, and Switzerland are asked before analytics runs; elsewhere on the website it runs by default. Analytics is not linked to your account, name, or email. Legal basis: consent (Art. 6(1)(a)).
 
 *Crash reports.* The mobile apps send crash logs and basic diagnostics through Firebase Crashlytics so we can fix failures. Legal basis: our legitimate interest in keeping the app working (Art. 6(1)(f)). You can object using the contact below.
 
-**What we never do**
+**What we don't do**
 
-We do not sell your data. We do not run ads. We never display your name or email with a price.
+We do not sell your data. We do not run ads. We do not display your name or email with a price.
 
 **Who processes data for us**
 
-Google (Firebase: sign-in, database, analytics, crash reports) and Netlify (website hosting).
+Google (Firebase: sign-in, database, analytics, crash reports) and Netlify (website hosting). On our website pages (not the app), Adobe Fonts serves our brand typeface; Adobe receives your IP address and browser details to count font usage for licensing, and sets no cookies. If you are in the EEA, UK, or Switzerland, the Adobe font loads only after you say yes to our banner; until then the site uses our self-hosted fonts.
 
 **Where data is processed**
 
@@ -160,15 +166,15 @@ Our servers are in the United States. If you use the app from the EEA, UK, or Sw
 
 **How long we keep it**
 
-Account data: until you delete your account. Price submissions: you can delete your own submissions in the app at any time; because Board is a public directory, submissions you leave up remain published. Analytics data: up to 14 months. Crash logs: per Firebase Crashlytics retention (90 days).
+Account data: until you delete your account. Price submissions: because Board is a public directory, they remain published until removed. To remove one of yours, email datadelete@holysmokesbbqco.com and we will take it down. Analytics data: up to 14 months. Crash logs: per Firebase Crashlytics retention (90 days).
 
 **Your rights**
 
-Wherever you live, you can ask us for a copy of your data, ask us to correct or delete it, restrict or object to processing, take your data elsewhere, and withdraw consent at any time. Email datadelete@holysmokesbbqco.com and we will respond within a month. If you are in the EEA or UK you can also complain to your data protection authority (in the UK, the ICO).
+Wherever you live, you can ask us for a copy of your data, ask us to correct or delete it, restrict or object to processing, take your data elsewhere, and withdraw consent at any time. Email datadelete@holysmokesbbqco.com and we will respond within a month. Full account deletion is described at our account deletion page (/delete-account-board.html) and completed within 7 days. If you are in the EEA or UK you can also complain to your data protection authority (in the UK, the ICO).
 
 **Children**
 
-BBQ Board is not directed at children under 13, and we do not knowingly collect their data.
+BBQ Board is not directed at children under 16, and we do not knowingly collect their data.
 
 **Changes**
 

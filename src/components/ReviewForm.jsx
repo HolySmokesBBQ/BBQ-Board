@@ -3,8 +3,17 @@ import { useAppContext } from '../context/AppContext.jsx';
 import { CATEGORIES, DESCRIPTORS, MEATS, SIDES_LIST, SAUCE_DEP_OPTIONS, RETURN_OPTIONS } from '../constants.js';
 import { calcScores, track } from '../scoring.js';
 import { findLastVisit, compareVisits, shortVisitDate } from '../rematch.js';
+import { PARTY_OPTIONS, GOOGLE_EXTRAS, defaultGoogleRatings } from '../googleDraft.js';
 
 const ALL_CATEGORIES = [...CATEGORIES.bbq, ...CATEGORIES.family];
+
+// Set or clear one key in a small map. Clearing deletes the key: Firestore
+// rejects a whole write if any nested value is undefined.
+function withKey(map, key, val) {
+  const next = { ...(map || {}) };
+  if (val == null) delete next[key]; else next[key] = val;
+  return next;
+}
 
 // One row per BBQ / Family category. Nine tappable number buttons —
 // tap a number to set the score directly. The radial ScoreWheel that
@@ -658,6 +667,78 @@ export default function ReviewForm() {
             + Add
           </button>
         </div>
+      </div>
+
+      {/* Google review: the extra inputs the Google draft and Google's own
+          form need (4.4.0). None of this feeds the composite score. */}
+      <div style={{ marginBottom: '20px', background: S.dark, border: `1px solid ${S.border}`, borderRadius: '8px', padding: '12px' }}>
+        <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: '14px', letterSpacing: '2px', color: S.accent, marginBottom: '10px' }}>Google Review</div>
+
+        <label style={sLabel()}>PARTY</label>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
+          {PARTY_OPTIONS.map(opt => (
+            <button key={opt} onClick={() => update('party', currentReview.party === opt ? '' : opt)}
+              style={sBtn(currentReview.party === opt, true)}>{opt}</button>
+          ))}
+        </div>
+        {(currentReview.party === 'Family' || currentReview.party === 'Group') && (
+          <input type="number" min="2" inputMode="numeric" placeholder="How many?"
+            value={currentReview.partySize || ''} onChange={e => update('partySize', e.target.value)}
+            style={{ ...sInput(), width: '120px', marginBottom: '8px' }} />
+        )}
+
+        <div style={{ marginTop: '8px' }}>
+          <CategoryScoreRow c={{ key: 'atmosphere', label: 'Atmosphere' }} S={S}
+            value={(currentReview.scores || {}).atmosphere}
+            onPick={(n) => updateScore('atmosphere', n)} />
+        </div>
+        <input type="text" placeholder="Atmosphere note (optional)"
+          value={currentReview.atmosphereNote || ''} onChange={e => update('atmosphereNote', e.target.value)}
+          style={{ ...sInput(), width: '100%', marginBottom: '8px' }} />
+        <input type="text" placeholder="Service note (optional, no staff names)"
+          value={currentReview.serviceNote || ''} onChange={e => update('serviceNote', e.target.value)}
+          style={{ ...sInput(), width: '100%', marginBottom: '12px' }} />
+
+        {(() => {
+          const d = defaultGoogleRatings(currentReview);
+          const o = currentReview.googleRatings || {};
+          return (
+            <div style={{ marginBottom: '12px' }}>
+              <label style={sLabel()}>GOOGLE RATINGS</label>
+              {[['food', 'Food'], ['service', 'Service'], ['atmosphere', 'Atmosphere']].map(([k, label]) => {
+                const val = o[k] || d[k];
+                return (
+                  <div key={k} style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '12px', width: '82px' }}>{label}</span>
+                    {[1, 2, 3, 4, 5].map(n => (
+                      <button key={n} onClick={() => update('googleRatings', withKey(o, k, n === d[k] ? null : n))}
+                        style={{ ...sBtn(val === n, true), padding: '6px 10px', minWidth: '34px' }}>{n}</button>
+                    ))}
+                    <span style={{ fontSize: '10px', color: S.muted }}>
+                      {o[k] ? 'set by you' : d.flagged.includes(k) ? 'no score, guessed' : 'from scores'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })()}
+
+        <label style={sLabel()}>GOOGLE EXTRAS</label>
+        {GOOGLE_EXTRAS.map(x => {
+          const ge = currentReview.googleExtras || {};
+          return (
+            <div key={x.key} style={{ marginBottom: '8px' }}>
+              <div style={{ fontSize: '11px', color: S.muted, marginBottom: '4px' }}>{x.label}</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {x.options.map(opt => (
+                  <button key={opt} onClick={() => update('googleExtras', withKey(ge, x.key, ge[x.key] === opt ? null : opt))}
+                    style={{ ...sBtn(ge[x.key] === opt, true), padding: '5px 9px', fontSize: '12px' }}>{opt}</button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Save */}

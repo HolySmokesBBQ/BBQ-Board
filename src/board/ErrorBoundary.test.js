@@ -14,6 +14,7 @@
 // reload handler does.
 
 import { describe, test, expect, vi } from 'vitest';
+import { CONSENT_KEY, CONSENT_TEXT_VERSION } from '../consent.js';
 import {
   deriveStateFromError,
   describeError,
@@ -61,8 +62,28 @@ describe('ErrorBoundary reporting', () => {
     spy.mockRestore();
   });
 
-  test('componentDidCatch emits a board_error_boundary analytics event when gtag exists', () => {
+  // Since 2.4.6 the report goes through analytics.js, so it needs consent.
+  const grantConsent = () => {
+    const m = new Map();
+    globalThis.localStorage = { getItem: k => m.get(k) ?? null, setItem: (k, v) => m.set(k, String(v)), removeItem: k => m.delete(k) };
+    localStorage.setItem(CONSENT_KEY, JSON.stringify({ choice: 'granted', at: 'x', textVersion: CONSENT_TEXT_VERSION }));
+  };
+
+  test('componentDidCatch sends nothing to analytics without consent', () => {
     const calls = [];
+    const m = new Map();
+    globalThis.localStorage = { getItem: k => m.get(k) ?? null, setItem: (k, v) => m.set(k, String(v)), removeItem: k => m.delete(k) };
+    globalThis.window = { gtag: (...a) => calls.push(a) };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    new ErrorBoundary({}).componentDidCatch(new Error('untracked'), { componentStack: '' });
+    expect(calls).toEqual([]);
+    spy.mockRestore();
+    delete globalThis.window;
+  });
+
+  test('componentDidCatch emits a board_error_boundary analytics event with consent', () => {
+    const calls = [];
+    grantConsent();
     globalThis.window = { gtag: (...a) => calls.push(a) };
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const b = new ErrorBoundary({});
@@ -76,6 +97,7 @@ describe('ErrorBoundary reporting', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     globalThis.window = {};
     expect(() => new ErrorBoundary({}).componentDidCatch(new Error('a'), {})).not.toThrow();
+    grantConsent();
     globalThis.window = { gtag: () => { throw new Error('gtag broke'); } };
     expect(() => new ErrorBoundary({}).componentDidCatch(new Error('b'), {})).not.toThrow();
     spy.mockRestore();

@@ -667,9 +667,9 @@ function AboutScreen({ onClose, user }) {
           the best cuts, and remember what the brisket ran per pound last time.
         </p>
         <p style={{ fontSize: 14, lineHeight: 1.6, margin: '0 0 20px' }}>
-          BBQ Board is one of four apps in the family. They stand alone, but
-          together they cover eating out, cooking at home, and shopping for
-          the meat.
+          BBQ Board is one of three apps in the family, with the BBQ Calculator
+          on the website. They stand alone, but together they cover eating
+          out, cooking at home, and shopping for the meat.
         </p>
 
         <div style={{ fontSize: 12, color: PAL.textDim, letterSpacing: 2, marginBottom: 12 }}>
@@ -1454,6 +1454,11 @@ function CircularScrubPanel({ region, user, onSignIn, onSignInAnon }) {
         workerPath: `${tessBase}worker.min.js`,
         corePath: tessBase,
         langPath: tessBase,
+        // We ship eng.traineddata uncompressed. tesseract.js defaults to
+        // gzip:true and asks for eng.traineddata.gz, which 404s in the app
+        // (the scan hung) and on the web gets the SPA's index.html. Every
+        // scan since self-hosting failed this way until 2.4.5.
+        gzip: false,
         logger: (m) => {
           if (m.status === 'recognizing text' && typeof m.progress === 'number') {
             setProgress(Math.round(m.progress * 100));

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { track } from './analytics.js';
 
 // First-launch walkthrough for BBQ Board. Three tap-through cards
 // covering the core loop: SHOP → SUBMIT → SUPPORT LOCAL. Same layout
@@ -41,10 +42,6 @@ export function markOnboarded() {
   try { localStorage.setItem(LS_KEY, '1'); } catch {}
 }
 
-const track = (event, params = {}) => {
-  if (typeof window === 'undefined' || !window.gtag) return;
-  try { window.gtag('event', event, { content_group: 'board', ...params }); } catch {}
-};
 
 export default function Onboarding({ onDismiss }) {
   const [idx, setIdx] = useState(0);

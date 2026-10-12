@@ -149,7 +149,7 @@ import {
 import {
   calcScores, genId, emptyReview, migrateReview, compressPhoto,
   track, trackPageView, setGaContext,
-  generateShareCard, generateGoogleDraft, exportCSV,
+  generateShareCard, exportCSV,
 } from '../scoring.js';
 import { generateReviewStoryCard } from '../reviewShareCard.js';
 import {

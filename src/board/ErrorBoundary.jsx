@@ -1,4 +1,5 @@
 import React from 'react';
+import { track } from './analytics.js';
 
 // App-shell error boundary for BBQ Board.
 //
@@ -55,15 +56,10 @@ export class ErrorBoundary extends React.Component {
     // so this one line gets the throw into the problem-report attachment.
     console.error('[board] render error caught by ErrorBoundary:',
       describeError(err), info?.componentStack || '');
-    // Same shape as App.board.jsx's track(), inlined so this file has no
-    // dependency on the tree it is protecting.
+    // analytics.js is a leaf module (consent.js only), so this still has no
+    // dependency on the tree it is protecting. It sends only with consent.
     try {
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'board_error_boundary', {
-          content_group: 'board',
-          message: String(err?.message || err).slice(0, 100),
-        });
-      }
+      track('board_error_boundary', { message: String(err?.message || err).slice(0, 100) });
     } catch {}
   }
 

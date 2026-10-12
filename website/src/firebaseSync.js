@@ -421,7 +421,7 @@ function humanizeAuthError(error) {
     case 'auth/wrong-password':        return 'Wrong password. Try again or use "Forgot password".';
     case 'auth/invalid-credential':    return 'Email or password is wrong. Try again.';
     case 'auth/email-already-in-use':  return 'An account already exists for that email. Sign in instead.';
-    case 'auth/weak-password':         return 'Password is too weak — use at least 6 characters.';
+    case 'auth/weak-password':         return 'Password is too weak. Use at least 8 characters.';
     case 'auth/too-many-requests':     return 'Too many attempts. Wait a few minutes and try again.';
     case 'auth/network-request-failed':return 'Network error. Check your connection and try again.';
     case 'auth/timeout':               return 'That took too long. Check your connection and try again.';

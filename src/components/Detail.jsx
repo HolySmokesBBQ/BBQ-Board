@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useAppContext } from '../context/AppContext.jsx';
 import { CATEGORIES, DESCRIPTORS } from '../constants.js';
-import { calcScores, generateGoogleDraft, track } from '../scoring.js';
+import { calcScores, track } from '../scoring.js';
+import { buildGoogleDraft, GOOGLE_EXTRAS, groupSize } from '../googleDraft.js';
 import NotebookReviewBanner from './NotebookReviewBanner.jsx';
 import { findLastVisit, compareVisits, shortVisitDate } from '../rematch.js';
 
@@ -368,9 +369,9 @@ export default function Detail() {
           </button>
           <button onClick={() => exportText(r)} style={sBtn(false, false)}>Export</button>
           <button onClick={() => {
-            const draft = generateGoogleDraft(r);
+            const draft = buildGoogleDraft(r).text;
             setDraftText(draft);
-            navigator.clipboard?.writeText(draft);
+            navigator.clipboard?.writeText(draft).catch(() => {});
             track('google_draft_generated', { restaurant: r.restaurant });
           }} style={sBtn(false, false)}>Google Draft</button>
           <button onClick={() => deleteReview(r.id)} style={{ ...sBtn(false, false), color: '#f87171', borderColor: '#f87171' }}>Delete</button>
@@ -385,6 +386,38 @@ export default function Detail() {
             <button onClick={() => setDraftText('')} style={{ background: 'none', border: 'none', color: S.muted, cursor: 'pointer', fontSize: '16px' }}>{'✕'}</button>
           </div>
           <pre style={{ fontSize: '12px', color: S.text, whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: '1.6', margin: 0 }}>{draftText}</pre>
+          {(() => {
+            const { ratings } = buildGoogleDraft(r);
+            const ge = r.googleExtras || {};
+            const size = groupSize(r);
+            const perHead = Number(r.price) > 0 ? Number(r.price) / (Number(r.priceSplit) || 1) : 0;
+            const rows = [
+              size ? ['Group size', String(size)] : null,
+              perHead ? ['Price per person', `$${perHead.toFixed(2)}`] : null,
+              ...GOOGLE_EXTRAS.map(x => (ge[x.key] ? [x.label, ge[x.key]] : null)),
+            ].filter(Boolean);
+            const nPhotos = photos.length;
+            return (
+              <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: `1px solid ${S.border}`, fontSize: '12px' }}>
+                <div style={{ fontSize: '11px', color: S.accent, letterSpacing: '1px', fontWeight: '600', marginBottom: '6px' }}>For Google's form</div>
+                {rows.length ? rows.map(([k, v]) => (
+                  <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0' }}>
+                    <span style={{ color: S.muted }}>{k}</span><span>{v}</span>
+                  </div>
+                )) : (
+                  <div style={{ color: S.muted }}>No Google extras filled in yet. Edit the review to add them.</div>
+                )}
+                {ratings.flagged.length > 0 && (
+                  <div style={{ color: S.muted, marginTop: '6px' }}>
+                    {ratings.flagged.map(k => k.charAt(0).toUpperCase() + k.slice(1)).join(' and ')} had no score, so it's set to 3. Check it before posting.
+                  </div>
+                )}
+                <div style={{ color: S.muted, marginTop: '6px' }}>
+                  Photos on this review: {nPhotos}. The busiest Google reviewers post 3 to 5, usually the plate, the room, and the menu board.
+                </div>
+              </div>
+            );
+          })()}
         </div>
       )}
 
