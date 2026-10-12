@@ -70,7 +70,14 @@ service cloud.firestore {
         'targetInternalTemp', 'cookTimeHours', 'cookTimeMinutes', 'restTime',
         'weatherTemp', 'weatherWind', 'weatherHumidity', 'photos',
         'notes', 'notesLog', 'rating', 'tags', 'shared', 'whatIdChange',
-        'createdAt', 'lastEdited', 'restaurantKey', 'syncedAt'
+        'createdAt', 'lastEdited', 'restaurantKey', 'syncedAt',
+        // Pit humidity (Notebook). Shipped in the client v3.0.1 but never
+        // added here, so prepCookForFirestore dropped them on every write and
+        // the readings never reached the cloud. Listing them is permissive —
+        // hasOnly() only rejects keys NOT in this list — so publishing this
+        // ahead of the matching client change is safe and is the required
+        // order: rules must allow a field before the client starts sending it.
+        'pitWetBulbF', 'pitPressureKPa'
       ];
     }
 
