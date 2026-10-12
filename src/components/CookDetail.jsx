@@ -4,7 +4,7 @@ import { useCookContext } from '../context/CookContext.jsx';
 import { shareCookCard } from '../cookShareCard.js';
 import { track } from '../scoring.js';
 import { computeHumidity } from '../pitHumidity.js';
-import { DEFAULT_PRESSURE_KPA } from '../pressureResolver.js';
+import { resolvePressure } from '../pressureResolver.js';
 
 export default function CookDetail() {
   const {
@@ -140,8 +140,14 @@ export default function CookDetail() {
         {currentCook.pitWetBulbF && (() => {
           const dryF = parseFloat(currentCook.cookTemp);
           const wetF = parseFloat(currentCook.pitWetBulbF);
+          // Pressure stored on the cook when it was logged, so viewing an
+          // old cook from elsewhere still shows the RH it actually had.
+          // Cooks logged before pitPressureKPa existed resolve to the default.
           const { rh, dewpointF, warning } = computeHumidity({
-            dryF, wetF, pressureKPa: DEFAULT_PRESSURE_KPA,
+            dryF, wetF,
+            pressureKPa: resolvePressure({
+              weatherPressureKPa: currentCook.pitPressureKPa,
+            }).valueKPa,
           });
           const rhText = rh != null ? `${Math.round(rh * 100)}%` : null;
           const dpText = dewpointF != null ? `${Math.round(dewpointF)}F` : null;
