@@ -9,8 +9,7 @@ trigger has fired and the step is done.
 | Waiting | Trigger | Then |
 |---|---|---|
 | Android 4.3.0 Open + Production (submitted 2026-10-12) | Google approves it (Play Console, Production track shows 4300 live) | Send the auditor the "Scorecard 4.3.0 live on both" note so it routes the privacy.html publish to Website. iOS 4.3.0 already released 2026-10-12. |
-| 4.4.0 consent sentence + per-app consent versions | Notebook's ConsentCard.jsx / consent.js refactor is committed (the auditor routes the moment) | Build the per-app version map, write Scorecard's sentence from the inventory test, commit the test green, bump Scorecard's key. |
-| 4.4.0 ship (Google review draft, password rules, sync fallback, analytics minimization) | 4.3.0 live on both stores AND the consent sentence done | Android 4400 through the full ladder; iOS 4.4.0 (16) from main; release-day bundle: Apple Product Interaction re-check, consent key bump verified. |
+| 4.4.0 ship (Google review draft, password rules, sync fallback, analytics minimization) | 4.3.0 live on both stores (consent sentence is done) | Android 4400 through the full ladder; iOS 4.4.0 (16) from a side branch (origin push of main is denied); release-day bundle: Apple Product Interaction re-check, consent key bump verified. |
 
 ## Requirements for the per-app consent versions (before building)
 

@@ -5,8 +5,9 @@ import { getConsent, setConsent, onConsentChange } from '../consent.js';
 // Usage-analytics consent (audit 2026-09-29, L-1). An inline Home card,
 // not a modal: it never blocks scoring, and nothing is collected while it
 // sits unanswered. Allow and No thanks carry identical styling so neither
-// is the "easy" button. The wording is versioned in consent.js
-// (CONSENT_TEXT_VERSION); change it materially and bump the version.
+// is the "easy" button. Each app's wording is versioned in consent.js
+// (CONSENT_VERSIONS); change what an app says it collects and bump that
+// app's entry, which re-asks that app's users only.
 
 // This card is shared by three apps, so the app name, the description of
 // what gets collected, and the privacy link all have to follow the host.
@@ -18,14 +19,32 @@ import { getConsent, setConsent, onConsentChange } from '../consent.js';
 //
 // window.GA_CONTENT_GROUP is already set per app by each index html before
 // the bundle evaluates, so it is the signal to follow rather than new
-// plumbing. Scorecard's wording below is unchanged from what it has been
-// showing, deliberately — only the other two were wrong.
+// plumbing.
 const APP = (typeof window !== 'undefined' && window.GA_CONTENT_GROUP) || 'scorecard';
 
 const APP_COPY = {
+  // Written from consentInventory.scorecard.test.js, which walks every
+  // track() call and user property reachable from src/main.jsx. Through
+  // 4.3.0 this said only "the restaurant names on reviews you open, share,
+  // or compare"; the inventory found 19 more keys behind it (score changes
+  // on a rematch, blind-table spreads, nearby radius, review and friend
+  // counts among them). 4.4.0 rewrote it and bumped Scorecard to version 2,
+  // so every Scorecard user is asked again against the full list.
+  //
+  // GA4 receives none of: review text, scores or star ratings themselves,
+  // photos, the trip or city you filter by, your location, or who your
+  // friends are. Errors go as bounded codes from analyticsCodes.js.
   scorecard: {
     name: 'BBQ Scorecard',
-    collects: 'plus the restaurant names on reviews you open, share, or compare',
+    collects:
+      'plus the restaurant name on reviews you save, open, share, export or ' +
+      "delete, how many reviews and friends you have and whether you're " +
+      'signed in, how much your score for a place moved since your last ' +
+      'visit, how many scorers sat at a blind table and how far apart they ' +
+      'were, the filters, sort and theme you pick, how far a nearby search ' +
+      "reached and how many places it found, how many badges you've earned, " +
+      'how many photos get saved or repaired, and a code for any error it ' +
+      'runs into',
     privacyUrl: 'https://holysmokesbbqco.com/privacy.html',
   },
   // Written from an inventory of every track() call reachable from the

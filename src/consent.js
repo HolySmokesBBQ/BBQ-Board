@@ -13,38 +13,79 @@
 // Written app-agnostic so Notebook and Board can adopt it unchanged.
 // Audit 2026-09-29, finding L-1.
 
-export const CONSENT_KEY = 'hs-analytics-consent';
+// Each app keeps its own record under `hs-analytics-consent:<app>`, where
+// <app> is the window.GA_CONTENT_GROUP the entry HTML sets. Before 4.4.0
+// every app wrote one shared key; that is LEGACY_CONSENT_KEY below and is
+// still read as a fallback, so nobody's existing answer is lost.
+//
+// Why per app: the web builds share one origin, so a single shared record
+// would make Scorecard and Notebook overwrite each other's answer and
+// re-prompt each other back and forth, and a wording change in one app
+// would blank the other two (the old shared version could only move all
+// three at once).
+export const LEGACY_CONSENT_KEY = 'hs-analytics-consent';
 
-// Bump when the consent card's wording changes materially. Records made
-// under an older version stop counting, so the user is asked again.
-//
-// Read that cost before bumping: this module is shared by Scorecard,
-// Notebook and Board, the version is not per app, and getConsent() returns
-// null for a stale record. So a bump re-prompts every existing user of all
-// three apps at once and stops analytics for each of them until they answer
-// again — including the ones who already said yes.
-//
-// Deliberately still 1 after the 2026-10-12 disclosure rewrite. That rewrite
-// corrected sentences that understated what the apps had always sent (error
-// messages, the thermometer import, the humidity range, Board's location
-// dimension). Nothing new started being collected, so the basis for the
-// existing grants did not change — the text caught up to the code. Fresh
-// consent is for a change in what is collected or why, and paying for a copy
-// fix by blanking three apps' consent would make the apps collect less and
-// tell the user nothing more. Bump it when the data changes, not the prose.
+// Kept as an alias so callers and tests that predate the split still name
+// the legacy key. New code should use consentKeyFor().
+export const CONSENT_KEY = LEGACY_CONSENT_KEY;
+
+// The version every record under the legacy shared key carries. Frozen at 1:
+// nothing writes the legacy key for a known app any more, so this never
+// moves. An app's own version lives in CONSENT_VERSIONS.
 export const CONSENT_TEXT_VERSION = 1;
+
+// Bump an app's entry when ITS consent sentence changes what it says is
+// collected or why. Records under an older version stop counting for that
+// app only, so only that app's users are asked again � and until they
+// answer, that app collects nothing, including from users who had said yes.
+// Bump when the data changes, not the prose.
+//
+// Values are opaque tokens compared with strict equality. Never coerce or
+// normalise them: a stored '1' is not 1.
+//
+//   scorecard 2  4.4.0 rewrote the sentence to name every parameter the
+//                inventory test finds (src/consentInventory.scorecard.test.js).
+//   notebook  1  unchanged; its 2026-10-12 rewrite only caught the text up
+//                to what the app had always sent.
+//   board     1  Board 2.4.6 stored its grants as 1 under the legacy key.
+//                Any other value re-prompts every Board user.
+export const CONSENT_VERSIONS = Object.freeze({ scorecard: 2, notebook: 1, board: 1 });
+
+// The running app, or null when the page did not say (unit tests, an entry
+// HTML without GA_CONTENT_GROUP). Null keeps the pre-split behaviour exactly:
+// the legacy key at version 1.
+function currentApp() {
+  const app = typeof window !== 'undefined' ? window.GA_CONTENT_GROUP : undefined;
+  return typeof app === 'string' && Object.hasOwn(CONSENT_VERSIONS, app) ? app : null;
+}
+
+export function consentKeyFor(app) {
+  return app ? `${LEGACY_CONSENT_KEY}:${app}` : LEGACY_CONSENT_KEY;
+}
+
+export function consentVersionFor(app) {
+  return app ? CONSENT_VERSIONS[app] : CONSENT_TEXT_VERSION;
+}
 
 const listeners = new Set();
 let loaderInjected = false;
 
 // { choice: 'granted' | 'denied', at: ISO string, textVersion } or null.
+//
+// The app's own key is authoritative whenever it holds anything at all, even
+// a stale or unreadable record. Only an app that has never answered under its
+// own key falls back to the legacy shared one. Otherwise a later "No" stored
+// under the own key could go stale and resurrect an older legacy "Yes".
 export function getConsent() {
+  const app = currentApp();
+  const version = consentVersionFor(app);
   try {
-    const raw = localStorage.getItem(CONSENT_KEY);
+    let raw = localStorage.getItem(consentKeyFor(app));
+    if (raw == null && app) raw = localStorage.getItem(LEGACY_CONSENT_KEY);
     if (!raw) return null;
     const rec = JSON.parse(raw);
     if (!rec || (rec.choice !== 'granted' && rec.choice !== 'denied')) return null;
-    if (rec.textVersion !== CONSENT_TEXT_VERSION) return null;
+    if (rec.textVersion !== version) return null;
     return rec;
   } catch {
     return null;
@@ -56,8 +97,9 @@ export function analyticsAllowed() {
 }
 
 export function setConsent(choice) {
-  const rec = { choice, at: new Date().toISOString(), textVersion: CONSENT_TEXT_VERSION };
-  try { localStorage.setItem(CONSENT_KEY, JSON.stringify(rec)); } catch {}
+  const app = currentApp();
+  const rec = { choice, at: new Date().toISOString(), textVersion: consentVersionFor(app) };
+  try { localStorage.setItem(consentKeyFor(app), JSON.stringify(rec)); } catch {}
   if (choice === 'granted') startAnalyticsIfAllowed();
   else stopAnalytics();
   listeners.forEach(fn => { try { fn(rec); } catch {} });
