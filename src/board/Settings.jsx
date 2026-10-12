@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase.board.js';
+import { auth, db } from '../firebase.board.js';
 import { STATES } from './schema.js';
 import { nativeAppVersion } from '../diagnostics.js';
 import { signInErrorMessage } from './signIn.js';
+import { setConsent } from '../consent.js';
+import { useConsent, openBoardPrivacyPolicy } from './ConsentPrompt.jsx';
+import { fetchMySubmissions, deleteSubmission, submissionLabel } from './mySubmissions.js';
+import { track } from './analytics.js';
 
 // Board Settings — minimal by design. Board has less user-owned state
 // than Scorecard/Notebook (no cooks, no reviews to export). This
@@ -104,6 +108,44 @@ export default function Settings({ user, onSignIn, onClose }) {
     return () => { live = false; };
   }, []);
 
+  // Analytics choice lives here as well as on the home card, outside the
+  // signed-in branch: withdrawing has to be as easy as allowing, and someone
+  // who never signs in still needs to reach it.
+  const consent = useConsent();
+  const analyticsOn = consent?.choice === 'granted';
+
+  // Own submissions, newest first, with delete.
+  const [subs, setSubs] = useState(null); // null = not loaded
+  const [subsError, setSubsError] = useState('');
+  const [confirmId, setConfirmId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+  const uid = user?.uid;
+  useEffect(() => {
+    if (!uid) { setSubs(null); return; }
+    let live = true;
+    setSubsError('');
+    fetchMySubmissions(db, uid)
+      .then(rows => { if (live) setSubs(rows); })
+      .catch(() => { if (live) { setSubs([]); setSubsError("Couldn't load your submissions. Check your connection and try again."); } });
+    return () => { live = false; };
+  }, [uid]);
+
+  const handleDelete = async (id) => {
+    if (confirmId !== id) { setConfirmId(id); return; }
+    setDeletingId(id);
+    setSubsError('');
+    try {
+      await deleteSubmission(db, id);
+      setSubs(rows => (rows || []).filter(r => r.id !== id));
+      track('board_submission_deleted');
+    } catch {
+      setSubsError("That price couldn't be deleted. Try again.");
+    } finally {
+      setDeletingId(null);
+      setConfirmId(null);
+    }
+  };
+
   const handleRegion = (v) => { setRegion(v); writeLS(LS_REGION, v); };
   const handleRadius = (v) => { setRadius(v); writeLS(LS_RADIUS, String(v)); };
   const handleUnits = (v) => { setUnits(v); writeLS(LS_UNITS, v); };
@@ -158,7 +200,9 @@ export default function Settings({ user, onSignIn, onClose }) {
           {user ? (
             <>
               <div style={{ fontSize: 14, marginBottom: 12 }}>
-                Signed in as <strong>{user.email || user.displayName || 'Google user'}</strong>
+                {user.isAnonymous
+                  ? <>Using Board without an account</>
+                  : <>Signed in as <strong>{user.email || user.displayName || 'Google user'}</strong></>}
               </div>
               <button style={S.btn} onClick={() => signOut(auth)}>Sign out</button>
             </>
@@ -181,6 +225,58 @@ export default function Settings({ user, onSignIn, onClose }) {
               )}
             </>
           )}
+        </div>
+
+        {user && (
+          <div style={S.card}>
+            <h2 style={S.h2}>YOUR SUBMISSIONS</h2>
+            {user.isAnonymous && (
+              <div style={{ fontSize: 13, color: PAL.textDim, marginBottom: 10, lineHeight: 1.4 }}>
+                Prices you submitted without an account stay deletable here until you sign out.
+              </div>
+            )}
+            {subs === null && !subsError && (
+              <div style={{ fontSize: 14, color: PAL.textDim }}>Loading…</div>
+            )}
+            {subs && subs.length === 0 && !subsError && (
+              <div style={{ fontSize: 14, color: PAL.textDim }}>You haven't submitted any prices yet.</div>
+            )}
+            {subs && subs.map(row => (
+              <div key={row.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: `1px solid ${PAL.border}` }}>
+                <div style={{ flex: 1, fontSize: 14, lineHeight: 1.4 }}>{submissionLabel(row)}</div>
+                <button
+                  style={{ ...S.btn, padding: '6px 12px', fontSize: 13, opacity: deletingId === row.id ? 0.6 : 1,
+                    borderColor: confirmId === row.id ? '#e8a33d' : PAL.border,
+                    color: confirmId === row.id ? '#e8a33d' : PAL.text }}
+                  onClick={() => handleDelete(row.id)}
+                  disabled={deletingId === row.id}
+                >
+                  {deletingId === row.id ? 'Deleting…' : confirmId === row.id ? 'Tap to confirm' : 'Delete'}
+                </button>
+              </div>
+            ))}
+            {subsError && (
+              <div role="alert" style={{ fontSize: 13, color: '#e8a33d', marginTop: 10, lineHeight: 1.4 }}>{subsError}</div>
+            )}
+          </div>
+        )}
+
+        <div style={S.card}>
+          <h2 style={S.h2}>PRIVACY</h2>
+          <div style={{ fontSize: 14, marginBottom: 6 }}>
+            Usage analytics: <strong>{analyticsOn ? 'On' : 'Off'}</strong>
+          </div>
+          <div style={{ fontSize: 13, color: PAL.textDim, marginBottom: 12, lineHeight: 1.4 }}>
+            {analyticsOn
+              ? 'Board sends usage analytics to Google Analytics. Turn it off and nothing more is sent.'
+              : 'Board sends nothing to Google Analytics unless you turn this on.'}{' '}
+            <button onClick={openBoardPrivacyPolicy} style={{ background: 'none', border: 'none', padding: 0, color: PAL.brass, fontSize: 13, textDecoration: 'underline', cursor: 'pointer' }}>
+              What's sent
+            </button>
+          </div>
+          <button style={S.btn} onClick={() => setConsent(analyticsOn ? 'denied' : 'granted')}>
+            {analyticsOn ? 'Turn off analytics' : 'Turn on analytics'}
+          </button>
         </div>
 
         <div style={S.card}>

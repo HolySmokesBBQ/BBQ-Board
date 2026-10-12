@@ -22,6 +22,8 @@ import Onboarding, { hasOnboarded } from './board/Onboarding.jsx';
 import BoardHamburger from './components/BoardHamburger.jsx';
 import Calculator from './board/Calculator.jsx';
 import Settings from './board/Settings.jsx';
+import { track } from './board/analytics.js';
+import ConsentPrompt from './board/ConsentPrompt.jsx';
 import { sendProblemReport } from './diagnostics.js';
 import 'leaflet/dist/leaflet.css';
 
@@ -66,10 +68,6 @@ function sanitizeNote(s) {
     .slice(0, 500);
 }
 
-const track = (event, params = {}) => {
-  if (typeof window === 'undefined' || !window.gtag) return;
-  try { window.gtag('event', event, { content_group: 'board', ...params }); } catch {}
-};
 
 // ─── App ───────────────────────────────────────────────────────
 const LS_CITY = 'board:city';
@@ -265,9 +263,12 @@ export default function BoardApp() {
 
   const openSubmit = (prefill = {}) => {
     setSubmitState(prefill);
+    // Whether the form came pre-filled, not which shop or cut. The shop id
+    // used to go to Google Analytics here, and a user-added shop's id
+    // carries part of the submitter's uid (user_<slug>_<uid8>).
     track('board_submit_opened', {
-      prefill_shop: prefill.shopId || 'none',
-      prefill_cut: prefill.cut || 'none',
+      prefill_shop: !!prefill.shopId,
+      prefill_cut: !!prefill.cut,
       signed_in: !!user,
     });
   };
@@ -325,6 +326,7 @@ export default function BoardApp() {
           </div>
         </div>
         <IntroCard />
+        <ConsentPrompt />
 
         <LocationPicker
           cityId={cityId}
@@ -669,9 +671,9 @@ function AboutScreen({ onClose, user }) {
           the best cuts, and remember what the brisket ran per pound last time.
         </p>
         <p style={{ fontSize: 14, lineHeight: 1.6, margin: '0 0 20px' }}>
-          BBQ Board is one of four apps in the family. They stand alone, but
-          together they cover eating out, cooking at home, and shopping for
-          the meat.
+          BBQ Board is one of three apps in the family, with the BBQ Calculator
+          on the website. They stand alone, but together they cover eating out,
+          cooking at home, and shopping for the meat.
         </p>
 
         <div style={{ fontSize: 12, color: PAL.textDim, letterSpacing: 2, marginBottom: 12 }}>
@@ -962,7 +964,9 @@ function LocationPicker({ cityId, radius, onCityChange, onRadiusChange }) {
           : "Couldn't get your location. Pick a city below.");
         track('board_location_detect_failed', { code: err.code });
       },
-      { timeout: 8000, maximumAge: 300000 },
+      // City-level is all nearestCity needs, and the app only holds the
+      // approximate-location permission from 2.4.6.
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
     );
   };
 

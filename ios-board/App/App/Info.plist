@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Firebase Analytics native SDK off before any code runs; usage
+	     analytics is consent-gated in src/consent.js (audit L-1). -->
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<false/>
+	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
+	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
     <key>CAPACITOR_DEBUG</key>
@@ -70,7 +76,11 @@
 	     App Review. They must describe features BBQ Board actually has: shop search by
 	     distance, and scanning a weekly ad to pull prices out of it. -->
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>BBQ Board uses your location to sort butcher shops and meat counters by how far they are from you. Your location is never stored or shared.</string>
+	<string>BBQ Board uses your location to pick the nearest city on the board. The location itself isn't uploaded.</string>
+	<!-- Nearest-city needs only approximate location (2.4.6, parity with
+	     Android's coarse-only permission). -->
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>BBQ Board uses the camera so you can photograph a store's weekly ad and have the per-pound prices read off it for you.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
