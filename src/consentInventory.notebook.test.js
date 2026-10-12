@@ -17,10 +17,12 @@
 // not account for.
 //
 // When it fails: update COPY.collects in src/components/ConsentCard.jsx so
-// the sentence covers the new field, then add the key here. Read the note on
-// CONSENT_TEXT_VERSION in src/consent.js before bumping it — a bump
-// re-prompts every user of all three apps, and a disclosure fix is not a
-// reason to.
+// the sentence covers the new field, then add the key here. If the change
+// alters what Notebook collects or why, bump CONSENT_VERSIONS.notebook in
+// src/consent.js, which re-asks Notebook users only — the per-app split
+// (2026-10-12) replaced the single shared CONSENT_TEXT_VERSION that used to
+// move all three apps at once. A disclosure catch-up is still not a reason to
+// bump: the basis for existing grants only changes when the data does.
 
 import { test, expect } from 'vitest';
 import { readFileSync, existsSync, statSync } from 'node:fs';
