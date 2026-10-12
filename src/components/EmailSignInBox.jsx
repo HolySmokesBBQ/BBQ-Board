@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAppContext } from '../context/AppContext.jsx';
 import { track } from '../scoring.js';
+import { errorCode } from '../analyticsCodes.js';
 import { MIN_SIGNUP_LENGTH, passwordMeetsGate, passwordStrength, isCommonPassword } from '../passwordPolicy.js';
 
 // Email/password auth UI — toggles between Sign In and Sign Up, plus a
@@ -30,11 +31,11 @@ export default function EmailSignInBox({ S, sBtn, sInput, onSignedIn }) {
         else { setMsg('Reset link sent — check your email.'); track('password_reset_requested'); }
       } else if (mode === 'signUp') {
         const r = await attemptEmailSignUp(email, password);
-        if (r?.error) { setErr(r.error); track('signin_failed', { method: 'email_signup', reason: r.error.slice(0, 60) }); }
+        if (r?.error) { setErr(r.error); track('signin_failed', { method: 'email_signup', reason: errorCode(r.code) }); }
         else { track('sign_up', { method: 'email' }); onSignedIn?.(r.user); }
       } else {
         const r = await attemptEmailSignIn(email, password);
-        if (r?.error) { setErr(r.error); track('signin_failed', { method: 'email', reason: r.error.slice(0, 60) }); }
+        if (r?.error) { setErr(r.error); track('signin_failed', { method: 'email', reason: errorCode(r.code) }); }
         else { track('sign_in', { method: 'email' }); onSignedIn?.(r.user); }
       }
     } finally {

@@ -152,6 +152,7 @@ import {
   generateShareCard, exportCSV,
 } from '../scoring.js';
 import { generateReviewStoryCard } from '../reviewShareCard.js';
+import { errorCode } from '../analyticsCodes.js';
 import {
   initEntitlements, isUnlocked, canCreateReview, isGateEnabled,
 } from '../entitlements.js';
@@ -299,10 +300,10 @@ export default function AppProvider({ children }) {
   // import itself.
   const emailSignIn = (email, password) =>
     withAuthTimeout(firebaseEmailSignIn(email, password), 'Sign-in')
-      .catch(e => ({ error: e?.message || 'Sign-in failed. Try again.' }));
+      .catch(e => ({ error: e?.message || 'Sign-in failed. Try again.', code: e?.code }));
   const emailSignUp = (email, password) =>
     withAuthTimeout(firebaseEmailSignUp(email, password), 'Sign-up')
-      .catch(e => ({ error: e?.message || 'Sign-up failed. Try again.' }));
+      .catch(e => ({ error: e?.message || 'Sign-up failed. Try again.', code: e?.code }));
   const passwordReset = (email) =>
     withAuthTimeout(firebaseSendPasswordReset(email), 'Password reset')
       .catch(e => ({ error: e?.message || 'Reset failed. Try again.' }));
@@ -340,8 +341,7 @@ export default function AppProvider({ children }) {
       const user = await withAuthTimeout(fn(), 'Sign-in');
       return user;
     } catch (e) {
-      const reason = (e?.code || e?.message || 'unknown').toString().slice(0, 80);
-      track('signin_failed', { method, reason });
+      track('signin_failed', { method, reason: errorCode(e) });
       if (!isUserCancel(e)) {
         setAuthError(
           e?.code === 'auth/timeout'
@@ -981,7 +981,7 @@ export default function AppProvider({ children }) {
       } catch (e) {
         console.error('Photo upload failed:', e);
         setSyncStatus('photos-failed');
-        track('photo_upload_failed', { restaurant: reviewToSave.restaurant, message: e?.message || 'unknown' });
+        track('photo_upload_failed', { restaurant: reviewToSave.restaurant, reason: errorCode(e) });
       }
     }
 
@@ -989,11 +989,10 @@ export default function AppProvider({ children }) {
       ? reviews.map(r => r.id === currentReview.id ? reviewToSave : r)
       : [reviewToSave, ...reviews];
     save(updated);
-    const sc = calcScores(reviewToSave.scores);
     if (exists) {
-      track('review_edited', { restaurant: reviewToSave.restaurant, location: reviewToSave.location || '', stars: sc.stars, composite: sc.composite.toFixed(2) });
+      track('review_edited', { restaurant: reviewToSave.restaurant });
     } else {
-      track('review_created', { restaurant: reviewToSave.restaurant, location: reviewToSave.location || '', stars: sc.stars, composite: sc.composite.toFixed(2), review_count: updated.length });
+      track('review_created', { restaurant: reviewToSave.restaurant, review_count: updated.length });
     }
     setDirty(false);
     setView('home');
@@ -1018,7 +1017,7 @@ export default function AppProvider({ children }) {
     setView('home');
     setCurrentReview(null);
     setDirty(false);
-    track('review_deleted', { restaurant: removed?.restaurant || '', location: removed?.location || '' });
+    track('review_deleted', { restaurant: removed?.restaurant || '' });
     // Tombstone locally so a cross-device merge won't resurrect this.
     addTombstone(id);
     // Clean up cloud state — Firestore doc + Storage photos. Both are
@@ -1375,7 +1374,7 @@ export default function AppProvider({ children }) {
       // AbortError = the user dismissed the share sheet; that's not a
       // failure and shouldn't be logged as one.
       if (e?.name !== 'AbortError') {
-        track('story_card_failed', { reason: (e?.message || 'unknown').toString().slice(0, 80) });
+        track('story_card_failed', { reason: errorCode(e) });
       }
     } finally {
       setStoryGenerating(false);
