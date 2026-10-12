@@ -36,7 +36,7 @@ export const CONSENT_TEXT_VERSION = 1;
 
 // Bump an app's entry when ITS consent sentence changes what it says is
 // collected or why. Records under an older version stop counting for that
-// app only, so only that app's users are asked again — and until they
+// app only, so only that app's users are asked again, and until they
 // answer, that app collects nothing, including from users who had said yes.
 // Bump when the data changes, not the prose.
 //
