@@ -10,6 +10,8 @@ import { track } from '../scoring.js';
 import Avatar from './Avatar.jsx';
 import EmailSignInBox from './EmailSignInBox.jsx';
 import { exportAllCooksToCsv, exportAllRecipesToCsv } from '../cookCsv.js';
+import { useConsent, openPrivacyPolicy, CONSENT_PURPOSE } from './ConsentCard.jsx';
+import { setConsent } from '../consent.js';
 
 // Settings — Appearance, Profile, Friends, Sync, Data, Danger.
 // Replaces the old Profile page and consolidates all app config in
@@ -43,6 +45,8 @@ export default function NotebookSettings() {
     cooks, recipes,
     syncWithCloud, cookSyncStatus,
   } = useCookContext();
+
+  const consentRec = useConsent();
 
   const themeOptions = [
     { key: 'dark', label: 'Dark' },
@@ -89,6 +93,34 @@ export default function NotebookSettings() {
                 </button>
               );
             })}
+          </div>
+        </div>
+
+        {/* PRIVACY — outside the signed-in branch on purpose. Consent has
+            nothing to do with having an account, and withdrawing has to be
+            exactly as easy as granting, so a signed-out user must be able to
+            reach this too. */}
+        <div style={{ ...SECTION_LABEL, color: S.muted }}>PRIVACY</div>
+        <div style={CARD(S)}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+            <div style={{ fontSize: 13 }}>
+              Usage analytics
+              <div style={{ fontSize: 11, color: S.muted, marginTop: 2 }}>
+                {consentRec?.choice === 'granted'
+                  ? `On since ${new Date(consentRec.at).toLocaleDateString()}`
+                  : consentRec?.choice === 'denied' ? 'Off' : 'Off (not answered yet)'}
+              </div>
+            </div>
+            <button
+              onClick={() => setConsent(consentRec?.choice === 'granted' ? 'denied' : 'granted')}
+              style={{ ...sBtn(false, true), whiteSpace: 'nowrap' }}
+            >
+              {consentRec?.choice === 'granted' ? 'Turn off' : 'Turn on'}
+            </button>
+          </div>
+          <div style={{ fontSize: 11, color: S.muted, lineHeight: 1.5, marginTop: 8 }}>
+            Sent to Google Analytics. {CONSENT_PURPOSE}{' '}
+            <button onClick={openPrivacyPolicy} style={{ background: 'none', border: 'none', padding: 0, color: S.accent, fontSize: 11, textDecoration: 'underline', cursor: 'pointer' }}>Privacy policy</button>
           </div>
         </div>
 

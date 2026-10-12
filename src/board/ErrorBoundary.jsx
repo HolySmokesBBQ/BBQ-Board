@@ -57,9 +57,12 @@ export class ErrorBoundary extends React.Component {
     console.error('[board] render error caught by ErrorBoundary:',
       describeError(err), info?.componentStack || '');
     // analytics.js is a leaf module (consent.js only), so this still has no
-    // dependency on the tree it is protecting. It sends only with consent.
+    // dependency on the tree it is protecting. It sends only with consent,
+    // and only that a render crashed: the message stays in the local
+    // diagnostics log above, never in analytics (bounded-reason ruling,
+    // 2026-10-12).
     try {
-      track('board_error_boundary', { message: String(err?.message || err).slice(0, 100) });
+      track('board_error_boundary');
     } catch {}
   }
 

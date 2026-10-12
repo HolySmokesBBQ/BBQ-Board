@@ -3,6 +3,7 @@ import { useAppContext } from '../context/AppContext.jsx';
 import { useCookContext } from '../context/CookContext.jsx';
 import { BRANDS, getBrand } from '../parsers/index.js';
 import { compressPhoto, track } from '../scoring.js';
+import { errorCode } from '../analyticsCodes.js';
 
 // Universal Import page. User picks a thermometer brand → we route to
 // either an OCR (screenshot) or CSV (file) flow → the parser returns a
@@ -52,10 +53,16 @@ export default function NotebookImport() {
       console.error(`${brand.label} import failed:`, err);
       setError(err?.message || 'Could not read the file. Try again.');
       setStatus('error');
+      // reason is a bounded code, never the error text. The auditor's ruling
+      // (2026-10-12): a truncated message is still arbitrary user-adjacent
+      // content -- a parser throwing on a filename, a path, or a line of the
+      // user's own CSV would have sent 80 characters of it to GA4. The CSV
+      // path below already sends a parser code, and the web fork bounded its
+      // copy of this same line independently.
       track('thermometer_import_failed', {
         brand: brand.id,
         method: brand.method,
-        reason: err?.message?.slice(0, 80) || 'unknown',
+        reason: errorCode(err),
       });
     }
   };

@@ -70,7 +70,7 @@ export default function Map() {
               `<b>${sc.composite.toFixed(2)}</b></div>`
             )
             .addTo(map);
-          marker.on('click', () => track('map_pin_clicked', { restaurant: r.restaurant || '', stars: sc.stars }));
+          marker.on('click', () => track('map_pin_clicked', { restaurant: r.restaurant || '' }));
 
           bounds.push([coords.lat + offset * 0.5, coords.lng + offset]);
         });

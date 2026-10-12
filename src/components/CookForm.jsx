@@ -3,7 +3,7 @@ import { useAppContext } from '../context/AppContext.jsx';
 import { useCookContext } from '../context/CookContext.jsx';
 import { MEATS, WOOD_TYPES, FUEL_SOURCES, WRAP_METHODS } from '../constants.js';
 import { computeHumidity } from '../pitHumidity.js';
-import { DEFAULT_PRESSURE_KPA } from '../pressureResolver.js';
+import { resolvePressure } from '../pressureResolver.js';
 import RatingWheel from './RatingWheel.jsx';
 
 export default function CookForm() {
@@ -38,7 +38,7 @@ export default function CookForm() {
 
       // Find nearest observation stations via NWS
       const pointResp = await fetch(
-        `https://api.weather.gov/points/${latitude.toFixed(4)},${longitude.toFixed(4)}`
+        `https://api.weather.gov/points/${latitude.toFixed(2)},${longitude.toFixed(2)}`
       );
       if (!pointResp.ok) throw new Error(`NWS points: ${pointResp.status}`);
       const pointData = await pointResp.json();
@@ -77,12 +77,20 @@ export default function CookForm() {
           }
           const rh = p.relativeHumidity?.value;
           const humText = rh != null ? `${Math.round(rh)}%` : '';
+          // Station pressure for the pit-humidity math. NWS reports
+          // barometricPressure in Pa (wmoUnit:Pa). Stored on the cook so a
+          // cook logged at altitude keeps that altitude's pressure when it's
+          // opened again later from somewhere else — a cook is a record of
+          // conditions at the time, not of wherever you happen to be reading it.
+          const pa = p.barometricPressure?.value;
+          const pressureKPa = Number.isFinite(pa) && pa > 0 ? pa / 1000 : null;
 
           setCurrentCook(prev => ({
             ...prev,
             weatherTemp: String(tempF),
             weatherWind: windText || prev.weatherWind,
             weatherHumidity: humText || prev.weatherHumidity,
+            pitPressureKPa: pressureKPa ?? prev.pitPressureKPa,
           }));
           setDirty(true);
           setWeatherLoading(false);
@@ -333,8 +341,9 @@ export default function CookForm() {
 
           {/* Pit humidity — wet-bulb reading + live RH%/dew point. Optional field;
               empty when unused, only computes when both cookTemp (dry-bulb) and
-              pitWetBulbF are numeric. Uses DEFAULT_PRESSURE_KPA (Waukesha ~98.3)
-              since we don't fetch station pressure from CookForm. */}
+              pitWetBulbF are numeric. Pressure comes from resolvePressure() on
+              the station pressure captured by "Get Current Weather"; it falls
+              back to the Waukesha default only when no weather fetch has run. */}
           <div style={{ marginBottom: '10px' }}>
             <label style={sLabel()}>WET BULB (F) — optional</label>
             <input type="number" inputMode="numeric" value={currentCook.pitWetBulbF || ''}
@@ -346,7 +355,10 @@ export default function CookForm() {
               const wetF = parseFloat(currentCook.pitWetBulbF);
               if (!Number.isFinite(dryF) || !Number.isFinite(wetF)) return null;
               const { rh, dewpointF, warning } = computeHumidity({
-                dryF, wetF, pressureKPa: DEFAULT_PRESSURE_KPA,
+                dryF, wetF,
+                pressureKPa: resolvePressure({
+                  weatherPressureKPa: currentCook.pitPressureKPa,
+                }).valueKPa,
               });
               if (warning === 'inverted') {
                 return <div style={{ fontSize: 11, color: '#f87171', marginTop: 4 }}>

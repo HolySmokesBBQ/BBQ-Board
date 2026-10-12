@@ -70,7 +70,14 @@ service cloud.firestore {
         'targetInternalTemp', 'cookTimeHours', 'cookTimeMinutes', 'restTime',
         'weatherTemp', 'weatherWind', 'weatherHumidity', 'photos',
         'notes', 'notesLog', 'rating', 'tags', 'shared', 'whatIdChange',
-        'createdAt', 'lastEdited', 'restaurantKey', 'syncedAt'
+        'createdAt', 'lastEdited', 'restaurantKey', 'syncedAt',
+        // Pit humidity (Notebook). Shipped in the client v3.0.1 but never
+        // added here, so prepCookForFirestore dropped them on every write and
+        // the readings never reached the cloud. Listing them is permissive —
+        // hasOnly() only rejects keys NOT in this list — so publishing this
+        // ahead of the matching client change is safe and is the required
+        // order: rules must allow a field before the client starts sending it.
+        'pitWetBulbF', 'pitPressureKPa'
       ];
     }
 
@@ -247,30 +254,90 @@ service cloud.firestore {
     // Public price directory for meat cuts. Read-open (anyone, even
     // signed-out, can browse). Write-auth: signed-in users can submit
     // one document per submission, must be their own userId, and the
-    // field whitelist blocks injection.
+    // whitelist + enum + shape checks block a series of attacks
+    // catalogued in SECURITY-AUDIT-BOARD-DEEP.md.
     //
-    // Anti-spam: enforced at the app layer + rate limits from Firebase
-    // itself. If abuse becomes a problem, tighten to require App Check
-    // and add a per-user submission counter subcollection.
+    // Locked down against (see SECURITY-AUDIT-BOARD-DEEP.md):
+    //   - B-1: server-side timestamp required so a client cannot pin a
+    //          $0.01 fake brisket at a real butcher with a year-9999
+    //          reportedAt that beats every honest recent report; shopId
+    //          constrained so a user cannot attribute a community price
+    //          to a directory shop id they don't own.
+    //   - B-2: docId cannot start with 'seed_' — the client uses that
+    //          prefix as a Verified-badge fallback (kept as a bug in
+    //          older builds), so blocking it at the rules layer
+    //          neutralises any attempt to forge trust.
+    //   - B-3 (partial): shopId/location/notes bounded to prevent
+    //          arbitrary junk from bloating queries and costs. Full App
+    //          Check + per-user rate limiting is a separate follow-up.
+    //   - B-5: region allowlist now covers all 27 REGIONS in schema.js
+    //          (previously missed 8 metros like atlanta_metro,
+    //          silently rejecting real submissions).
+    //   - Older B-1 XSS (from the first audit): also mitigated by the
+    //          cut enum below.
     match /board_prices/{docId} {
       allow read: if true;
 
       allow create: if isSignedIn()
                     && request.resource.data.userId == request.auth.uid
+                    // Block docId 'seed_' prefix forgery (Finding B-2)
+                    && !docId.matches('^seed_.*')
                     && request.resource.data.keys().hasOnly([
                       'userId', 'shopId', 'store', 'storeType', 'region', 'location',
                       'cut', 'pricePerLb', 'notes', 'source', 'reportedAt'
                     ])
+                    // Server-side timestamp only — client cannot fake past/future (B-1)
+                    && request.resource.data.reportedAt == request.time
                     && request.resource.data.store is string
                     && request.resource.data.store.size() > 0
                     && request.resource.data.store.size() <= 80
                     && request.resource.data.pricePerLb is number
                     && request.resource.data.pricePerLb > 0
                     && request.resource.data.pricePerLb <= 100
-                    && request.resource.data.cut is string
-                    && request.resource.data.region is string
-                    && request.resource.data.storeType is string
-                    && request.resource.data.source == 'community';
+                    // shopId shape: bounded string, cannot start with 'seed_'
+                    // (Finding B-1: attribution forgery)
+                    && request.resource.data.shopId is string
+                    && request.resource.data.shopId.size() > 0
+                    && request.resource.data.shopId.size() <= 120
+                    && !request.resource.data.shopId.matches('^seed_.*')
+                    // location: bounded (Finding B-3 partial)
+                    && request.resource.data.location is string
+                    && request.resource.data.location.size() <= 120
+                    // The three enum blocks below are generated from
+                    // src/board/schema.js by scripts/sync-firestore-rules.mjs.
+                    // NEVER edit them by hand — edit schema.js and run
+                    // `npm run deploy:rules` (which syncs + deploys).
+                    // /* @sync:cuts */
+                    && request.resource.data.cut in [
+                      'brisket_prime', 'brisket_choice', 'brisket_select', 'ribeye',
+                      'filet_mignon', 'tbone', 'porterhouse', 'sirloin', 'flank', 'chuck_roast',
+                      'tri_tip', 'ground_beef_80', 'pork_shoulder', 'spare_ribs', 'baby_back_ribs',
+                      'bratwurst_fresh', 'bratwurst_smoked', 'whole_chicken', 'chicken_breast',
+                      'whole_turkey'
+                    ]
+                    // /* @endsync */
+                    // /* @sync:regions */
+                    && request.resource.data.region in [
+                      'milwaukee_metro', 'madison_metro', 'fox_valley', 'green_bay',
+                      'chicago_metro', 'kansas_city_metro', 'austin_metro', 'memphis_metro',
+                      'nashville_metro', 'st_louis_metro', 'dallas_metro', 'houston_metro',
+                      'san_antonio_metro', 'birmingham_metro', 'boise_metro', 'lexington_metro',
+                      'greenville_metro', 'owensboro_metro', 'lockhart_metro', 'atlanta_metro',
+                      'louisville_metro', 'charlotte_metro', 'raleigh_metro', 'columbia_metro',
+                      'lexington_nc_metro', 'tuscaloosa_metro', 'oklahoma_city_metro',
+                      'tulsa_metro', 'little_rock_metro', 'new_orleans_metro', 'savannah_metro',
+                      'denver_metro', 'jacksonville_metro', 'phoenix_metro', 'wichita_metro',
+                      'twin_cities_metro', 'omaha_metro', 'cincinnati_metro', 'indianapolis_metro',
+                      'pittsburgh_metro'
+                    ]
+                    // /* @endsync */
+                    // /* @sync:storeTypes */
+                    && request.resource.data.storeType in ['butcher', 'warehouse', 'grocery', 'farm']
+                    // /* @endsync */
+                    && request.resource.data.source == 'community'
+                    && (!('notes' in request.resource.data.keys())
+                        || (request.resource.data.notes is string
+                            && request.resource.data.notes.size() <= 500));
 
       // Owner can delete their own submission (e.g. correcting a typo).
       // Update not allowed — resubmit instead, so timestamps stay honest.

@@ -390,7 +390,7 @@ export async function firebaseEmailSignIn(email, password) {
     const result = await withTimeout(signInWithEmailAndPassword(auth, email.trim(), password), 'Sign-in');
     return { user: result.user };
   } catch (error) {
-    return { error: humanizeAuthError(error) };
+    return { error: humanizeAuthError(error), code: error?.code };
   }
 }
 
@@ -402,7 +402,7 @@ export async function firebaseEmailSignUp(email, password) {
     try { await sendEmailVerification(result.user); } catch {}
     return { user: result.user };
   } catch (error) {
-    return { error: humanizeAuthError(error) };
+    return { error: humanizeAuthError(error), code: error?.code };
   }
 }
 
@@ -411,7 +411,7 @@ export async function firebaseSendPasswordReset(email) {
     await withTimeout(sendPasswordResetEmail(auth, email.trim()), 'Password reset');
     return { ok: true };
   } catch (error) {
-    return { error: humanizeAuthError(error) };
+    return { error: humanizeAuthError(error), code: error?.code };
   }
 }
 
@@ -853,6 +853,13 @@ const COOK_FIELD_WHITELIST = [
   'weatherTemp', 'weatherWind', 'weatherHumidity', 'photos',
   'notes', 'notesLog', 'rating', 'tags', 'shared', 'whatIdChange',
   'createdAt', 'lastEdited', 'syncedAt',
+  // Pit humidity. Shipped in the UI in v3.0.1 but never added here, so every
+  // write silently dropped them and the readings never left the device —
+  // log a wet-bulb reading, reinstall, it's gone. Safe to send now: the
+  // matching firestore.rules cookFields() entry went live on
+  // holy-smokes-bbq-notebook on 2026-09-29, and hasOnly() would deny the
+  // whole cook write if the rules didn't already allow these keys.
+  'pitWetBulbF', 'pitPressureKPa',
 ];
 
 function prepCookForFirestore(cook, userId) {

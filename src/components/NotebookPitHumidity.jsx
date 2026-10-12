@@ -41,7 +41,7 @@ function fetchWeatherPressureKPa() {
       async ({ coords: { latitude, longitude } }) => {
         try {
           const pointResp = await fetch(
-            `https://api.weather.gov/points/${latitude.toFixed(4)},${longitude.toFixed(4)}`,
+            `https://api.weather.gov/points/${latitude.toFixed(2)},${longitude.toFixed(2)}`,
           );
           if (!pointResp.ok) throw new Error();
           const pointData = await pointResp.json();
@@ -85,21 +85,27 @@ export default function NotebookPitHumidity() {
   const [wetStr, setWetStr] = useState('');
   const [manualPressureStr, setManualPressureStr] = useState('');
   const [weatherPressureKPa, setWeatherPressureKPa] = useState(null);
-  const [pressureLoading, setPressureLoading] = useState(true);
+  // starts false: nothing fetches until the user taps "Use my location"
+  const [pressureLoading, setPressureLoading] = useState(false);
   const [showOverride, setShowOverride] = useState(false);
 
+  // Opening this screen must NOT touch location. It used to fetch on mount,
+  // which meant simply navigating here requested GPS and sent coordinates to
+  // api.weather.gov with no user action — undisclosed automatic collection,
+  // and it breaks the user-initiated basis we rely on for that transfer.
+  // The calculator works fine without it: resolvePressure() falls back to the
+  // default, and the user can tap for a local reading or type one in.
   useEffect(() => {
     track('humidity_calculator_opened');
-    let cancelled = false;
-    (async () => {
-      const p = await fetchWeatherPressureKPa();
-      if (!cancelled) {
-        setWeatherPressureKPa(p);
-        setPressureLoading(false);
-      }
-    })();
-    return () => { cancelled = true; };
   }, []);
+
+  const useMyLocation = async () => {
+    setPressureLoading(true);
+    const p = await fetchWeatherPressureKPa();
+    setWeatherPressureKPa(p);
+    setPressureLoading(false);
+    track('humidity_pressure_from_location', { ok: p != null });
+  };
 
   const dryF = parseFloat(dryStr);
   const wetF = parseFloat(wetStr);
@@ -227,6 +233,25 @@ export default function NotebookPitHumidity() {
               </span>
             </div>
           </div>
+          {pressure.source !== 'weather' && (
+            <button
+              onClick={useMyLocation}
+              disabled={pressureLoading}
+              style={{
+                background: 'none',
+                border: `1px solid ${S.border}`,
+                borderRadius: 6,
+                color: S.text,
+                padding: '4px 10px',
+                fontSize: 12,
+                cursor: 'pointer',
+                marginRight: 6,
+                opacity: pressureLoading ? 0.5 : 1,
+              }}
+            >
+              {pressureLoading ? 'Locating…' : 'Use my location'}
+            </button>
+          )}
           <button
             onClick={() => setShowOverride((v) => !v)}
             style={{

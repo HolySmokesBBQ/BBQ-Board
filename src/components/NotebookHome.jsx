@@ -8,6 +8,7 @@ import Avatar from './Avatar.jsx';
 import CookLog from './CookLog.jsx';
 import NotebookOnboarding from './NotebookOnboarding.jsx';
 import NotebookAboutModal from './NotebookAboutModal.jsx';
+import ConsentCard from './ConsentCard.jsx';
 import NotebookHamburger from './NotebookHamburger.jsx';
 import EmailSignInBox from './EmailSignInBox.jsx';
 
@@ -49,32 +50,7 @@ export default function NotebookHome() {
 
   return (
     <>
-      <header style={{ background: '#121a14', borderBottom: `1px solid ${S.border}`, padding: '14px 16px' }}>
-        <div className="bbq-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {/* Web-only back link — the installed app has no "back" from home. */}
-            {!window.Capacitor?.isNativePlatform?.() && (
-              <a href="/" onClick={() => track('cross_app_nav', { from: 'notebook', to: 'site' })}
-                style={{ color: S.muted, textDecoration: 'none', fontSize: 14 }}>← Back</a>
-            )}
-            <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 20, fontWeight: 700, letterSpacing: 1, color: ACCENT }}>
-              BBQ NOTEBOOK
-            </div>
-          </div>
-          <button
-            onClick={() => { track('hamburger_opened'); setShowMenu(true); }}
-            aria-label="Open menu"
-            style={{
-              background: 'none', border: `1px solid ${S.border}`, borderRadius: 6,
-              width: 40, height: 40, cursor: 'pointer', color: S.text,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20,
-            }}
-          >
-            ☰
-          </button>
-        </div>
-      </header>
-    <div className="bbq-container" style={{ padding: '16px' }}>
+    <div className="bbq-container" style={{ padding: '16px', paddingTop: 'calc(20px + env(safe-area-inset-top, 0px))' }}>
       {showOnboarding && <NotebookOnboarding onDismiss={() => setShowOnboarding(false)} />}
       <OfflineBanner />
 
@@ -102,6 +78,9 @@ export default function NotebookHome() {
           letterSpacing: '2px', color: ACCENT }}>BBQ Notebook</h1>
         <div style={{ fontSize: '11px', color: S.muted, letterSpacing: '3px' }}>by Holy Smokes BBQ Co</div>
       </div>
+
+      {/* Usage-analytics consent, shown until answered (consent.js). */}
+      <ConsentCard />
 
       {/* Cook log — search, filters, list, empty state */}
       <CookLog />
@@ -211,6 +190,34 @@ export default function NotebookHome() {
           Share BBQ Notebook
         </button>
       </div>
+
+      {/* Floating hamburger — top-right mirror of the + FAB. Header is
+          gone in v3.0.2; this is the sole navigation trigger on Home. */}
+      <button
+        onClick={() => { track('hamburger_opened'); setShowMenu(true); }}
+        aria-label="Open menu"
+        style={{
+          position: 'fixed',
+          right: '20px',
+          top: 'calc(20px + env(safe-area-inset-top, 0px))',
+          width: '52px',
+          height: '52px',
+          borderRadius: '50%',
+          background: '#121a14',
+          color: S.text,
+          border: `1px solid ${S.border}`,
+          fontSize: '24px',
+          lineHeight: 1,
+          cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        ☰
+      </button>
 
       {/* Floating add-cook button — always visible on home, no more
           hidden-behind-empty-state. Bottom-right with safe-area inset
