@@ -37,14 +37,14 @@ const APP_COPY = {
   scorecard: {
     name: 'BBQ Scorecard',
     collects:
-      'plus the restaurant name on reviews you save, open, share, export or ' +
-      "delete, how many reviews and friends you have and whether you're " +
-      'signed in, how much your score for a place moved since your last ' +
-      'visit, how many scorers sat at a blind table and how far apart they ' +
-      'were, the filters, sort and theme you pick, how far a nearby search ' +
-      "reached and how many places it found, how many badges you've earned, " +
-      'how many photos get saved or repaired, and a code for any error it ' +
-      'runs into',
+      'plus the restaurant name on reviews you save, open, share, export ' +
+      'or delete and whether friends were on it, how many reviews and ' +
+      "friends you have and whether you're signed in, how much your score " +
+      'for a place moved since your last visit, how many scorers sat at a ' +
+      'blind table and how far apart they were, the filters, sort and ' +
+      'theme you pick, how far a nearby search reached and how many ' +
+      "places it found, how many badges you've earned, how many photos " +
+      'get saved or repaired, and a code for any error it runs into',
     privacyUrl: 'https://holysmokesbbqco.com/privacy.html',
   },
   // Written from an inventory of every track() call reachable from the

@@ -30,11 +30,13 @@ const DISCLOSED_PARAMS = {
   // action rather than its content.
   view: 'features', from: 'features', to: 'features', target: 'features',
   source: 'features', method: 'features',
-  // "the restaurant name on reviews you save, open, share, export or delete"
+  // "the restaurant name on reviews you save, open, share, export or delete
+  // and whether friends were on it"
   restaurant: 'restaurant', restaurant_a: 'restaurant', restaurant_b: 'restaurant',
+  has_friends: 'restaurant',
   // "how many reviews and friends you have and whether you're signed in"
   reviews: 'library', review_count: 'library', friends: 'library',
-  friend_count: 'library', has_friends: 'library', signed_in: 'library',
+  friend_count: 'library', signed_in: 'library',
   // Always 0 and always 'restaurants' in Scorecard: no cook screen is in
   // this graph (asserted below) and main.jsx pins the mode. Still sent as
   // user properties, so still listed.
@@ -174,6 +176,7 @@ test('the sentence names what this inventory found', () => {
   // still matches.
   const collects = entry[1].replace(/['"]\s*\+\s*['"]/g, '');
   expect(collects).toMatch(/restaurant name/);
+  expect(collects).toMatch(/whether friends were on it/);
   expect(collects).toMatch(/reviews and friends you have/);
   expect(collects).toMatch(/signed in/);
   expect(collects).toMatch(/since your last visit/);

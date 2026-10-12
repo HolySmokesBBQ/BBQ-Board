@@ -117,6 +117,24 @@ describe('per-app consent', () => {
     expect(consent.analyticsAllowed()).toBe(false);
   });
 
+  test("the website banner's grant never counts as an app's consent", () => {
+    // Doctrine 2026-10-12: consent records are purpose- and surface-scoped.
+    // hs-consent-v1 is the website banner's answer to a different text (GA
+    // page views plus the Adobe font load), so no app may act on it. Even a
+    // record shaped exactly like an app grant is ignored under that key.
+    const banner = JSON.stringify({ choice: 'granted', timestamp: '2026-10-01T00:00:00Z', consentTextVersion: '2026-10-01' });
+    const lookalike = JSON.stringify({ choice: 'granted', at: 'x', textVersion: 1 });
+    for (const value of [banner, lookalike]) {
+      for (const app of ['scorecard', 'notebook', 'board', undefined]) {
+        env = freshEnv();
+        if (app) asApp(app); else delete window.GA_CONTENT_GROUP;
+        env.store.set('hs-consent-v1', value);
+        expect(consent.getConsent(), `${app} honoured hs-consent-v1`).toBeNull();
+        expect(consent.analyticsAllowed()).toBe(false);
+      }
+    }
+  });
+
   test('versions compare strictly: a stored "1" is not 1', () => {
     asApp('board');
     env.store.set(consent.LEGACY_CONSENT_KEY, JSON.stringify({ choice: 'granted', at: 'x', textVersion: '1' }));
