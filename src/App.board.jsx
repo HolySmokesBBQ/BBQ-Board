@@ -23,6 +23,7 @@ import BoardHamburger from './components/BoardHamburger.jsx';
 import Calculator from './board/Calculator.jsx';
 import Settings from './board/Settings.jsx';
 import { track } from './board/analytics.js';
+import { errorCode } from './analyticsCodes.js';
 import ConsentPrompt from './board/ConsentPrompt.jsx';
 import { sendProblemReport } from './diagnostics.js';
 import 'leaflet/dist/leaflet.css';
@@ -235,7 +236,7 @@ export default function BoardApp() {
       track('board_signin');
     } catch (err) {
       console.error('signin failed', err);
-      track('board_signin_failed', { error: err?.code || 'unknown' });
+      track('board_signin_failed', { error: errorCode(err) });
       // Rethrow. Swallowing this was the bug: the gates below already
       // catch and show a message, but with nothing thrown they carried on
       // as if sign-in SUCCEEDED — closing the gate and queueing a submit
@@ -256,7 +257,7 @@ export default function BoardApp() {
       track('board_signin_anon');
     } catch (err) {
       console.error('anon signin failed', err);
-      track('board_signin_anon_failed', { error: err?.code || 'unknown' });
+      track('board_signin_anon_failed', { error: errorCode(err) });
       throw err;
     }
   };
@@ -1461,7 +1462,9 @@ function CircularScrubPanel({ region, user, onSignIn, onSignInAnon }) {
       console.error('OCR failed', err);
       setError('Something went wrong reading that image. Try a smaller or sharper photo.');
       setStatus('idle');
-      track('board_circular_ocr_failed', { error: err?.message || 'unknown' });
+      // A short code from a fixed list, never the message: error text can carry
+      // anything (auditor bounded-reason ruling, 2026-10-12).
+      track('board_circular_ocr_failed', { error: errorCode(err) });
     }
   };
 

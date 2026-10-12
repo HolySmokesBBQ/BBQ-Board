@@ -19,7 +19,7 @@ export const BOARD_CONSENT = {
     'That covers which screens and features you use, plus the city you pick ' +
     '(and how far away it is when you use Near me), the cuts and store types ' +
     'you filter by, the cut, store type and region of any price you submit, ' +
-    'and the error messages the app runs into. ' +
+    'and a short code for any error the app runs into. ' +
     "It isn't linked to your account, name, or email.",
   privacyUrl: 'https://holysmokesbbqco.com/privacy-board.html',
 };
@@ -41,6 +41,7 @@ export const DISCLOSED_PARAMS = {
   meat: 'filters', type: 'filters',
   // "the cut, store type and region of any price you submit"
   cut: 'submission', storeType: 'submission', region: 'submission',
-  // "the error messages the app runs into"
-  error: 'errors', code: 'errors', message: 'errors',
+  // "a short code for any error the app runs into" (errorCode() from
+  // src/analyticsCodes.js, or the browser's numeric geolocation code)
+  error: 'errors', code: 'errors',
 };

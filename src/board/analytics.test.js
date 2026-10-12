@@ -62,3 +62,29 @@ describe('track', () => {
     expect(() => track('board_meat_filter')).not.toThrow();
   });
 });
+
+// Per-app consent (shared consent.js, Oct 2026): Board reads its own key
+// hs-analytics-consent:board first and falls back to the legacy shared key,
+// at CONSENT_VERSIONS.board = 1. Board 2.4.6 wrote grants to the legacy key
+// at version 1, so those must keep counting without a re-prompt.
+describe('Board consent under per-app keys', () => {
+  beforeEach(() => { window.GA_CONTENT_GROUP = 'board'; });
+
+  test('a 2.4.6 grant on the legacy key still counts', () => {
+    localStorage.setItem('hs-analytics-consent', JSON.stringify({ choice: 'granted', at: 'x', textVersion: 1 }));
+    track('board_meat_filter', { meat: 'brisket' });
+    expect(window.gtag).toHaveBeenCalledTimes(1);
+  });
+
+  test("Board's own key wins over the legacy key", () => {
+    localStorage.setItem('hs-analytics-consent', JSON.stringify({ choice: 'granted', at: 'x', textVersion: 1 }));
+    localStorage.setItem('hs-analytics-consent:board', JSON.stringify({ choice: 'denied', at: 'y', textVersion: 1 }));
+    track('board_meat_filter');
+    expect(window.gtag).not.toHaveBeenCalled();
+  });
+
+  test('Board stays at consent version 1', async () => {
+    const { CONSENT_VERSIONS } = await import('../consent.js');
+    expect(CONSENT_VERSIONS.board).toBe(1);
+  });
+});
