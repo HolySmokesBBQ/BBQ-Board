@@ -387,7 +387,7 @@ export async function firebaseEmailSignIn(email, password) {
     const result = await withTimeout(signInWithEmailAndPassword(auth, email.trim(), password), 'Sign-in');
     return { user: result.user };
   } catch (error) {
-    return { error: humanizeAuthError(error) };
+    return { error: humanizeAuthError(error), code: error?.code };
   }
 }
 
@@ -399,7 +399,7 @@ export async function firebaseEmailSignUp(email, password) {
     try { await sendEmailVerification(result.user); } catch {}
     return { user: result.user };
   } catch (error) {
-    return { error: humanizeAuthError(error) };
+    return { error: humanizeAuthError(error), code: error?.code };
   }
 }
 
@@ -408,7 +408,7 @@ export async function firebaseSendPasswordReset(email) {
     await withTimeout(sendPasswordResetEmail(auth, email.trim()), 'Password reset');
     return { ok: true };
   } catch (error) {
-    return { error: humanizeAuthError(error) };
+    return { error: humanizeAuthError(error), code: error?.code };
   }
 }
 
