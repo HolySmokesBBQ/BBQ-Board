@@ -43,14 +43,14 @@ const APP_COPY = {
   // strings are truncated and run through scrubParams, which replaces
   // anything email-shaped with [redacted].
   //
-  // "the error messages the app runs into" is deliberately still the broad
-  // wording. The auditor ruled (2026-10-12) that `reason` must be a bounded
-  // code rather than error text, and commit 9334db6 converted the sign-in
-  // box, photo_upload_failed and story_card_failed to errorCode(). But
-  // profile_load_failed in AppContext.jsx still falls back to e.message, so
-  // on that one path a real error string does reach GA4. Narrow this to "a
-  // code for any error" once that path is bounded too -- not before.
-  // Over-disclosing costs the user nothing; under-disclosing is the whole
+  // The error wording says "a code" rather than "the error messages" because
+  // every reason Notebook can send is now a bounded code from
+  // analyticsCodes.js. That took three commits to become true: 9334db6 did
+  // the sign-in box, photo_upload_failed and story_card_failed, f140413 did
+  // profile_load_failed, and the thermometer import in NotebookImport.jsx was
+  // the last raw sender. The order matters and is the auditor's rule -- bound
+  // the path first, narrow the copy second. Never narrow ahead of the code:
+  // over-disclosing costs the user nothing, under-disclosing is the whole
   // failure mode this sentence keeps falling into.
   //
   // Scorecard's review events (restaurant names, star ratings) sit in the
@@ -64,7 +64,7 @@ const APP_COPY = {
       'cooks, recipes and friends you have when it syncs, a range for any ' +
       'pit humidity you work out and whether that used your location, the ' +
       'thermometer brand you import from and how much a file brought in, ' +
-      'and the error messages the app runs into',
+      'and a code for any error it runs into',
     privacyUrl: 'https://holysmokesbbqco.com/notebook/privacy-notebook.html',
   },
   // No board entry on purpose. BBQ Board cannot render this card at all —

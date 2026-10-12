@@ -51,8 +51,9 @@ const DISCLOSED_PARAMS = {
   brand: 'import', photo_count: 'import', cook_temp_found: 'import',
   date_found: 'import', meat_found: 'import', duration_found: 'import',
   finish_found: 'import',
-  // "the error messages the app runs into". Truncated at the call site and
-  // run through scrubParams, which replaces anything email-shaped.
+  // "a code for any error it runs into" -- a fixed code from
+  // analyticsCodes.js, not error text. The no-raw-error-text test below is
+  // what keeps that sentence true.
   reason: 'errors', message: 'errors',
 };
 
@@ -146,6 +147,31 @@ test('no Notebook screen has been wired into a review flow', () => {
   ).toEqual([]);
 });
 
+test('no tracked reason carries raw error text', () => {
+  // The auditor's bounded-reason rule (2026-10-12), as a test rather than a
+  // habit. A truncated error message is still arbitrary user-adjacent content
+  // -- a parser throwing on a filename, a path, or a line of someone's own CSV
+  // would put 80 characters of it in GA4. The consent sentence promises "a
+  // code for any error", so a raw message here makes that sentence false, not
+  // merely incomplete. Three separate commits were needed to get every path
+  // bounded; this is what stops the fourth from regressing.
+  const offenders = [];
+  for (const f of reachableFiles()) {
+    const src = readFileSync(f, 'utf8');
+    for (const m of src.matchAll(/\btrack\(\s*['"`][\w-]+['"`]\s*,\s*\{([^}]*)\}/g)) {
+      for (const part of m[1].split(',')) {
+        const kv = part.trim().match(/^(reason|message)\s*:\s*(.+)$/s);
+        // A value mentioning .message is error text. errorCode(...) is fine,
+        // as is a literal like 'in_app_browser' or a parser's own code.
+        if (kv && /\bmessage\b/.test(kv[2]) && !/errorCode\s*\(/.test(kv[2])) {
+          offenders.push(`${rel(f)}: ${kv[1]}: ${kv[2].trim().slice(0, 60)}`);
+        }
+      }
+    }
+  }
+  expect(offenders, 'route these through errorCode() from analyticsCodes.js').toEqual([]);
+});
+
 test('nothing outside scoring.js talks to gtag directly', () => {
   // scoring.js owns the wrapper, and the wrapper is where the consent gate
   // is. A direct call anywhere else would send without checking.
@@ -165,7 +191,7 @@ test('the sentence names the categories that were missing before', () => {
   const entry = src.match(/notebook:\s*\{([\s\S]*?)\n  \}/);
   expect(entry, 'the notebook entry has moved or been renamed').toBeTruthy();
   const collects = entry[1];
-  expect(collects).toMatch(/error messages/);
+  expect(collects).toMatch(/a code for any error/);
   expect(collects).toMatch(/thermometer brand/);
   expect(collects).toMatch(/pit humidity/);
   expect(collects).toMatch(/used your location/);
