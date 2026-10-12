@@ -552,7 +552,7 @@ export default function AppProvider({ children }) {
         } catch (e) {
           console.error('Profile load failed; continuing without it:', e);
           track('profile_load_failed', {
-            reason: (e?.code || e?.message || 'unknown').toString().slice(0, 80),
+            reason: errorCode(e),
           });
           profile = {
             displayName: user.displayName || 'BBQ Fan',
