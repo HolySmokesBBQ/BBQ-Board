@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import NotebookApp from './App.notebook.jsx';
 import { initDiagnostics } from './diagnostics.js';
+import { startAnalyticsIfAllowed } from './consent.js';
 
 // Start the rolling error buffer immediately so any startup exception
 // is captured for the Report a Problem flow (see NotebookAboutModal).
@@ -13,6 +14,17 @@ initDiagnostics();
 if (typeof window !== 'undefined') {
   localStorage.setItem('bbq-app-mode', 'cooks');
 }
+
+// Usage analytics loads only if the user already allowed it (consent.js).
+//
+// This line was missing from 2026-09-29 until 2026-10-07 and Notebook sent
+// GA4 nothing at all in that window — not a reduced count, a flat zero.
+// index.notebook.html had its static gtm-init.js tag removed as part of the
+// consent work, correctly, but without this call nothing ever injected the
+// replacement. So analyticsAllowed() returned true for a consenting user
+// while window.gtag never existed, and every track() bailed on its own
+// typeof guard. Consent UI present, consent recorded, nothing sent.
+startAnalyticsIfAllowed();
 
 ReactDOM.createRoot(document.getElementById('root')).render(<NotebookApp />);
 

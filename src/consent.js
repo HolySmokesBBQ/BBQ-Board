@@ -17,6 +17,21 @@ export const CONSENT_KEY = 'hs-analytics-consent';
 
 // Bump when the consent card's wording changes materially. Records made
 // under an older version stop counting, so the user is asked again.
+//
+// Read that cost before bumping: this module is shared by Scorecard,
+// Notebook and Board, the version is not per app, and getConsent() returns
+// null for a stale record. So a bump re-prompts every existing user of all
+// three apps at once and stops analytics for each of them until they answer
+// again — including the ones who already said yes.
+//
+// Deliberately still 1 after the 2026-10-12 disclosure rewrite. That rewrite
+// corrected sentences that understated what the apps had always sent (error
+// messages, the thermometer import, the humidity range, Board's location
+// dimension). Nothing new started being collected, so the basis for the
+// existing grants did not change — the text caught up to the code. Fresh
+// consent is for a change in what is collected or why, and paying for a copy
+// fix by blanking three apps' consent would make the apps collect less and
+// tell the user nothing more. Bump it when the data changes, not the prose.
 export const CONSENT_TEXT_VERSION = 1;
 
 const listeners = new Set();
